@@ -12,15 +12,17 @@ class LoginHandler(BaseHandler, tornado.auth.TwitterMixin):
     if self.get_argument('oauth_token', None):
       user = yield self.get_authenticated_user()            
       # user['created_at'] = r.now()
-            
+
       # if new user
-      r.table("users").insert(user).run()
-            
+      r.table('users').insert(user).run()
+
       # else update info
 
-      # delete user description to reduce cookie size
-      del user["description"]
-            
+      # delete user fields to reduce cookie size
+      del user['description']
+      del user['status']
+      del user['entities']
+
       self.set_secure_cookie(self.COOKIE_NAME, json_encode(user))
       self.redirect('/')
     else:
