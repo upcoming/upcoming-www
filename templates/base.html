@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Upcoming - {% block title %}Home{% end %}</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+    <script src="//use.typekit.net/tqk1fsd.js"></script>
+    <script>try{Typekit.load();}catch(e){}</script>
+    <style type="text/css">
+      body {
+        font-family: "canada-type-gibson",sans-serif;
+        font-style: normal;
+        font-size: 16px;
+        color: #000;
+      }
+
+      .navbar {
+        font-size: 16px;
+        font-weight: 400;
+        background-color: #fff;
+        margin-bottom: 0px;
+      }
+
+      .navbar-brand img {
+        height: 100%;
+      }
+
+      .navbar a {
+        text-transform: uppercase;
+      }
+      
+      .list-nav {
+        margin: 0px 0px 10px 0px;
+      }
+
+      .list-nav a {
+        display: block;
+        text-transform: uppercase;   
+        padding: 0px;
+        color: #777;
+      }
+
+      .header-masthead {
+        padding: 80px 0px 40px 0px;
+      }
+
+      .header-masthead h1 {
+        font-size: 96px;
+        font-size: 8vw;
+        color: #ccc;
+      }
+
+      .event {
+        font-size: 16px;
+        font-weight: 200;
+        padding: 12px 10px 4px 10px;
+        border-bottom: 1px solid #ccc;
+      }
+
+      .event-title {
+        font-family: "jubilat",sans-serif;
+        font-size: 22px;
+        font-weight: 200;
+        color: #666;
+        line-height: 24px;
+        padding-bottom: 2px;
+      }
+
+      .event-title a {
+        color: #333;   
+        font-weight: 400;
+      }
+
+      .month {
+        text-align: right;
+        font-size: 16px;
+        text-transform: uppercase;
+        color: #999;
+        padding-bottom: 0;
+      }
+
+      .day {
+        text-align: right;
+        padding: 0;
+        line-height: 24px;
+        font-size: 36px;            
+        color: #999;
+      }
+
+    </style>
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <link rel="apple-touch-icon" sizes="57x57" href="/images/apple-touch-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="/images/apple-touch-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="/images/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="/images/apple-touch-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="/images/apple-touch-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="/images/apple-touch-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="/images/apple-touch-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="/images/apple-touch-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-180x180.png">
+    <link rel="icon" type="image/png" href="/images/favicon-32x32.png" sizes="32x32">
+    <link rel="icon" type="image/png" href="/images/android-chrome-192x192.png" sizes="192x192">
+    <link rel="icon" type="image/png" href="/images/favicon-96x96.png" sizes="96x96">
+    <link rel="icon" type="image/png" href="/images/favicon-16x16.png" sizes="16x16">
+    <link rel="manifest" href="/images/manifest.json">
+    <link rel="shortcut icon" href="/images/favicon.ico">
+    <meta name="msapplication-TileColor" content="#b91d47">
+    <meta name="msapplication-TileImage" content="/images/mstile-144x144.png">
+    <meta name="msapplication-config" content="/images/browserconfig.xml">
+    <meta name="theme-color" content="#ffffff">
+  </head>
+  <body>
+  <header>
+    {% block header %}
+    <nav class="navbar navbar-default navbar-static-top" role="navigation">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="/">
+            <img alt="Upcoming" src="/images/logo.png">
+          </a>
+        </div>
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+          <ul class="nav navbar-nav navbar-left">
+            <li><a href="/discover" class="navbar-link">Discover</a></li>
+            <li><a href="/friends" class="navbar-link">Friends</a></li>
+          </ul>
+          <ul class="nav navbar-nav navbar-right">
+            <li><a href="/event/add" class="navbar-link">+ Add event</a></li>
+            <li><a href="/search" class="navbar-link"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></a></li>
+              {% if current_user %}
+                <li class="dropdown">
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" style="padding: 10px 20px 10px 20px">
+                    <img src="{{ current_user['profile_image_url'] }}" width="30" height="30">
+                    <span class="caret"></span>
+                  </a>
+                  <ul class="dropdown-menu" role="menu">
+                    <li role="presentation">
+                      <a href="/@{{ current_user['screen_name'] }}" role="menuitem" tabindex="-1">View your profile</a>
+                    </li>
+                    <li role="presentation">
+                      <a href="/logout" role="menuitem" tabindex="-1">Logout</a>
+                    </li>
+                  </ul>
+                </li>
+              {% else %}
+                <li><a href="/login" class="navbar-link">Login/Sign Up</a></li>
+              {% end %}
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+    <div class="header-masthead">
+      <div class="container">
+        <div class="col-md-12">
+          <h1>Discover</h1>
+        </div>
+      </div>
+    </div>
+    {% end %}
+  </header>
+  <div id="container" class="container">
+      {% block body %}Body goes here{% end %}
+      <footer>
+        {% block footer %}{% end %}
+      </footer>
+    </div>
+  </div>
+  </body>
+</html>

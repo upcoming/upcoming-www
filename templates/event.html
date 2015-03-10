@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+
+{% block title %}{{ event['title'] }} at {{ event['venue_name'] }}{% end %} 
+
+{% block body %}
+{% import arrow %}
+
+<div id="main">
+  <div class="col-md-9">
+  <div class="row">
+    <div class="event-title">
+      {{ event['title'] }} at {{ event['venue_name'] }}
+      on {{ arrow.get( event['start_date'] ).format('MMMM D, YYYY') }}
+    </div>
+  </div>
+  <div class="row">
+    <p>
+      {{ arrow.get( event['start_date'] ).format('MMMM D') }} -
+      {{ arrow.get( event['end_date'] ).format('MMMM D, YYYY') }}
+    </p>
+    <p>{{ event['start_time'] }} - {{ event['end_time'] }}</p>
+    <p>{{ event['website'] }}</p>
+    <p>{{ event['description'] }}</p>
+    <p>
+      <a href="/venue/{{ event['venue_id'] }}">{{ event['venue_name'] }}</a><br />
+      {{ event['venue_address'] }}<br />
+      {{ event['venue_locality'] }}, {{ event['venue_region'] }} {{ event['venue_postal_code'] }}<br />
+      {{ event['venue_latitude'] }}, {{ event['venue_longitude'] }}
+    </p>
+    {#
+    <p>
+      Added by <a href="/user/{{ event['creator_user_id'] }}"><img src="{{ event['creator_avatar'] }}"></a> 
+      <a href="/user/{{ event['creator_user_id'] }}">{{ event['creator_username'] }}</a>
+      {{ arrow.get( event['created_at'] ).humanize() }}
+    </p>
+    #}
+  </div>
+  
+  {#
+  {% if len(event['watchlists']) > 0 %}
+    <div class="row">
+      <div class="col-xs-6 col-md-4">
+        <strong>Watching</strong>
+        {% for watchlist in event['watchlists'] %}
+          {% if watchlist['status'] == 'watch' %}
+            <li>
+              <a href="/user/{{ watchlist['user_id'] }}"><img src="{{ watchlist['avatar'] }}"></a> 
+              <a href="/user/{{ watchlist['user_id'] }}">{{ watchlist['username'] }}</a>
+            </li>
+          {% end %}
+        {% end %}
+      </div>
+      <div class="col-xs-6 col-md-4">
+        <strong>Attending</strong>
+        {% for watchlist in event['watchlists'] %}
+          {% if watchlist['status'] == 'attend' %}
+            <li>
+              <a href="/user/{{ watchlist['user_id'] }}"><img src="{{ watchlist['avatar'] }}"></a>
+              <a href="/user/{{ watchlist['user_id'] }}">{{ watchlist['username'] }}</a>
+            </li>
+          {% end %}
+        {% end %}
+      </div>
+    </div>
+  {% end %}
+
+  <div class="row">
+    {% if len(event['comments']) > 0 %}
+      <h3>Comments</h3><br />
+      {% for comment in event['comments'] %}
+        <li>
+          <a href="/user/{{ comment['user_id'] }}"><img src="{{ comment['avatar'] }}"></a> 
+          <a href="/user/{{ comment['user_id'] }}">{{ comment['username'] }}</a>:
+          {{ comment['comment'] }}
+        </li>
+
+      {% end %}
+    {% end %}
+  </div>
+  #}
+  </div>
+</div>
+{% end %}

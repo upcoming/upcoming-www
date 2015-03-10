@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block body %}
+
+  <h3>
+    <a href="http://twitter.com/{{ user['screen_name'] }}"><img src="{{ user['profile_image_url'] }}" style="float: left; margin-right: 10px;"></a>
+    {{ user['name'] }} <small>@{{ user['screen_name'] }}</small>
+  </h3>
+  
+  <p>{{ user['description'] }}</p>
+
+{% end %}

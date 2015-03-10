@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block body %}
+  <h1>Venue</h1>
+  {% for event in events %}
+    {% if 'title' in event %}
+      <li><a href="/event/{{ event['event_id'] }}">{{ event['title'] }}</a></li>
+    {% else %}
+      <h2>No title</h2>
+    {% end %}
+  {% end %}
+{% end %}

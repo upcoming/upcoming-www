@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+
+{% block body %}
+  <select class="form-control">
+    {% for venue in venues %}
+      <option value="{{ venue['id'] }}">{{ venue['name'] }} - {{ venue['location']['formattedAddress'][0] }}</option>
+    {% end %}
+  </select>
+    
+  <form method="post" action="/add">
+    <div class="form-group">
+      <label for="event_name">Title</label>
+      <input type="text" class="form-control" id="title" name="title">
+    </div>
+    <div class="form-group">
+      <label for="start_date">Start date</label>
+      <input type="date" class="form-control" id="start_date" name="start_date">
+    </div>
+    <div class="form-group">
+      <label for="end_date">End date</label>
+      <input type="date" class="form-control" id="end_date" name="end_date">
+    </div>
+    <div class="form-group">
+      <label for="start_time">Start time</label>
+      <input type="time" class="form-control" id="start_time" name="start_time">
+    </div>
+    <div class="form-group">
+      <label for="end_time">End time</label>
+      <input type="time" class="form-control" id="end_time" name="end_time">
+    </div>
+    <div class="form-group">
+      <label for="website">Website</label>
+      <input type="text" class="form-control" id="website" name="website">
+    </div>
+    <div class="form-group">
+      <label for="venue_name">Venue name</label>
+      <input type="text" class="form-control" id="venue_name" name="venue_name">
+    </div>
+    <input type="hidden" class="form-control" id="venue_address" name="venue_address">
+    <input type="hidden" class="form-control" id="venue_locality" name="venue_locality">
+    <input type="hidden" class="form-control" id="venue_region" name="venue_region">
+    <input type="hidden" class="form-control" id="venue_postal_code" name="venue_postal_code">
+    <input type="hidden" class="form-control" id="venue_latitude" name="venue_latitude">
+    <input type="hidden" class="form-control" id="venue_longitude" name="venue_longitude">
+    <input type="hidden" class="form-control" id="creator_user_id" name="creator_user_id">
+    <input type="hidden" class="form-control" id="creator_username" name="creator_username">
+    <input type="hidden" class="form-control" id="creator_user_id" name="creator_user_id">
+  
+    <div class="form-group">
+      <label for="description">Description</label>
+      <input type="text" class="form-control" id="description" name="description">
+    </div>
+    <button type="submit" class="btn btn-default">Add event</button>
+  </form>
+{% end %}
