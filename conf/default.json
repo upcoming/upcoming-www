@@ -1,0 +1,13 @@
+{
+  "db_host": "example.host",
+  "db_port": 0,
+  "db_database": "upcoming",
+
+  "twitter_consumer_key": "key",
+  "twitter_consumer_secret": "secret",
+
+  "foursquare_client_id": "id",
+  "foursquare_client_secret": "secret",
+
+  "cookie_secret": "random_hash"
+}
