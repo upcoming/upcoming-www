@@ -19,7 +19,7 @@ class EventHandler(BaseHandler, tornado.web.RequestHandler):
 class EventAddHandler(tornado.web.RequestHandler):
   def get(self):
     client = foursquare.Foursquare(client_id=self.settings['foursquare_client_id'], client_secret=self.settings['foursquare_client_secret'])
-    venues = client.venues.search(params={'query': 'The Redd', 'near': 'Portland, OR'})
+    venues = client.venues.search(params={'query': 'Rev Hall', 'near': 'Portland, OR', 'intent': 'browse'})
 
     self.render(
       "add.html",
