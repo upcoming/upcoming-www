@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% block body %}
-<div class="col-md-3">
+<div class="hidden-xs col-sm-3 col-md-2">
   <div class="list-nav">
     <a href="">Upcoming</a>
     <a href="">This Weekend</a>
@@ -15,7 +15,7 @@
   </div>
 </div>
 <div id="main">
-  <div class="col-md-9">
+  <div class="col-xs-12 col-sm-9 col-md-10">
     {% set prev_start_date = '2000-01-01' %}
 
     {% for event in events %}
@@ -31,7 +31,7 @@
         </div>
 
         {% if 'title' in event %}
-          <div class="col-md-8">
+          <div class="col-md-10">
             <div class="event">
               <div class="event-title">
                 <a href="/event/{{ event['id'] }}">{{ event['title'] }}</a> 
@@ -46,5 +46,4 @@
 
   </div>
 </div>
-
 {% end %}
