@@ -24,7 +24,12 @@ class VenueSearchHandler(BaseHandler, tornado.web.RequestHandler):
     query = self.get_argument('query', None)
     
     client = foursquare.Foursquare(client_id=self.settings['foursquare_client_id'], client_secret=self.settings['foursquare_client_secret'])
-    venues = client.venues.suggestcompletion(params={'query': query, 'near': city, 'intent': 'browse', 'limit': 10})
+    if city == None or city == '':
+      intent = 'global'
+    else:
+      intent = 'browse'
+
+    venues = client.venues.suggestcompletion(params={'query': query, 'near': city, 'intent': intent, 'limit': 10})      
 
     json = tornado.escape.json_encode(venues['minivenues'])
     self.write(json)
