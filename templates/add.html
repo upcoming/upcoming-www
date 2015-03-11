@@ -9,9 +9,19 @@
       <label for="event_name">Title</label>
       <input type="text" class="form-control" id="title" name="title">
     </div>
-    <div class="form-group">
-      <label for="venue_name">Venue name</label>
-      <input type="text" class="form-control typeahead" id="venue_name" name="venue_name" placeholder="Venue name" autocomplete="off">
+    <div class="row">
+      <div class="col-md-6">
+        <div class="form-group">
+          <label for="venue_name">Venue</label>
+          <input type="text" class="form-control typeahead" id="venue_name" name="venue_name" placeholder="Venue name" autocomplete="off">
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="form-group">
+          <label for="venue_city">City</label>
+          <input type="text" class="form-control" id="venue_city" name="venue_city" value="Portland, OR">
+        </div>
+      </div>
     </div>
     <div class="row">
       <div class="col-md-6">
@@ -59,7 +69,11 @@ var venues = new Bloodhound({
   datumTokenizer: Bloodhound.tokenizers.obj.whitespace('value'),
   queryTokenizer: Bloodhound.tokenizers.whitespace,
   remote: {
-    url: '/venue/search/?city=Portland, OR&query=%QUERY',
+    url: '/venue/search/?city=%CITY&query=%QUERY',
+    replace: function(url, query) {
+      var city = encodeURIComponent($('#venue_city').val());
+      return url.replace('%QUERY', query).replace('%CITY', city);
+    },
     rateLimitBy: 'debounce',
     rateLimitWait: 300,
   }
