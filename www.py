@@ -54,6 +54,7 @@ class Application(tornado.web.Application):
       (r'/event/add', EventAddHandler),
       (r'/event/(.*)', EventHandler),
       (r'/@(.*)', UserHandler),
+      (r'/venue/search/(.*)', VenueSearchHandler),
       (r'/venue/(.*)', VenueHandler),
       (r'/login', LoginHandler),
       (r'/logout', LogoutHandler),
