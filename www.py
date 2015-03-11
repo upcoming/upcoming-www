@@ -57,7 +57,7 @@ class Application(tornado.web.Application):
       (r'/venue/(.*)', VenueHandler),
       (r'/login', LoginHandler),
       (r'/logout', LogoutHandler),
-      (r'/images/(.*)', tornado.web.StaticFileHandler, {'path': './static/images'})   
+      (r'/assets/(.*)', tornado.web.StaticFileHandler, {'path': './static'}),   
     ]
 
     settings = {
