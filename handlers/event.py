@@ -1,6 +1,8 @@
 from   base import *
 import rethinkdb as r
 import tornado.web
+from simpleflake import simpleflake
+from basehash import base62
 
 
 class EventHandler(BaseHandler, tornado.web.RequestHandler):
@@ -28,7 +30,13 @@ class EventAddHandler(tornado.web.RequestHandler):
       'venue_id', 'venue_name', 'venue_address', 'venue_locality', 'venue_region', 'venue_postal_code',
       'venue_latitude', 'venue_longitude', 'creator_user_id', 'creator_username', 'creator_avatar'
       ]
+    
+    uuid = simpleflake()
+    event['id'] = base62().encode(uuid)
+
     event['created_at'] = r.now()
+    event['updated_at'] = r.now()
+    
     for key in event_fields:
       event[key] = self.get_argument(key, None)
     r.table("events").insert(event).run()
