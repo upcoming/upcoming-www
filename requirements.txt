@@ -1,5 +1,6 @@
-tornado
-rethinkdb
 arrow
 foursquare
+pycket
 python-memcached
+rethinkdb
+tornado
