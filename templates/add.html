@@ -1,10 +1,16 @@
 {% extends "base.html" %}
 
+{% block includes %}
+    <script src="/assets/js/bower_components/typeahead.js/dist/typeahead.bundle.min.js"></script>
+    <script src="http://maps.googleapis.com/maps/api/js?sensor=false&amp;libraries=places"></script>
+    <script src="/assets/js/bower_components/geocomplete/jquery.geocomplete.min.js"></script>
+{% end %}
+
 {% block body %}
 <div class="col-md-6">
   <h1>Add new event</h1>
 
-  <form method="post" action="/add">
+  <form method="post" action="/event/add">
     <div class="form-group">
       <label for="event_name">Title</label>
       <input type="text" class="form-control" id="title" name="title">
