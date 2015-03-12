@@ -42,5 +42,7 @@ class BaseHandler(tornado.web.RequestHandler, SessionMixin):
 
     super(BaseHandler, self).render(template_name, **kwargs)
 
-  def slugify(text):
-    return '-%s-' % text
+  def slugify(self, text):
+    slug = text.lower()
+    slug = slug.replace(" ", "-")
+    return slug
