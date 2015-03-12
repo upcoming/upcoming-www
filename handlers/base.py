@@ -32,6 +32,7 @@ class BaseHandler(tornado.web.RequestHandler, SessionMixin):
 
   def render(self, template_name, **kwargs):
     if not kwargs.has_key('user'):
+      kwargs['slugify'] = self.slugify
       kwargs['user'] = {
         'screen_name': 'nouser!',
         'name': 'noname',
@@ -41,3 +42,5 @@ class BaseHandler(tornado.web.RequestHandler, SessionMixin):
 
     super(BaseHandler, self).render(template_name, **kwargs)
 
+  def slugify(text):
+    return '-%s-' % text
