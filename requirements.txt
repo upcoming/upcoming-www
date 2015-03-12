@@ -1,6 +1,8 @@
 arrow
+basehash
 foursquare
 pycket
 python-memcached
 rethinkdb
+simpleflake
 tornado
