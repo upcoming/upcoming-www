@@ -2,3 +2,4 @@ tornado
 rethinkdb
 arrow
 foursquare
+python-memcached
