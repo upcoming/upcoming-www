@@ -2,12 +2,44 @@ login
   service
   user_id
   token
-  created
+  created_at
 
 user
+  id
+  email
+  ip_address
+  created_at
 
 account
+  id
+  service
+  created_at
 
 event
+  id
+  creator_user_id
+  venue_id
+  title
+  description
+  start_date
+  start_time
+  end_date
+  end_time
+  website
+  created_at
+  updated_at
 
 venue
+  id
+  name
+  address
+  latitude
+  longitude
+  address
+  locality
+  region
+  postal_code
+  website
+  shortUrl
+  created_at
+  updated_at
