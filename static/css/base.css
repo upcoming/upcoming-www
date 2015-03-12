@@ -112,3 +112,18 @@ body {
 .twitter-typeahead {
      width: 100%;
 }
+
+.pac-container:after {
+  margin: 0px 10px 8px 10px; 
+}
+
+.pac-item {
+  font-family: "canada-type-gibson",sans-serif;
+  font-style: normal;
+  font-weight: 200;
+  padding: 4px 8px 4px 8px; 
+}
+
+.pac-icon {
+  display: none; 
+}

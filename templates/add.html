@@ -61,6 +61,7 @@
       <textarea class="form-control" rows="5" id="description" name="description"></textarea>
     </div>
     <button type="submit" class="btn btn-default">Add event</button>
+
   </form>
 </div>
 
@@ -82,14 +83,18 @@ var venues = new Bloodhound({
 venues.initialize();
  
 $('#venue_name').typeahead({
-  hint: true,
-  highlight: true,
-  minLength: 3
-}, 
-{
-  name: 'Search',
-  displayKey: 'name',
-  source: venues.ttAdapter()
+    hint: true,
+    highlight: true,
+    minLength: 3
+  }, {
+    name: 'Search',
+    displayKey: 'name',
+    source: venues.ttAdapter()
 });
+
+$("#venue_city").geocomplete({
+  types: ['(cities)']
+});
+
 </script>
 {% end %}
