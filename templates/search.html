@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block body %}
+
+<h1>Search</h1>
+
+<div class="hidden-xs col-sm-3 col-md-2">
+  <div class="list-nav">
+    <a href="/">Upcoming</a>
+    <a href="/">This Weekend</a>
+    <a href="/">Next Month</a>
+    <a href="/">Pick A Day</a>
+  </div>
+
+  <div class="list-nav">
+    <a href="/">Recommended</a>
+    <a href="/">Most Popular</a>
+    <a href="/">Recently Added</a>
+  </div>
+</div>
+<div id="main">
+  <div class="col-xs-12 col-sm-9 col-md-10">
+    {% for event in events %}
+      <div class="row">
+        {% if 'title' in event %}
+          <div class="col-md-10">
+            <div class="event">
+              <div class="event-title">
+                <a href="/event/{{ event['id'] }}">{{ event['title'] }}</a> 
+                at {{ event['venue_name'] }}
+              </div>
+              <p>{{ event['description'].replace('<br/>', ' ') }}</p>
+            </div>
+          </div>
+        {% end %}
+      </div>
+    {% end %}
+  </div>
+</div>
+{% end %}
