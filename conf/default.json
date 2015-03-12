@@ -1,13 +1,19 @@
 {
+  "cookie_secret": "random_hash",
+
   "db_host": "example.host",
   "db_port": 0,
   "db_database": "upcoming",
 
-  "twitter_consumer_key": "key",
-  "twitter_consumer_secret": "secret",
+  "facebook_app_id": "id",
+  "facebook_app_secret": "secret",
 
   "foursquare_client_id": "id",
   "foursquare_client_secret": "secret",
 
-  "cookie_secret": "random_hash"
+  "google_oauth_key": "key",
+  "google_oauth_secret": "secret",
+
+  "twitter_consumer_key": "key",
+  "twitter_consumer_secret": "secret"
 }
