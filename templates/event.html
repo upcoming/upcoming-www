@@ -15,10 +15,21 @@
   </div>
   <div class="row">
     <p>
-      {{ arrow.get( event['start_date'] ).format('MMMM D') }} -
-      {{ arrow.get( event['end_date'] ).format('MMMM D, YYYY') }}
+      {{ arrow.get( event['start_date'] ).format('MMMM D') }} 
+
+      {% if event['end_date'] != '' %}
+        - {{ arrow.get( event['end_date'] ).format('MMMM D, YYYY') }}
+      {% end %}
     </p>
-    <p>{{ event['start_time'] }} - {{ event['end_time'] }}</p>
+    <p>
+      {% if event['start_time'] != None %}      
+        {{ event['start_time'] }}
+      {% end %}      
+      
+      {% if event['end_time'] != None %}      
+        - {{ event['end_time'] }}
+      {% end %}
+    </p>
     <p>{{ event['website'] }}</p>
     <p>{{ event['description'] }}</p>
     <p>
