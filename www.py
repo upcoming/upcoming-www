@@ -18,6 +18,7 @@ from   handlers.event import *
 from   handlers.main import *
 from   handlers.user import *
 from   handlers.venue import *
+from   handlers.search import *
 
 
 ### PATHS
@@ -51,13 +52,14 @@ class Application(tornado.web.Application):
   def __init__(self):      
     handlers = [
       (r'/', MainHandler),
+      (r'/@(.*)', UserHandler),
       (r'/event/add', EventAddHandler),
       (r'/event/(.*)', EventHandler),
-      (r'/@(.*)', UserHandler),
-      (r'/venue/search/(.*)', VenueSearchHandler),
-      (r'/venue/(.*)', VenueHandler),
       (r'/login', LoginHandler),
       (r'/logout', LogoutHandler),
+      (r'/search', SearchHandler),
+      (r'/venue/search/(.*)', VenueSearchHandler),
+      (r'/venue/(.*)', VenueHandler),
       (r'/assets/(.*)', tornado.web.StaticFileHandler, {'path': './static'}),   
     ]
 
