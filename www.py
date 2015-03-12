@@ -55,8 +55,14 @@ class Application(tornado.web.Application):
       (r'/@(.*)', UserHandler),
       (r'/event/add', EventAddHandler),
       (r'/event/(.*)', EventHandler),
+
+      # Login
       (r'/login', LoginHandler),
+      (r'/login/facebook', FacebookLoginHandler),
+      (r'/login/google', GoogleLoginHandler),
+      (r'/login/twitter', TwitterLoginHandler),
       (r'/logout', LogoutHandler),
+
       (r'/search', SearchHandler),
       (r'/venue/search/(.*)', VenueSearchHandler),
       (r'/venue/(.*)', VenueHandler),
@@ -68,6 +74,14 @@ class Application(tornado.web.Application):
       'template_path': os.path.join(os.path.dirname(__file__), 'templates'),
       'debug': True,
       'autoescape': None,
+
+      'pycket': {
+        'engine': 'memcached',
+        'storage': {
+          'servers': ('localhost:11211',)
+        },
+      },
+    
     }
 
     # Load JSON settings
