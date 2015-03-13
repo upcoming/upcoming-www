@@ -19,45 +19,17 @@
     <div class="row">
       <div class="col-md-6">
         <div class="form-group">
-          <label for="venue_city">City</label>
-          <input type="text" class="form-control" id="venue_city" name="venue_city" value="Portland, OR">
+          <label for="city">City</label>
+          <input type="text" class="form-control" id="city" name="city" value="Portland, OR">
         </div>
       </div>
       <div class="col-md-6">
         <div class="form-group">
-          <label for="venue_name">Venue</label>
-          <input type="text" class="form-control typeahead" id="venue_name" name="venue_name" placeholder="Venue name" autocomplete="off">
+          <label for="name">Venue</label>
+          <input type="text" class="form-control typeahead" id="name" name="name" placeholder="Venue name" autocomplete="off">
         </div>
       </div>
     </div>
-    <div class="form-group">
-      <label for="venue_id">Venue ID</label>
-      <input type="text" class="form-control" id="venue_id" name="venue_id">
-    </div>      
-    <div class="form-group">
-      <label for="venue_address">Address</label>
-      <input type="text" class="form-control" id="venue_address" name="venue_address">
-    </div>      
-    <div class="form-group">
-      <label for="venue_locality">City</label>
-      <input type="text" class="form-control" id="venue_locality" name="venue_address">
-    </div>      
-    <div class="form-group">
-      <label for="venue_region">State</label>
-      <input type="text" class="form-control" id="venue_region" name="venue_address">
-    </div>      
-    <div class="form-group">
-      <label for="venue_postal_code">Postal Code</label>
-      <input type="text" class="form-control" id="venue_postal_code" name="venue_address">
-    </div>      
-    <div class="form-group">
-      <label for="venue_latitude">Lat</label>
-      <input type="text" class="form-control" id="venue_latitude" name="venue_address">
-    </div>      
-    <div class="form-group">
-      <label for="venue_longitude">Long</label>
-      <input type="text" class="form-control" id="venue_longitude" name="venue_address">
-    </div>      
     <div class="row">
       <div class="col-md-6">
         <div class="form-group">
@@ -97,6 +69,14 @@
     </div>
     <button type="submit" class="btn btn-default">Add event</button>
 
+    <input type="hidden" id="foursquare_id" name="foursquare_id">
+    <input type="hidden" id="address" name="address">
+    <input type="hidden" id="locality" name="locality">
+    <input type="hidden" id="region" name="region">
+    <input type="hidden" id="postal_code" name="postal_code">
+    <input type="hidden" id="longitude" name="longitude">
+    <input type="hidden" id="latitude" name="latitude">
+
   </form>
 </div>
 
@@ -107,17 +87,17 @@ var venues = new Bloodhound({
   remote: {
     url: '/venue/search/?city=%CITY&query=%QUERY',
     replace: function(url, query) {
-      var city = encodeURIComponent($('#venue_city').val());
+      var city = encodeURIComponent($('#city').val());
       return url.replace('%QUERY', query).replace('%CITY', city);
     },
     rateLimitBy: 'debounce',
     rateLimitWait: 300,
   }
 });
- 
+
 venues.initialize();
 
-$('#venue_name').typeahead({
+$('#name').typeahead({
     hint: true,
     highlight: false,
     minLength: 3
@@ -139,16 +119,16 @@ $('#venue_name').typeahead({
 ).on('typeahead:selected', onSelected);
 
 function onSelected($e, venue) {
-  $('#venue_id').val(venue['id']);
-  $('#venue_address').val(venue['location']['address']);
-  $('#venue_locality').val(venue['location']['city']);
-  $('#venue_region').val(venue['location']['state']);
-  $('#venue_postal_code').val(venue['location']['postalCode']);
-  $('#venue_latitude').val(venue['location']['lat']);
-  $('#venue_longitude').val(venue['location']['lng']);
+  $('#foursquare_id').val(venue['id']);
+  $('#address').val(venue['location']['address']);
+  $('#locality').val(venue['location']['city']);
+  $('#region').val(venue['location']['state']);
+  $('#postal_code').val(venue['location']['postalCode']);
+  $('#longitude').val(venue['location']['lng']);
+  $('#latitude').val(venue['location']['lat']);
 }
 
-$("#venue_city").geocomplete({
+$("#city").geocomplete({
   types: ['(cities)']
 });
 
