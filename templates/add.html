@@ -1,8 +1,9 @@
 {% extends "base.html" %}
 
 {% block includes %}
+    <script src="//cdn.jsdelivr.net/handlebarsjs/3.0.0/handlebars.min.js"></script>
     <script src="/assets/js/bower_components/typeahead.js/dist/typeahead.bundle.min.js"></script>
-    <script src="http://maps.googleapis.com/maps/api/js?sensor=false&amp;libraries=places"></script>
+    <script src="//maps.googleapis.com/maps/api/js?sensor=false&amp;libraries=places"></script>
     <script src="/assets/js/bower_components/geocomplete/jquery.geocomplete.min.js"></script>
 {% end %}
 
@@ -18,17 +19,45 @@
     <div class="row">
       <div class="col-md-6">
         <div class="form-group">
-          <label for="venue_name">Venue</label>
-          <input type="text" class="form-control typeahead" id="venue_name" name="venue_name" placeholder="Venue name" autocomplete="off">
-        </div>
-      </div>
-      <div class="col-md-6">
-        <div class="form-group">
           <label for="venue_city">City</label>
           <input type="text" class="form-control" id="venue_city" name="venue_city" value="Portland, OR">
         </div>
       </div>
+      <div class="col-md-6">
+        <div class="form-group">
+          <label for="venue_name">Venue</label>
+          <input type="text" class="form-control typeahead" id="venue_name" name="venue_name" placeholder="Venue name" autocomplete="off">
+        </div>
+      </div>
     </div>
+    <div class="form-group">
+      <label for="venue_id">Venue ID</label>
+      <input type="text" class="form-control" id="venue_id" name="venue_id">
+    </div>      
+    <div class="form-group">
+      <label for="venue_address">Address</label>
+      <input type="text" class="form-control" id="venue_address" name="venue_address">
+    </div>      
+    <div class="form-group">
+      <label for="venue_locality">City</label>
+      <input type="text" class="form-control" id="venue_locality" name="venue_address">
+    </div>      
+    <div class="form-group">
+      <label for="venue_region">State</label>
+      <input type="text" class="form-control" id="venue_region" name="venue_address">
+    </div>      
+    <div class="form-group">
+      <label for="venue_postal_code">Postal Code</label>
+      <input type="text" class="form-control" id="venue_postal_code" name="venue_address">
+    </div>      
+    <div class="form-group">
+      <label for="venue_latitude">Lat</label>
+      <input type="text" class="form-control" id="venue_latitude" name="venue_address">
+    </div>      
+    <div class="form-group">
+      <label for="venue_longitude">Long</label>
+      <input type="text" class="form-control" id="venue_longitude" name="venue_address">
+    </div>      
     <div class="row">
       <div class="col-md-6">
         <div class="form-group">
@@ -87,16 +116,37 @@ var venues = new Bloodhound({
 });
  
 venues.initialize();
- 
+
 $('#venue_name').typeahead({
     hint: true,
-    highlight: true,
+    highlight: false,
     minLength: 3
   }, {
     name: 'Search',
     displayKey: 'name',
-    source: venues.ttAdapter()
-});
+    source: venues.ttAdapter(),
+    templates: {
+      empty: [
+        '<div class="empty-message">',
+        'No venue found! <a href="/add/venue">Add it.</a>',
+        '</div>'
+      ].join('\n'),
+      suggestion: Handlebars.compile(
+        '<p><strong>{{!name}}</strong> <small>{{!location.address}}</small></p>'
+      )
+    }
+  }
+).on('typeahead:selected', onSelected);
+
+function onSelected($e, venue) {
+  $('#venue_id').val(venue['id']);
+  $('#venue_address').val(venue['location']['address']);
+  $('#venue_locality').val(venue['location']['city']);
+  $('#venue_region').val(venue['location']['state']);
+  $('#venue_postal_code').val(venue['location']['postalCode']);
+  $('#venue_latitude').val(venue['location']['lat']);
+  $('#venue_longitude').val(venue['location']['lng']);
+}
 
 $("#venue_city").geocomplete({
   types: ['(cities)']
