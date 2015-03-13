@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 
+### Libraries
 import json
 import logging
 import os
@@ -12,6 +13,7 @@ from   tornado.options import define, options
 import tornado.web
 
 
+### Handlers
 import handlers
 from   handlers.auth import *
 from   handlers.event import *
@@ -29,7 +31,7 @@ LOG_DIR = '%s/logs' % HOME_DIR
 ### Logging
 FORMAT = '%(asctime)-15s : %(levelname)s : %(message)s'
 if sys.stdout.isatty():
-  logging.basicConfig(filename='%s/upcoming.log' % LOG_DIR,level=logging.DEBUG,format=FORMAT)
+  logging.basicConfig(filename='%s/www.log' % LOG_DIR,level=logging.DEBUG,format=FORMAT)
 
   console = logging.StreamHandler()
   console.setLevel(logging.DEBUG)
@@ -38,18 +40,24 @@ if sys.stdout.isatty():
   logging.getLogger('').addHandler(console)
   debug = 1
 else:
-  logging.basicConfig(filename='%s/upcoming.log' % LOG_DIR,level=logging.INFO,format=FORMAT)
+  logging.basicConfig(filename='%s/www.log' % LOG_DIR,level=logging.INFO,format=FORMAT)
   debug = 0
 
 
+### Options
 tornado.options.define('port', default=8000, help='run on the given port')
-tornado.options.define('config_file', default='./conf/upcoming-www.json', help='filename for additional configuration')
+if os.path.exists('%s/conf/upcoming-www.json' % HOME_DIR):
+  tornado.options.define('config_file', default='%s/conf/upcoming-www.json' % HOME_DIR, help='filename for additional configuration')
+else:
+  logging.error('Copy conf/default.json to conf/upcoming-www.json and populate to run')
+  logging.error('Shutting Down')
+  sys.exit()
 
 
-
-
+### APP
 class Application(tornado.web.Application):
   def __init__(self):      
+    ### Handlers
     handlers = [
       (r'/', MainHandler),
       (r'/@(.*)', UserHandler),
@@ -69,10 +77,12 @@ class Application(tornado.web.Application):
       (r'/assets/(.*)', tornado.web.StaticFileHandler, {'path': './static'}),   
     ]
 
+    ### Settings
     settings = {
       'login_url': '/login',
+      'static_path': os.path.join(os.path.dirname(__file__), 'static'),
       'template_path': os.path.join(os.path.dirname(__file__), 'templates'),
-      'debug': True,
+      'debug': debug,
       'autoescape': None,
 
       'pycket': {
