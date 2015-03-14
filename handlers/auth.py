@@ -106,7 +106,7 @@ class TwitterLoginHandler(BaseHandler, AuthMixin, tornado.auth.TwitterMixin):
       # user['created_at'] = r.now()
 
       # if new user
-      r.table('users').insert(user).run()
+      r.table('user').insert(user).run()
 
       # else update info
 

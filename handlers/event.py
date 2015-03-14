@@ -8,10 +8,10 @@ from basehash import base62
 class EventHandler(BaseHandler, tornado.web.RequestHandler):
   def get(self, event_id=None):
     current_user = self.get_current_user()
-    event = r.table("events").get_all(
+    event = r.table("event").get_all(
       event_id, index='event_id'
     ).eq_join(
-      "venue_id", r.table("venues"), index='venue_id'
+      "venue_id", r.table("venue"), index='venue_id'
     ).zip().run()
     
     self.render(
@@ -61,6 +61,6 @@ class EventAddHandler(tornado.web.RequestHandler):
     venue['created_at'] = r.now()
     venue['updated_at'] = r.now()
 
-    r.table("events").insert(event).run()
-    r.table("venues").insert(venue).run()
+    r.table("event").insert(event).run()
+    r.table("venue").insert(venue).run()
     self.redirect("/")
