@@ -1,8 +1,6 @@
 {% extends "base.html" %}
 {% block body %}
 
-<h1>Search</h1>
-
 <div class="hidden-xs col-sm-3 col-md-2">
   <div class="list-nav">
     <a href="/">Upcoming</a>
@@ -19,14 +17,26 @@
 </div>
 <div id="main">
   <div class="col-xs-12 col-sm-9 col-md-10">
+    {% set prev_start_date = '2000-01-01' %}
+
     {% for event in events %}
       <div class="row">
+        <div class="col-md-2">
+          <div class="event-date">
+            {% if prev_start_date != event['start_date'] %}
+              <div class="month">{{ datetime.datetime.strptime( event['start_date'], '%Y-%m-%d').strftime('%B') }}</div>
+              <div class="day">{{ datetime.datetime.strptime( event['start_date'], '%Y-%m-%d').strftime('%e').lstrip('0') }}</div>
+              {% set prev_start_date = event['start_date'] %}
+            {% end %}
+          </div>
+        </div>
+
         {% if 'title' in event %}
           <div class="col-md-10">
             <div class="event">
               <div class="event-title">
-                <a href="/event/{{ event['id'] }}">{{ event['title'] }}</a> 
-                at {{ event['venue_name'] }}
+                <a href="/event/{{ slugify(event['title']) }}-{{ event['event_id'] }}">{{ event['title'] }}</a> 
+                at {{ event['name'] }}
               </div>
               <p>{{ event['description'].replace('<br/>', ' ') }}</p>
             </div>
@@ -34,6 +44,7 @@
         {% end %}
       </div>
     {% end %}
+
   </div>
 </div>
 {% end %}
