@@ -38,7 +38,7 @@ class EventAddHandler(tornado.web.RequestHandler):
     venue_fields = [
       'foursquare_id', 'name', 'address', 'locality', 'region', 'postal_code',
       'longitude', 'latitude', 'creator_user_id'
-    ]
+      ]
 
     for key in event_fields:
       event[key] = self.get_argument(key, None)

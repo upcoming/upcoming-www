@@ -30,13 +30,19 @@
         - {{ event['end_time'] }}
       {% end %}
     </p>
-    <p>{{ event['website'] }}</p>
-    <p>{{ event['description'] }}</p>
+    
+    {% if event['website'] != '' %}
+      <p>{{ event['website'] }}</p>
+    {% end %}
+    
+    {% if event['description'] != '' %}
+      <p>{{ event['description'] }}</p>
+    {% end %}
+    
     <p>
       <a href="/venue/{{ event['venue_id'] }}">{{ event['name'] }}</a><br />
       {{ event['address'] }}<br />
-      {{ event['locality'] }}, {{ event['region'] }} {{ event['postal_code'] }}<br />
-      {{ event['latitude'] }}, {{ event['longitude'] }}
+      {{ event['locality'] }}, {{ event['region'] }} {{ event['postal_code'] }}
     </p>
     {#
     <p>
@@ -46,9 +52,8 @@
     </p>
     #}
   </div>
-  
-  {#
-  {% if len(event['watchlists']) > 0 %}
+
+  {% if 'watchlists' in event %}
     <div class="row">
       <div class="col-xs-6 col-md-4">
         <strong>Watching</strong>
@@ -75,20 +80,19 @@
     </div>
   {% end %}
 
+  {% if 'comments' in event %}
   <div class="row">
-    {% if len(event['comments']) > 0 %}
-      <h3>Comments</h3><br />
+    <h3>Comments</h3><br />
       {% for comment in event['comments'] %}
         <li>
-          <a href="/user/{{ comment['user_id'] }}"><img src="{{ comment['avatar'] }}"></a> 
-          <a href="/user/{{ comment['user_id'] }}">{{ comment['username'] }}</a>:
+          <a href="/user/@{{ comment['username'] }}"><img src="{{ comment['avatar'] }}"></a> 
+          <a href="/user/@{{ comment['username'] }}">{{ comment['name'] }}</a> @{{ comment['username'] }}:
           {{ comment['comment'] }}
         </li>
 
       {% end %}
     {% end %}
   </div>
-  #}
   </div>
 </div>
 {% end %}
