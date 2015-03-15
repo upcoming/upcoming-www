@@ -18,9 +18,10 @@ import handlers
 from   handlers.auth import *
 from   handlers.event import *
 from   handlers.main import *
+from   handlers.search import *
+from   handlers.trip import *
 from   handlers.user import *
 from   handlers.venue import *
-from   handlers.search import *
 
 
 ### PATHS
@@ -72,6 +73,8 @@ class Application(tornado.web.Application):
       (r'/logout', LogoutHandler),
 
       (r'/search', SearchHandler),
+      (r'/trip/add', TripAddHandler),
+      (r'/trip/(?:.*-|)(.+)$', TripHandler),
       (r'/venue/search/(.*)', VenueSearchHandler),
       (r'/venue/(.*)', VenueHandler),
       (r'/assets/(.*)', tornado.web.StaticFileHandler, {'path': './static'}),   

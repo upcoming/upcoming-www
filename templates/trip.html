@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+
+{% block includes %}
+    <script src="//cdn.jsdelivr.net/handlebarsjs/3.0.0/handlebars.min.js"></script>
+    <script src="/assets/js/bower_components/typeahead.js/dist/typeahead.bundle.min.js"></script>
+    <script src="//maps.googleapis.com/maps/api/js?sensor=false&amp;libraries=places"></script>
+    <script src="/assets/js/bower_components/geocomplete/jquery.geocomplete.min.js"></script>
+{% end %}
+
+{% block body %}
+<div class="col-md-6">
+  <h1>Add new trip</h1>
+
+  <form method="post" action="/trip/add">
+    <div class="row">
+      <div class="col-md-6">
+        <div class="form-group">
+          <label for="city">Where to?</label>
+          <input type="text" class="form-control" id="city" name="city" value="Portland, OR">
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-6">
+        <div class="form-group">
+          <label for="start_date">When?</label>
+          <input type="date" class="form-control" id="start_date" name="start_date">
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="form-group">
+          <label for="end_date">Until when?</label>
+          <input type="date" class="form-control" id="end_date" name="end_date">
+        </div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="description">What brings you to town? (optional)</label>
+      <textarea class="form-control" rows="5" id="description" name="description"></textarea>
+    </div>
+    <button type="submit" class="btn btn-default">Add trip</button>
+
+    <br>
+    foursquare: <input type="text" id="foursquare_id" name="foursquare_id"><br>
+    address: <input type="text" id="address" name="address"><br>
+    locality: <input type="text" id="locality" name="locality"><br>
+    region: <input type="text" id="region" name="region"><br>
+    postal code: <input type="text" id="postal_code" name="postal_code"><br>
+    long: <input type="text" id="longitude" name="lng"><br>
+    lat: <input type="text" id="latitude" name="lat"><br>
+
+  </form>
+</div>
+
+<script type="text/javascript">
+$("#city").geocomplete({
+  types: ['(cities)'],
+  details: 'form'
+});
+
+</script>
+{% end %}
