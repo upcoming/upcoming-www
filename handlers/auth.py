@@ -122,8 +122,12 @@ class TwitterLoginHandler(BaseHandler, AuthMixin, tornado.auth.TwitterMixin):
 
       '''
       TODO: 
-      * check if user is in table or not
-      * if not, create a new 
+      * check if login is in table or not
+      * if not, create a new login - always update?
+
+      * check for user, account - if ok, fine
+      * otherwise bounce to registration
+
 
         * login
           * service (twitter, facebook)
