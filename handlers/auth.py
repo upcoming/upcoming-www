@@ -104,6 +104,12 @@ class LoginHandler(BaseHandler):
 
 class LoginRegistrationHandler(BaseHandler):
   def get(self):
+    # render template - collect emai
+    pass
+
+  def post(self):
+    # create user
+    # create account
     pass
     
 
@@ -140,15 +146,17 @@ class TwitterLoginHandler(BaseHandler, AuthMixin, tornado.auth.TwitterMixin):
         * user
           * user_id (basehashed snowflake)
           * email address
-          logins {}
           preferences {}
+
+          m:n
+          * logins []
+          * accounts []
 
         * account
           * name
           * twitter_screen_name
           * screen_name
           * attached
-          * users {}
       '''
 
       # if new user
