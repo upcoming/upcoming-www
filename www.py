@@ -62,11 +62,13 @@ class Application(tornado.web.Application):
     handlers = [
       (r'/', MainHandler),
       (r'/@(.*)', UserHandler),
+      (r'/~(.*)', UserHandler),
       (r'/event/add', EventAddHandler),
       (r'/event/(?:.*-|)(.+)$', EventHandler),
 
       # Login
       (r'/login', LoginHandler),
+      (r'/login/registration', LoginRegistrationHandler),
       (r'/login/facebook', FacebookLoginHandler),
       (r'/login/google', GoogleLoginHandler),
       (r'/login/twitter', TwitterLoginHandler),
