@@ -8,6 +8,16 @@ import tornado.gen
 import tornado.web
 
 
+'''
+For documentation on login model, see:
+https://github.com/upcoming/upcoming/wiki/Data-Model:-Users
+
+* login   - authentication methods
+* user    - person (internal use only to attach multiple logins and accounts)
+* account - personas/profiles (external facing)
+'''
+
+
 ### Decorator
 def authorized(method):
   """Decorate methods with this to require that the user be logged in."""
@@ -86,10 +96,16 @@ class AuthMixin():
 
 ### Global Login / Logout
 class LoginHandler(BaseHandler):
-   def get(self):
+  def get(self):
     self.session.set('redirect', self.get_argument('next', None))
     print self.session.get('redirect')
     self.render('login.html')
+
+
+class LoginRegistrationHandler(BaseHandler):
+  def get(self):
+    pass
+    
 
 
 class LogoutHandler(BaseHandler, AuthMixin):
@@ -103,7 +119,33 @@ class TwitterLoginHandler(BaseHandler, AuthMixin, tornado.auth.TwitterMixin):
   def get(self):
     if self.get_argument('oauth_token', None):
       user = yield self.get_authenticated_user()            
-      # user['created_at'] = r.now()
+
+      '''
+      TODO: 
+      * check if user is in table or not
+      * if not, create a new 
+
+        * login
+          * service (twitter, facebook)
+          * user_id (twitter id, fbuid)
+          * key
+          * secret
+          * screen_name
+          * dump
+
+        * user
+          * user_id (basehashed snowflake)
+          * email address
+          logins {}
+          preferences {}
+
+        * account
+          * name
+          * twitter_screen_name
+          * screen_name
+          * attached
+          * users {}
+      '''
 
       # if new user
       r.table('user').insert(user).run()
@@ -118,7 +160,7 @@ class TwitterLoginHandler(BaseHandler, AuthMixin, tornado.auth.TwitterMixin):
       self.set_secure_cookie(self.COOKIE_NAME, json_encode(user))
       self.redirect('/')
     else:
-      yield self.authorize_redirect(callback_uri=self.request.full_url())
+      yield self.authenticate_redirect(callback_uri=self.request.full_url())
 
 
 ### Facebook
