@@ -112,6 +112,7 @@ def main():
   tornado.options.parse_command_line()
   http_server = tornado.httpserver.HTTPServer(Application())
   http_server.listen(options.port)
+  logging.info('Starting on http://localhost:%s' % options.port)
   tornado.ioloop.IOLoop.instance().start()
 
 
