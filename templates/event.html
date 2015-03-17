@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}{{ event['title'] }} at {{ event['name'] }}{% end %} 
+{% block title %}{{ event['title'] }} at {{ venue['name'] }}{% end %} 
 
 {% block body %}
 {% import arrow %}
@@ -9,7 +9,7 @@
   <div class="col-md-9">
   <div class="row">
     <div class="event-title">
-      {{ event['title'] }} at {{ event['name'] }}
+      {{ event['title'] }} at {{ venue['name'] }}
       on {{ arrow.get( event['start_date'] ).format('MMMM D, YYYY') }}
     </div>
   </div>
@@ -31,26 +31,25 @@
       {% end %}
     </p>
     
+    <p>
+      <a href="/venue/{{ venue['venue_id'] }}">{{ venue['name'] }}</a><br />
+      {{ venue['address'] }}<br />
+      {{ venue['locality'] }}, {{ venue['region'] }} {{ venue['postal_code'] }}
+    </p>
+
     {% if event['website'] != '' %}
-      <p>{{ event['website'] }}</p>
+      <p><a href="{{ event['website'] }}">{{ event['website'] }}</a></p>
     {% end %}
     
     {% if event['description'] != '' %}
       <p>{{ event['description'] }}</p>
     {% end %}
     
-    <p>
-      <a href="/venue/{{ event['venue_id'] }}">{{ event['name'] }}</a><br />
-      {{ event['address'] }}<br />
-      {{ event['locality'] }}, {{ event['region'] }} {{ event['postal_code'] }}
-    </p>
-    {#
-    <p>
-      Added by <a href="/user/{{ event['creator_user_id'] }}"><img src="{{ event['creator_avatar'] }}"></a> 
-      <a href="/user/{{ event['creator_user_id'] }}">{{ event['creator_username'] }}</a>
+    <div class="avatar">
+      <a href="/user/{{ event['creator_user_id'] }}"><img src="{{ creator['profile_image_url'] }}" class="img-rounded" style="float: left"></a>
+      <strong><a href="/user/{{ event['creator_user_id'] }}">{{ creator['name'] }}</a> @{{ creator['screen_name'] }}</strong><br />
       {{ arrow.get( event['created_at'] ).humanize() }}
-    </p>
-    #}
+    </div>
   </div>
 
   {% if 'watchlists' in event %}
