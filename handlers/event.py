@@ -57,7 +57,7 @@ class EventAddHandler(BaseHandler, tornado.web.RequestHandler):
 
     event['created_at'] = r.now()
     event['updated_at'] = r.now()
-    venue['creator_user_id'] = user['id']
+    event['creator_user_id'] = user['id']
 
     venue['geo'] = r.point(float(venue['longitude']), float(venue['latitude']))
     venue['created_at'] = r.now()
