@@ -46,7 +46,7 @@
     {% end %}
     
     <div class="avatar">
-      <a href="/user/{{ event['creator_user_id'] }}"><img src="{{ creator['profile_image_url'] }}" class="img-rounded" style="float: left"></a>
+      <a href="/user/{{ event['creator_user_id'] }}"><img alt="" src="{{ creator['profile_image_url'] }}" class="img-rounded" style="float: left"></a>
       <strong><a href="/user/{{ event['creator_user_id'] }}">{{ creator['name'] }}</a> @{{ creator['screen_name'] }}</strong><br />
       {{ arrow.get( event['created_at'] ).humanize() }}
     </div>
@@ -59,7 +59,7 @@
         {% for watchlist in event['watchlists'] %}
           {% if watchlist['status'] == 'watch' %}
             <li>
-              <a href="/user/{{ watchlist['user_id'] }}"><img src="{{ watchlist['avatar'] }}"></a> 
+              <a href="/user/{{ watchlist['user_id'] }}"><img alt="" src="{{ watchlist['avatar'] }}"></a> 
               <a href="/user/{{ watchlist['user_id'] }}">{{ watchlist['username'] }}</a>
             </li>
           {% end %}
@@ -70,7 +70,7 @@
         {% for watchlist in event['watchlists'] %}
           {% if watchlist['status'] == 'attend' %}
             <li>
-              <a href="/user/{{ watchlist['user_id'] }}"><img src="{{ watchlist['avatar'] }}"></a>
+              <a href="/user/{{ watchlist['user_id'] }}"><img alt="" src="{{ watchlist['avatar'] }}"></a>
               <a href="/user/{{ watchlist['user_id'] }}">{{ watchlist['username'] }}</a>
             </li>
           {% end %}
@@ -84,7 +84,7 @@
     <h3>Comments</h3><br />
       {% for comment in event['comments'] %}
         <li>
-          <a href="/user/@{{ comment['username'] }}"><img src="{{ comment['avatar'] }}"></a> 
+          <a href="/user/@{{ comment['username'] }}"><img alt="" src="{{ comment['avatar'] }}"></a> 
           <a href="/user/@{{ comment['username'] }}">{{ comment['name'] }}</a> @{{ comment['username'] }}:
           {{ comment['comment'] }}
         </li>
