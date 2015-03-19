@@ -11,12 +11,12 @@
 <div class="col-md-6">
   <h1>Add new trip</h1>
 
-  <form method="post" action="/trip/add">
+  <form method="post" action="/trip/add" autocomplete="off">
     <div class="row">
       <div class="col-md-6">
         <div class="form-group">
           <label for="city">Where to?</label>
-          <input type="text" class="form-control" id="city" name="city" value="Portland, OR">
+          <input type="text" class="form-control" id="city" name="city" autocomplete="off">
         </div>
       </div>
     </div>
@@ -40,14 +40,14 @@
     </div>
     <button type="submit" class="btn btn-default">Add trip</button>
 
-    <br>
-    foursquare: <input type="text" id="foursquare_id" name="foursquare_id"><br>
-    address: <input type="text" id="address" name="address"><br>
-    locality: <input type="text" id="locality" name="locality"><br>
-    region: <input type="text" id="region" name="region"><br>
-    postal code: <input type="text" id="postal_code" name="postal_code"><br>
-    long: <input type="text" id="longitude" name="lng"><br>
-    lat: <input type="text" id="latitude" name="lat"><br>
+    <input type="hidden" id="place_id" name="place_id">
+    <input type="hidden" id="formatted_address" name="formatted_address">
+    <input type="hidden" id="locality" name="locality">
+    <input type="hidden" id="country" name="country">
+    <input type="hidden" id="administrative_area_level_1" name="administrative_area_level_1">    
+    <input type="hidden" id="administrative_area_level_2" name="administrative_area_level_2">    
+    <input type="hidden" id="lng" name="lng">
+    <input type="hidden" id="lat" name="lat">
 
   </form>
 </div>

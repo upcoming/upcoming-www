@@ -29,20 +29,28 @@ class TripAddHandler(BaseHandler, tornado.web.RequestHandler):
     user = self.get_current_user()
 
     trip = dict()
-    trip_fields = [
-      'start_date', 'end_date', 'description', 'locality', 'region', 'postal_code',
-      'longitude', 'latitude'
-      ]
+    trip_fields = {
+      'start_date': 'start_date', 
+      'end_date': 'end_date', 
+      'description': 'description', 
+      'place_id': 'place_id',
+      'address': 'formatted_address',
+      'locality': 'locality',
+      'region': 'administrative_area_level_1',
+      'county': 'administrative_area_level_2',
+      'longitude': 'lng',
+      'latitude': 'lat'
+      }
 
     for key in trip_fields:
-      venue[key] = self.get_argument(key, None)
+      trip[key] = self.get_argument(trip_fields[key], None)
 
     trip_uuid = simpleflake()
     trip['trip_id'] = base62().hash(trip_uuid, 12)
 
     trip['created_at'] = r.now()
     trip['updated_at'] = r.now()
-    trip['creator_user_id'] = current_user['id']
+    trip['creator_user_id'] = user['id']
 
     trip['geo'] = r.point(float(trip['longitude']), float(trip['latitude']))
 
