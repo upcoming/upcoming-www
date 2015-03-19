@@ -1,12 +1,30 @@
 {% extends "base.html" %}
-
 {% block body %}
-
   <h3>
     <a href="http://twitter.com/{{ user['screen_name'] }}"><img alt="" src="{{ user['profile_image_url'] }}" style="float: left; margin-right: 10px;"></a>
     {{ user['name'] }} <small>@{{ user['screen_name'] }}</small>
   </h3>
   
   <p>{{ user['description'] }}</p>
+  
+  <h3>Events</h3>
+
+  {% for event in events %}
+    <div class="event">
+      <div class="event-title">
+        {{ event['title'] }}
+      </div>
+      <div>{{ event['description'].replace('<br/>', ' ') }}</div>
+    </div>
+  {% end %}
+  
+  <h3>Trips</h3>
+  
+  {% for trip in trips %}
+    <div class="event">
+      <div class="event-title">{{ trip['start_date'] }} - {{ trip['end_date'] }}: {{ trip['locality'] }}</div>
+    </div>
+    <div>{{ trip['description'] }}</div>
+  {% end %}
 
 {% end %}
