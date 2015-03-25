@@ -22,11 +22,11 @@
       {% end %}
     </p>
     <p>
-      {% if event['start_time'] != None %}      
+      {% if 'start_time' in event %}      
         {{ event['start_time'] }}
       {% end %}      
       
-      {% if event['end_time'] != None %}      
+      {% if 'end_time' in event %}      
         - {{ event['end_time'] }}
       {% end %}
     </p>
@@ -46,8 +46,8 @@
     {% end %}
     
     <div class="avatar">
-      <a href="/user/{{ event['creator_user_id'] }}"><img alt="" src="{{ creator['profile_image_url'] }}" class="img-rounded" style="float: left"></a>
-      <strong><a href="/user/{{ event['creator_user_id'] }}">{{ creator['name'] }}</a> @{{ creator['screen_name'] }}</strong><br />
+      <a href="/@{{ creator['screen_name'] }}"><img alt="" src="{{ creator['profile_image_url'] }}" class="img-rounded" style="float: left"></a>
+      <strong><a href="/@{{ creator['screen_name'] }}">{{ creator['name'] }}</a> @{{ creator['screen_name'] }}</strong><br />
       {{ arrow.get( event['created_at'] ).humanize() }}
     </div>
   </div>
