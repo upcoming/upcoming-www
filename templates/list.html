@@ -38,7 +38,10 @@
                 <a href="/event/{{ slugify(event['title']) }}-{{ event['event_id'] }}">{{ event['title'] }}</a> 
                 at {{ event['name'] }}
               </div>
-              <p>{{ event['description'].replace('<br/>', ' ') }}</p>
+              <div>
+                "{{ event['description'].replace('<br/>', ' ') }}" — 
+                <a href="/@{{ event['screen_name'] }}">@{{ event['screen_name'] }}</a>
+              </div>
             </div>
           </div>
         {% end %}
