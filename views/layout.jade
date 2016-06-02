@@ -1,0 +1,131 @@
+doctype html
+html(lang="en")
+  head
+    title= title
+      |  - Upcoming Beta
+    
+    meta(charset='utf-8')
+    meta(http-equiv='X-UA-Compatible', content='IE=edge')
+    meta(name='viewport', content='width=device-width, initial-scale=1')
+
+    link(rel='stylesheet', href='//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css')
+    link(rel='stylesheet', type='text/css', href='/css/style.css')
+
+    script(src='//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js')
+    script(src='/js/global.js')
+
+    script(src='//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js')
+
+    script(src='//use.typekit.net/tqk1fsd.js')
+    script.
+      try{Typekit.load({ async: true });}catch(e){}
+      
+    block includes
+    // HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries
+    // WARNING: Respond.js doesn't work if you view the page via file://
+    //if lt IE 9
+    script(src='//oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js')
+    script(src='//oss.maxcdn.com/respond/1.4.2/respond.min.js')
+    
+    link(rel='apple-touch-icon', sizes='57x57', href='/images/apple-touch-icon-57x57.png')
+    link(rel='apple-touch-icon', sizes='60x60', href='/images/apple-touch-icon-60x60.png')
+    link(rel='apple-touch-icon', sizes='72x72', href='/images/apple-touch-icon-72x72.png')
+    link(rel='apple-touch-icon', sizes='76x76', href='/images/apple-touch-icon-76x76.png')
+    link(rel='apple-touch-icon', sizes='114x114', href='/images/apple-touch-icon-114x114.png')
+    link(rel='apple-touch-icon', sizes='120x120', href='/images/apple-touch-icon-120x120.png')
+    link(rel='apple-touch-icon', sizes='144x144', href='/images/apple-touch-icon-144x144.png')
+    link(rel='apple-touch-icon', sizes='152x152', href='/images/apple-touch-icon-152x152.png')
+    link(rel='apple-touch-icon', sizes='180x180', href='/images/apple-touch-icon-180x180.png')
+    link(rel='icon', type='image/png', href='/images/favicon-32x32.png', sizes='32x32')
+    link(rel='icon', type='image/png', href='/images/android-chrome-192x192.png', sizes='192x192')
+    link(rel='icon', type='image/png', href='/images/favicon-96x96.png', sizes='96x96')
+    link(rel='icon', type='image/png', href='/images/favicon-16x16.png', sizes='16x16')
+    link(rel='manifest', href='/images/manifest.json')
+    link(rel='shortcut icon', href='/images/favicon.ico')
+    meta(name='msapplication-TileColor', content='#b91d47')
+    meta(name='msapplication-TileImage', content='/images/mstile-144x144.png')
+    meta(name='msapplication-config', content='/images/browserconfig.xml')
+    meta(name='theme-color', content='#ffffff')
+  
+  body
+    header
+      block header
+      
+      nav.navbar.navbar-default.navbar-static-top(role='navigation')
+        .container-fluid
+          .navbar-header
+            button.navbar-toggle.collapsed(type='button', data-toggle='collapse', data-target='#bs-navbar-collapse')
+              span.sr-only Toggle navigation
+              span.icon-bar
+              span.icon-bar
+              span.icon-bar
+            a.navbar-brand(href='/')
+              img(alt='Upcoming', src='/images/logo.png')
+          #bs-navbar-collapse.collapse.navbar-collapse
+            ul.nav.navbar-nav.navbar-left
+              li
+                a.navbar-link(href='/discover') Discover
+              li
+                a.navbar-link(href='/friends') Friends
+            ul.nav.navbar-nav.navbar-right
+              li
+                a.navbar-link(href='/event/add')
+                  span.glyphicon.glyphicon-plus(aria-hidden="true")
+                  |  Add
+              li
+                a.navbar-link(href='/search')
+                  span.glyphicon.glyphicon-search(aria-hidden="true")
+                  |  Search
+              if user
+                li.dropdown
+                  a.dropdown-toggle(href='#', data-toggle='dropdown', role='button', style='padding: 10px 20px 10px 20px')
+                    img.img-rounded(alt='', src="//avatars.io/twitter/#{user.username}/small", width='30', height='30')
+                    span.caret
+                  ul.dropdown-menu(role='menu')
+                    li(role='presentation')
+                      #{user.name}
+                    li(role='presentation')
+                      a(href="/@#{user.username}", role='menuitem', tabindex='-1') Your Profile
+                    li(role='presentation')
+                      a(href="/settings", role='menuitem', tabindex='-1') Settings
+                    li(role='presentation')
+                      a(href='/logout', role='menuitem', tabindex='-1') Logout
+              else
+                li
+                  a.navbar-link(href='/auth/twitter')
+                    img(src='/images/twitter_logo.png', height="18px")
+                    |  Sign In
+
+
+  #container.container-fluid
+    block content
+
+  // Auth modal
+  #myModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='myModalLabel', aria-hidden='true')
+    .modal-dialog.modal-lg
+      .modal-content
+        .modal-header
+          button.close(type='button', data-dismiss='modal', aria-label='Close')
+            span(aria-hidden='true') &times;
+          h4#myModalLabel.modal-title Sign in
+        .modal-body
+          div
+            a(href='/auth/twitter') Login with Twitter
+
+  footer.footer
+    block footer
+    .container-fluid
+      ul
+        li
+          a(href="/about") About
+        li
+          a(href="/guidelines") Guidelines
+        li
+          a(href="/terms") Terms
+        li
+          a(href="/privacy") Privacy
+        li
+          a(href="http://blog.upcoming.org/") Blog
+        li
+          a(href="https://twitter.com/upcomingorg") Twitter
+      

@@ -1,0 +1,51 @@
+extends layout
+
+block content
+  .col-xs-12.col-sm-10.col-md-8  
+    h1= result.event.title
+    h3= moment(result.event.start_date).format('MMMM D, YYYY')
+  
+    .venue
+      .venue-name
+        a(href="/venue/#{slug(result.venue.name)}-#{result.venue.venue_id}") #{result.venue.name}
+      .venue-address
+        span.address= result.venue.address
+        br
+        span.locality= result.venue.locality + ', '
+        span.region= result.venue.region + ' '
+        span.postal_code= result.venue.postal_code
+  
+    div
+      .list-recommend
+        img.img-rounded(alt='', src="//avatars.io/twitter/#{result.user.username}/small", style='float: left; margin-right: 10px')
+        h4
+          a(href="/@" + result.user.username) #{result.user.name}
+          small
+            |  @#{result.user.username}
+      .recommend-quote
+        p= result.event.description
+        form(name="watchlist", action="/watchlist", method="post")
+          div.form-group
+            input(type="hidden", name="event_id", value="#{result.event.event_id}")
+            input(type="hidden", name="status", value="attend")
+            .btn-group
+              button.btn.btn-default(type="submit")
+                🔥 Recommend
+  
+      - each comment in comments
+        img(alt='', src="//avatars.io/twitter/#{comment.username}/small", style='float: left; margin-right: 10px')
+        .comment(style='margin-left: 60px')
+          h4
+            a(href="/@" + comment.username) #{comment.name}
+            small
+              |  @#{comment.username}
+          
+            p= comment.created_at
+          p= comment.comment_text
+            br
+  
+      form(name="comment", action="/comment", method="post")
+        div.form-group
+          textarea.form-control(name="comment_text", cols="40", rows="5")
+          input(type="hidden", name="event_id", value="#{result.event.event_id}")
+          button.btn.btn-default(type="submit") Add Comment

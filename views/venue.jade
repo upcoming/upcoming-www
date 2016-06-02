@@ -1,0 +1,26 @@
+extends layout
+
+block content
+  .col-xs-12.col-sm-10.col-md-8.col-lg-6
+    .page-header
+      h1= venue.name
+  
+    .venue
+      .venue-address
+        if venue.address
+          span.address= venue.address
+          br
+          span.locality= venue.locality + ', '
+          span.region= venue.region + ' '
+          span.postal_code= venue.postal_code
+        else
+          span No address available
+          
+      a(href="//foursquare.com/v/" + venue.foursquare_id) View on Foursquare
+  
+    if events.length > 0
+      - each event in events
+        .event
+          small= moment(event.start_date).format('MMMM D, YYYY')
+          h4
+            a(href="/event/#{slug(event.title)}-#{event.event_id}") #{event.title}

@@ -1,0 +1,45 @@
+extends layout
+
+block content
+  #main
+  .col-xs-12.col-sm-2
+    .list-nav
+      a(href='/') Recommended
+      a(href='/') Popular
+      a(href='/') Latest
+    .list-nav
+      a(href='/') Upcoming
+      a(href='/') This Weekend
+      a(href='/') Next Month
+      a(href='/') Pick A Day
+
+  .col-xs-12.col-sm-6
+    ul.nav.nav-tabs
+      li.active
+        a(href="#") All
+      li
+        a(href="#") Following
+      li
+        a(href="#") My Events
+    - each result in results
+      .event
+        .event-venue #{moment(result.event.start_date).format('MMMM D')} at #{result.venue.name}
+        .event-title
+          a(href="/event/#{slug(result.event.title)}-#{result.event.event_id}") #{result.event.title}
+
+        .profile
+          strong
+            a(href="/@" + result.user.username) #{result.user.name} 
+          | @#{result.user.username} 
+          .description= truncate(result.event.description, 280)
+          p.small
+            form(name="watchlist", action="/watchlist", method="post")
+              div.form-group
+                input(type="hidden", name="event_id", value="#{result.event.event_id}")
+                input(type="hidden", name="status", value="watch")
+                .btn-group
+                  button.btn.btn-default(type="submit")
+                    🔥 Recommend
+                
+
+  .col-xs-12.col-sm-6

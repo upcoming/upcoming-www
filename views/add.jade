@@ -1,0 +1,112 @@
+extends layout
+
+block includes
+  script(src='//cdn.jsdelivr.net/handlebarsjs/3.0.0/handlebars.min.js')
+  script(src='/components/typeahead.js/dist/typeahead.bundle.min.js')
+  script(src!='//maps.googleapis.com/maps/api/js?libraries=places&key=AIzaSyCELrZ_wJW6wZ9XE7yaY_TgTubSUWuBXjw')
+  script(src='/components/geocomplete/jquery.geocomplete.min.js')
+
+block content
+  .col-md-6
+    h1 Add New Event
+    form(method='post', action='/event/add')
+      .form-group
+        label(for='event_name') Title
+        input#title.form-control(type='text', name='title')
+      .row
+        .col-md-6
+          .form-group
+            label(for='city') City
+            input#city.form-control(type='text', name='city', value='Portland, OR')
+        .col-md-6
+          .form-group
+            label(for='name') Venues
+            input#name.form-control.typeahead(type='text', name='name', placeholder='Venue name', autocomplete='off')
+      .row
+        .col-md-6
+          .form-group
+            label(for='start_date') Start date
+            input#start_date.form-control(type='date', name='start_date')
+        .col-md-6
+          .form-group
+            label(for='end_date') End date
+            input#end_date.form-control(type='date', name='end_date')
+      .row
+        .col-md-6
+          .form-group
+            label(for='start_time') Start time
+            input#start_time.form-control(type='time', name='start_time')
+        .col-md-6
+          .form-group
+            label(for='end_time') End time
+            input#end_time.form-control(type='time', name='end_time')
+      .form-group
+        label(for='website') Website
+        input#website.form-control(type='text', name='website')
+      .form-group
+        label(for='description') Description
+        textarea#description.form-control(rows='5', name='description')
+      .checkbox
+        label
+          input#private(type='checkbox', name='private')
+          |  Only show to people you follow?
+      button.btn.btn-default(type='submit') Add event
+      input#foursquare_id(type='hidden', name='foursquare_id')
+      input#address(type='hidden', name='address')
+      input#locality(type='hidden', name='locality')
+      input#region(type='hidden', name='region')
+      input#postal_code(type='hidden', name='postal_code')
+      input#longitude(type='hidden', name='longitude')
+      input#latitude(type='hidden', name='latitude')
+  
+  script.
+    var venues = new Bloodhound({
+      datumTokenizer: Bloodhound.tokenizers.obj.whitespace('value'),
+      queryTokenizer: Bloodhound.tokenizers.whitespace,
+      remote: {
+        url: '/venue/search/?city=%CITY&query=%QUERY',
+        replace: function(url, query) {
+          var city = encodeURIComponent($('#city').val());
+          return url.replace('%QUERY', query).replace('%CITY', city);
+        },
+        rateLimitBy: 'debounce',
+        rateLimitWait: 300,
+      }
+    });
+    
+    venues.initialize();
+    
+    $('#name').typeahead({
+        hint: true,
+        highlight: false,
+        minLength: 3
+      }, {
+        name: 'Search',
+        displayKey: 'name',
+        source: venues.ttAdapter(),
+        templates: {
+          empty: [
+            '<div class="empty-message">',
+              'No venue found! <a href="/venues/add">Add it.</a>',
+            '</div>'
+          ].join('\n'),
+          suggestion: Handlebars.compile(
+            '<div><strong>{{name}}</strong> <small>{{location.address}}</small></div>'
+          )
+        }
+      }
+    ).on('typeahead:selected', onSelected);
+    
+    function onSelected($e, venue) {
+      $('#foursquare_id').val(venue['id']);
+      $('#address').val(venue['location']['address']);
+      $('#locality').val(venue['location']['city']);
+      $('#region').val(venue['location']['state']);
+      $('#postal_code').val(venue['location']['postalCode']);
+      $('#longitude').val(venue['location']['lng']);
+      $('#latitude').val(venue['location']['lat']);
+    }
+    
+    $("#city").geocomplete({
+      types: ['(cities)']
+    });

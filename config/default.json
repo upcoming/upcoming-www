@@ -1,0 +1,32 @@
+{
+  "session_secret": "",
+  "redis_password": "",
+
+  "database": {
+    "host": "localhost",
+    "database": "upcoming",
+    "user": "",
+    "pass": ""
+  },
+  
+  "twitter": {
+    "consumer_key": "",
+    "consumer_secret": "",
+    "callback_url": ""
+  },
+
+  "facebook": {
+    "app_id": "",
+    "app_secret": ""
+  },
+
+  "foursquare": {
+    "client_id": "",
+    "client_secret": ""
+  },
+
+  "google": {
+    "oauth_key": "",
+    "oauth_secret": ""
+  }
+}

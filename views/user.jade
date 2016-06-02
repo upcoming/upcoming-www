@@ -1,0 +1,20 @@
+extends layout
+
+block content
+  .col-xs-12.col-sm-10.col-md-8.col-lg-6
+    .page-header
+      h1= current_user.username
+        small
+          |  @#{current_user.username}
+  
+    div= current_user.description
+  
+    if events.length > 0
+      - each event in events
+        .event
+          small= moment(event.event.start_date).format('MMMM D, YYYY')
+          h4
+            a(href="/event/#{slug(event.event.title)}-#{event.event.event_id}") #{event.event.title}
+            | 
+            small at #{event.venue.name}
+  
