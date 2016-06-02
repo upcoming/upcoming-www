@@ -27,7 +27,7 @@ exports.create = function(user, venue, next) {
       db.query('INSERT INTO venue SET ?', post, function (err, result) {
         if (err) return next(err);
         console.log(db.query.sql);
-        next(null, result);
+        exports.get(venue_id, next);
       });
     } else {
       next(null, rows[0]);
