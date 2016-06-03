@@ -87,4 +87,8 @@ function onListening() {
     ? 'pipe ' + addr
     : 'port ' + addr.port;
   debug('Listening on ' + bind);
+
+  if (process.stdout.isTTY) {
+    console.log('Listening on ' + bind);
+  }
 }
