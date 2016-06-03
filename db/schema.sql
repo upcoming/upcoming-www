@@ -179,7 +179,8 @@ CREATE TABLE `watchlist` (
   `user_id` varchar(20) DEFAULT NULL,
   `status` enum('watch','attend') DEFAULT NULL,
   `created_at` datetime DEFAULT NULL,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `watchlist_event_user` (`event_id`,`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
