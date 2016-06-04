@@ -1,2 +1,5 @@
 node_modules
 .DS_Store
+
+# So we don't accidentally overwrite from local copy
+config/default.json
