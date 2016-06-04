@@ -7,7 +7,7 @@
 #
 # Host: 127.0.0.1 (MySQL 5.6.20)
 # Database: upcoming
-# Generation Time: 2016-05-31 01:50:25 +0000
+# Generation Time: 2016-06-04 16:42:11 +0000
 # ************************************************************
 
 
@@ -178,9 +178,25 @@ CREATE TABLE `watchlist` (
   `event_id` varchar(20) DEFAULT NULL,
   `user_id` varchar(20) DEFAULT NULL,
   `status` enum('watch','attend') DEFAULT NULL,
-  `created_at` datetime DEFAULT NULL,
+  `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   UNIQUE KEY `watchlist_event_user` (`event_id`,`user_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+
+# Dump of table watchlist_copy
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `watchlist_copy`;
+
+CREATE TABLE `watchlist_copy` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `event_id` varchar(20) DEFAULT NULL,
+  `user_id` varchar(20) DEFAULT NULL,
+  `status` enum('watch','attend') DEFAULT NULL,
+  `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
