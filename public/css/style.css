@@ -163,3 +163,7 @@ button:hover .glyphicon {
   margin-right: 14px;
   float: left;
 }
+
+.watchlist-active, #watchlist-btn:hover {
+  color:red;
+}
