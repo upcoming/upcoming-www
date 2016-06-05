@@ -15,7 +15,7 @@ router.use('/comment', require('./comments'));
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  Event.all(function (err, results) {
+  Event.all(req.user, function (err, results) {
     if (err) throw err;
     res.render('index', { title: 'Home', results: results });
   });

@@ -1,8 +1,11 @@
 extends layout
 
+block includes
+  script(src='/js/watchlists.js')
+
 block content
   #main
-  .col-xs-12.col-sm-2
+  .hidden-xs.col-sm-2
     .list-nav
       a(href='/') Recommended
       a(href='/') Popular
@@ -27,19 +30,23 @@ block content
         .event-title
           a(href="/event/#{slug(result.event.title)}-#{result.event.event_id}") #{result.event.title}
 
-        .profile
-          strong
-            a(href="/@" + result.user.username) #{result.user.name} 
-          | @#{result.user.username} 
-          .description= truncate(result.event.description, 280)
-          p.small
+        .list-recommend
+          img.img-rounded(alt='', src="//avatars.io/twitter/#{result.user.username}/small", style='float: left; margin-right: 10px')
+          h4
+            a(href="/@" + result.user.username) #{result.user.name}
+            small
+              |  @#{result.user.username}
+              
+        .recommend-quote
+          =truncate(result.event.description, 280)
+        
+        if user
+          .recommend-action
             form(name="watchlist", action="/watchlist", method="post")
               div.form-group
-                input(type="hidden", name="event_id", value="#{result.event.event_id}")
-                input(type="hidden", name="status", value="watch")
+                input#event_id(type="hidden", name="event_id", value="#{result.event.event_id}")
+                input#status(type="hidden", name="status", value="#{result.watchlist.status}")
                 .btn-group
-                  button.btn.btn-default(type="submit")
-                    🔥 Recommend
-                
-
+                  button#watchlist-btn.btn.btn-default(type="submit") 🔥 Recommend        
+                  
   .col-xs-12.col-sm-6

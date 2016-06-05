@@ -62,19 +62,43 @@ exports.getAllByUser = function(user_id, next) {
   });  
 };
 
-exports.all = function(next) {
-  var sql = "SELECT event.*, user.*, venue.*, COUNT(watchlist.status) AS recommend_count "
-          + "FROM venue, user, event "
-          + "LEFT JOIN watchlist ON watchlist.event_id = event.event_id "
-          + "WHERE event.creator_user_id = user.id "
-          + "AND event.venue_id = venue.venue_id "
-          + "AND start_date >= DATE( NOW() ) "
-          + "GROUP BY event.id "
-          + "ORDER BY event.start_date LIMIT 50";
-  db.query({sql: sql, nestTables: true}, function (err, rows) {
-    if (err) return next(err);
-    next(null, rows);
-  });  
+exports.all = function(user, next) {
+  if (user) {
+    var sql = "SELECT event.*, user.*, venue.*, watchlist.status, "
+            + "COUNT(friend_watchlist.user_id) AS watchlist_count, "
+            + "COUNT(following.friend_id) AS friend_count "
+            + "FROM venue, user, event "
+            + "LEFT JOIN watchlist friend_watchlist ON friend_watchlist.event_id = event.event_id "
+            + "LEFT JOIN watchlist ON watchlist.event_id = event.event_id AND watchlist.user_id = ? "
+            + "LEFT JOIN following ON friend_watchlist.user_id = following.friend_id AND following.user_id = ? "
+            + "WHERE event.creator_user_id = user.id "
+            + "AND event.venue_id = venue.venue_id "
+            + "AND start_date >= DATE( NOW() ) "
+            + "GROUP BY event.id "
+            + "ORDER BY DATE(event.start_date), friend_count, watchlist_count LIMIT 50";
+
+    console.log(sql);
+    console.log(user.user_id);
+    db.query({sql: sql, nestTables: true}, [ user.user_id, user.user_id ], function (err, rows) {
+      if (err) return next(err);
+      next(null, rows);
+    });
+  } else {
+    var sql = "SELECT event.*, user.*, venue.*, COUNT(watchlist.user_id) AS watchlist_count "
+            + "FROM venue, user, event "
+            + "LEFT JOIN watchlist ON watchlist.event_id = event.event_id "
+            + "WHERE event.creator_user_id = user.id "
+            + "AND event.venue_id = venue.venue_id "
+            + "AND start_date >= DATE( NOW() ) "
+            + "GROUP BY event.id "
+            + "ORDER BY DATE(event.start_date), watchlist_count LIMIT 50";
+  
+    console.log(sql);
+    db.query({sql: sql, nestTables: true}, function (err, rows) {
+      if (err) return next(err);
+      next(null, rows);
+    });    
+  }
 };
     
 
