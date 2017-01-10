@@ -26,7 +26,13 @@ block content
         a(href="#") My Events
     - each result in results
       .event
-        .event-venue #{moment(result.event.start_date).format('MMMM D')} at #{result.venue.name}
+        .event-venue
+          if result.event.end_date
+            = moment(result.event.start_date).twix(result.event.end_date, {allDay: true}).format({monthFormat: 'MMMM'})
+          else
+            = moment(result.event.start_date).format('MMMM D')
+          |  at #{result.venue.name}
+
         .event-title
           a(href="/event/#{slug(result.event.title)}-#{result.event.event_id}") #{result.event.title}
 
