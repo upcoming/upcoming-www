@@ -17,12 +17,12 @@ $(document).ready(function() {
     };
 
     $.post('/watchlist', post, function(data) {
-      if($('#status').val() == 'attend') {
+      if($('#status').val() == 'watch') {
         $('#watchlist-btn').addClass('watchlist-active');
         $('#status').val('remove');
       } else {
         $('#watchlist-btn').removeClass('watchlist-active');
-        $('#status').val('attend');
+        $('#status').val('watch');
       }
     });
 

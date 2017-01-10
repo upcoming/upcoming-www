@@ -8,7 +8,7 @@ router.post('/', function (req, res, next) {
   var user = req.user;
   var post = req.body;
 
-  if (post.status == 'attend') {
+  if (post.status == 'attend' || post.status == 'watch' ) {
     Watchlist.add(user, post, function (err, result) {
       if (err) throw err;
       if (!res.xhr) {

@@ -6,17 +6,20 @@ block includes
 block content
   .col-xs-12.col-sm-10.col-md-8  
     h1= result.event.title
-    h3= moment(result.event.start_date).format('MMMM D, YYYY')
+    if result.event.end_date
+      h3= moment(result.event.start_date).twix(result.event.end_date, {allDay: true}).format({monthFormat: 'MMMM', implicitYear: false})
+    else
+      h3= moment(result.event.start_date).format('MMMM D, YYYY')
   
     .venue
       .venue-name
         a(href="/venue/#{slug(result.venue.name)}-#{result.venue.venue_id}") #{result.venue.name}
       .venue-address
-        span.address= result.venue.address
-        br
+        if result.venue.address
+          span.address= result.venue.address
+          br
         span.locality= result.venue.locality + ', '
-        span.region= result.venue.region + ' '
-        span.postal_code= result.venue.postal_code
+        span.region= result.venue.region
   
     div
       .list-recommend
@@ -27,12 +30,13 @@ block content
             |  @#{result.user.username}
       .recommend-quote
         p= result.event.description
+      .recommend-action
         form(name="watchlist", action="/watchlist", method="post")
           div.form-group
             input#event_id(type="hidden", name="event_id", value="#{result.event.event_id}")
-            input#status(type="hidden", name="status", value="attend")
+            input#status(type="hidden", name="status", value="watch")
             .btn-group
-              button#watchlist-btn.btn.btn-default(type="submit") 🔥 Recommend
+              button#watchlist-btn.btn.btn-default(type="submit", data-toggle="button") 🔥 Recommend
   
       - each comment in comments
         img(alt='', src="//avatars.io/twitter/#{comment.username}/small", style='float: left; margin-right: 10px')

@@ -22,6 +22,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.locals.moment = require('moment');
+app.locals.twix = require('twix');
 app.locals.truncate = require('truncate');
 app.locals.slug = require('slug');
 app.locals.slug.defaults.mode = 'rfc3986';
