@@ -17,58 +17,66 @@ block content
       a(href='/') Pick A Day
 
   .col-xs-12.col-sm-6
-    ul.nav.nav-tabs
-      li.active
-        a(href="#") All
+    ul.nav.nav-tabs(role="tablist")
+      li.active(role="presentation")
+        a(href="#home", aria-controls="home", role="tab", data-toggle="tab") All
       li
-        a(href="#") Following
+        a(href="#following", aria-controls="following", role="tab", data-toggle="tab") Following
       li
-        a(href="#") My Events
-    - each result in results
-      .event
-        .event-venue
-          if result.event.end_date
-            = moment(result.event.start_date).twix(result.event.end_date, {allDay: true}).format({monthFormat: 'MMMM'})
-          else
-            = moment(result.event.start_date).format('MMMM D')
+        a(href="#my", aria-controls="my", role="tab", data-toggle="tab") My Events
 
-        .event-title
-          a(href="/event/#{slug(result.event.title)}-#{result.event.event_id}") #{result.event.title}
-          small 
-            | at #{result.venue.name}
-
-        .list-recommend
-          img.img-rounded(alt='', src="//avatars.io/twitter/#{result.user.username}/small", style='float: left; margin-right: 10px; width: 48px; height: 48px;')
-          h4
-            a(href="/@" + result.user.username) #{result.user.name}
-            small
-              |  @#{result.user.username}
-              
-        .recommend-quote
-          =truncate(result.event.description, 280)
-
-        if user
-          .recommend-action                  
-            form.watchlist(action="/watchlist", method="post")
-              div.form-group
-                input.event_id(type="hidden", name="event_id", value="#{result.event.event_id}")
-                div.btn-group(data-toggle="buttons", role="group")
-                  if result.watchlist.status == 'attend'
-                    label.btn.btn-default.active
-                      input.status(type="checkbox", name="status", value="attend", checked)
-                      | 👍 I'm Going
-                  else
-                    label.btn.btn-default
-                      input.status(type="checkbox", name="status", value="attend")
-                      | 👍 I'm Going
+    div.tab-content
+      div#home.tab-pane.active(role="tabpanel")
+        - each result in results
+          .event
+            .event-venue
+              if result.event.end_date
+                = moment(result.event.start_date).twix(result.event.end_date, {allDay: true}).format({monthFormat: 'MMMM'})
+              else
+                = moment(result.event.start_date).format('MMMM D')
     
-                  if result.watchlist.status == 'watch'
-                    label.btn.btn-default.active
-                      input.status(type="checkbox", name="status", value="watch", checked)
-                      | 🌟 Recommend
-                  else
-                    label.btn.btn-default
-                      input.status(type="checkbox", name="status", value="watch")
-                      | 🌟 Recommend
+            .event-title
+              a(href="/event/#{slug(result.event.title)}-#{result.event.event_id}") #{result.event.title}
+              small 
+                | at #{result.venue.name}
+    
+            .list-recommend
+              img.img-rounded(alt='', src="//avatars.io/twitter/#{result.user.username}/small", style='float: left; margin-right: 10px; width: 48px; height: 48px;')
+              h4
+                a(href="/@" + result.user.username) #{result.user.name}
+                small
+                  |  @#{result.user.username}
                   
+            .recommend-quote
+              =truncate(result.event.description, 280)
+    
+            if user
+              .recommend-action                  
+                form.watchlist(action="/watchlist", method="post")
+                  div.form-group
+                    input.event_id(type="hidden", name="event_id", value="#{result.event.event_id}")
+                    div.btn-group(data-toggle="buttons", role="group")
+                      if result.watchlist.status == 'attend'
+                        label.btn.btn-default.active
+                          input.status(type="checkbox", name="status", value="attend", checked)
+                          | 👍 I'm Going
+                      else
+                        label.btn.btn-default
+                          input.status(type="checkbox", name="status", value="attend")
+                          | 👍 I'm Going
+        
+                      if result.watchlist.status == 'watch'
+                        label.btn.btn-default.active
+                          input.status(type="checkbox", name="status", value="watch", checked)
+                          | 🌟 Recommend
+                      else
+                        label.btn.btn-default
+                          input.status(type="checkbox", name="status", value="watch")
+                          | 🌟 Recommend
+
+      div#following.tab-pane(role="tabpanel")
+        h3 Following
+      div#my.tab-pane(role="tabpanel")
+        h3 My Events
+                 
   .col-xs-12.col-sm-6
