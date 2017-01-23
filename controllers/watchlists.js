@@ -15,7 +15,7 @@ router.post('/', function (req, res, next) {
         res.redirect('/event/' + post.event_id);
       }
     });
-  } else if (post.status == 'remove') {
+  } else if (!post.status) {
     Watchlist.remove(user, post, function (err, result) {
       if (err) throw err;
       if (!res.xhr) {

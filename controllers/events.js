@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 var Event = require('../models/event');
 var Venue = require('../models/venue');
+var Watchlist = require('../models/watchlist');
 var Comment = require('../models/comment');
 
 // show add event form
@@ -12,8 +13,8 @@ router.get('/add', function(req, res, next) {
 
 // POST event
 router.post('/add', function (req, res, next) {
-  user = req.user
-  post = req.body
+  user = req.user;
+  post = req.body;
   
   Venue.create(user, post, function (err, venue) {
     if (err) throw err;
@@ -27,13 +28,18 @@ router.post('/add', function (req, res, next) {
 
 // GET event by id, ignoring slug
 router.get(/(?:.*-|)(.+)$/, function(req, res, next) {
+  user = req.user;
   event_id = req.params[0].replace(/\//g, '');
   
-  Event.get(event_id, function (err, result) {
+  Event.get(event_id, user, function (err, result) {
     if (err) throw err;
-    Comment.getAllByEventId(event_id, function (err, comments) {
-      if (err) throw err;
-      res.render('event', { title: 'Events', result: result, comments: comments });
+    Watchlist.getAllByEventId(event_id, function (err, watchlists) {
+      if (err) throw err;    
+      Comment.getAllByEventId(event_id, function (err, comments) {
+        if (err) throw err;
+        title = result.event.title + ' at ' + result.venue.name;
+        res.render('event', { title: title, result: result, watchlists: watchlists, comments: comments });
+      });
     });
   });
 });
