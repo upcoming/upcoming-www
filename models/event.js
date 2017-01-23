@@ -42,15 +42,16 @@ exports.get = function(event_id, user, next) {
     var sql = "SELECT event.*, user.*, venue.*, watchlist.status, "
             + "COUNT(friend_watchlist.user_id) AS watchlist_count, "
             + "COUNT(following.friend_id) AS friend_count "
-            + "FROM venue, user, event "
+            + "FROM user, event "
+            + "LEFT JOIN venue ON venue.venue_id = event.venue_id "
             + "LEFT JOIN watchlist friend_watchlist ON friend_watchlist.event_id = event.event_id "
             + "LEFT JOIN watchlist ON watchlist.event_id = event.event_id AND watchlist.user_id = ? "
             + "LEFT JOIN following ON friend_watchlist.user_id = following.friend_id AND following.user_id = ? "
             + "WHERE event.creator_user_id = user.id "
-            + "AND event.venue_id = venue.venue_id "
             + "AND event.event_id = ? "
             + "GROUP BY event.id";
 
+    console.log(sql);
     db.query({sql: sql, nestTables: true}, [ user.id, user.id, event_id ], function (err, result) {
       if (err) return next(err);
       next(null, result[0]);
@@ -85,20 +86,39 @@ exports.getAllByUser = function(user_id, next) {
 };
 
 exports.all = function(user, next) {
+  var options = {
+    filters: null, /* user, friends, date */
+    timespan: 'past', /* past, future, all */
+    sort: 'start_date', /* popular, friends, distance */
+    sort_order: 'desc',
+    user_id: user.id,
+    start_date: '2017-01-01',
+    end_date: '2018-01-01',
+    location: 'Portland, OR',
+    distance_miles: '20'
+  };
+  console.log(options['sort']);
+  
   if (user) {
     var sql = "SELECT event.*, user.*, venue.*, watchlist.status, "
             + "COUNT(friend_watchlist.user_id) AS watchlist_count, "
             + "COUNT(following.friend_id) AS friend_count "
-            + "FROM venue, user, event "
+            + "FROM user, event "
+            + "LEFT JOIN venue ON venue.venue_id = event.venue_id "
             + "LEFT JOIN watchlist friend_watchlist ON friend_watchlist.event_id = event.event_id "
             + "LEFT JOIN watchlist ON watchlist.event_id = event.event_id AND watchlist.user_id = ? "
             + "LEFT JOIN following ON friend_watchlist.user_id = following.friend_id AND following.user_id = ? "
-            + "WHERE event.creator_user_id = user.id "
-            + "AND event.venue_id = venue.venue_id "
-            + "AND start_date >= DATE( NOW() ) "
-            + "GROUP BY event.id "
+            + "WHERE event.creator_user_id = user.id ";
+            
+    if (options['timespan'] == 'future') {
+      sql += "AND start_date >= DATE( NOW() ) ";
+    } else if (options['timespan'] == 'past') {
+      sql += "AND start_date <= DATE( NOW() ) ";
+    }
+    
+      sql   += "GROUP BY event.id "
             + "ORDER BY DATE(event.start_date), friend_count DESC, watchlist_count DESC "
-            + "LIMIT 50";
+            + "LIMIT 100";
 
     db.query({sql: sql, nestTables: true}, [ user.id, user.id ], function (err, rows) {
       if (err) return next(err);
@@ -106,13 +126,13 @@ exports.all = function(user, next) {
     });
   } else {
     var sql = "SELECT event.*, user.*, venue.*, COUNT(watchlist.user_id) AS watchlist_count "
-            + "FROM venue, user, event "
+            + "FROM user, event "
+            + "LEFT JOIN venue ON venue.venue_id = event.venue_id "
             + "LEFT JOIN watchlist ON watchlist.event_id = event.event_id "
             + "WHERE event.creator_user_id = user.id "
-            + "AND event.venue_id = venue.venue_id "
             + "AND start_date >= DATE( NOW() ) "
             + "GROUP BY event.id "
-            + "ORDER BY DATE(event.start_date), watchlist_count LIMIT 50";
+            + "ORDER BY DATE(event.start_date), watchlist_count LIMIT 100";
   
     db.query({sql: sql, nestTables: true}, function (err, rows) {
       if (err) return next(err);

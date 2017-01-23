@@ -29,7 +29,7 @@ block content
       div#home.tab-pane.active(role="tabpanel")
         - each result in results
           .event
-            .event-venue
+            .event-date
               if result.event.end_date
                 = moment(result.event.start_date).twix(result.event.end_date, {allDay: true}).format({monthFormat: 'MMMM'})
               else
@@ -37,8 +37,9 @@ block content
     
             .event-title
               a(href="/event/#{slug(result.event.title)}-#{result.event.event_id}") #{result.event.title}
-              small 
-                | at #{result.venue.name}
+              if result.venue
+                small.event-venue
+                  |  at #{result.venue.name}
     
             .list-recommend
               img.img-rounded(alt='', src="//avatars.io/twitter/#{result.user.username}/small", style='float: left; margin-right: 10px; width: 48px; height: 48px;')
