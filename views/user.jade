@@ -12,7 +12,11 @@ block content
     if events.length > 0
       - each event in events
         .event
-          small= moment(event.event.start_date).format('MMMM D, YYYY')
+          small
+            if event.event.end_date
+              = moment(event.event.start_date).twix(event.event.end_date, {allDay: true}).format({monthFormat: 'MMMM'})
+            else
+              = moment(event.event.start_date).format('MMMM D')
           h4
             a(href="/event/#{slug(event.event.title)}-#{event.event.event_id}") #{event.event.title}
             | 
