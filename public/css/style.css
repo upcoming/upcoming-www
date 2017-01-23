@@ -158,3 +158,8 @@ button:hover .glyphicon {
 .watchlist-active, #watchlist-btn:hover {
   color:red;
 }
+
+/* prevent buttons on iOS from appearing depressed when focused */
+.btn:hover {
+    background-color: white;
+}
