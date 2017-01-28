@@ -11,14 +11,14 @@ router.post('/', function (req, res, next) {
   if (post.status == 'attend' || post.status == 'watch' ) {
     Watchlist.add(user, post, function (err, result) {
       if (err) throw err;
-      if (!res.xhr) {
+      if (!req.xhr) {
         res.redirect('/event/' + post.event_id);
       }
     });
   } else if (!post.status) {
     Watchlist.remove(user, post, function (err, result) {
       if (err) throw err;
-      if (!res.xhr) {
+      if (!req.xhr) {
         res.redirect('/event/' + post.event_id);
       }
     });
