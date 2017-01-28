@@ -1,6 +1,6 @@
 var db = require('../db.js');
 
-/* GET friends list */
+/* GET following list */
 exports.get = function(id, next) {
   var sql = 'SELECT * FROM user, following '
     + 'WHERE user.id = following.friend_id '

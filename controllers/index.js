@@ -9,7 +9,7 @@ router.use('/auth', require('./auth'));
 router.use('/event', require('./events'));
 router.use('/venue', require('./venues'));
 router.use('/user', require('./users'));
-router.use('/friends', require('./friends'));
+router.use('/following', require('./following'));
 router.use('/watchlist', require('./watchlists'));
 router.use('/comment', require('./comments'));
 
