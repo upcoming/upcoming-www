@@ -9,9 +9,9 @@ router.get(/(?:.*-|)(.+)$/, function(req, res, next) {
   
   User.get(username, function (err, user) {
     if (err) throw err;
-    User.getEvents(user.user_id, function (err, events) {
+    User.getEvents(user.user_id, function (err, results) {
       if (err) throw err;
-      res.render('user', { title: user.username, current_user: user, events: events});
+      res.render('user', { title: user.username, current_user: user, results: results});
     });
   });
 });

@@ -1,24 +1,87 @@
 extends layout
 
+block includes
+  script(src='/js/watchlists.js')
+
 block content
-  .col-xs-12.col-sm-10.col-md-8.col-lg-6
+  #main
     .page-header
+      img.img-rounded(alt='', src="//avatars.io/twitter/#{current_user.username}/small", style='float: left; margin-right: 10px')
       h1= current_user.name
         small
           |  @#{current_user.username}
-  
-    div= current_user.description
-  
-    if events.length > 0
-      - each event in events
-        .event
-          small
-            if event.event.end_date
-              = moment(event.event.start_date).twix(event.event.end_date, {allDay: true}).format({monthFormat: 'MMMM'})
-            else
-              = moment(event.event.start_date).format('MMMM D')
-          h4
-            a(href="/event/#{slug(event.event.title)}-#{event.event.event_id}") #{event.event.title}
-            | 
-            small at #{event.venue.name}
-  
+          
+  .hidden-xs.col-sm-2
+    p 👑 Kickstarter Backer!
+    
+    small= current_user.description
+
+  .col-xs-12.col-sm-6
+    div.tab-content
+      div#home.tab-pane.active(role="tabpanel")
+      
+        - each result in results
+          .event
+            .event-date
+              if result.event.end_date
+                = moment(result.event.start_date).twix(result.event.end_date, {allDay: true}).format({monthFormat: 'MMMM'})
+              else
+                = moment(result.event.start_date).format('MMMM D')
+    
+            .event-title
+              a(href="/event/#{slug(result.event.title)}-#{result.event.event_id}") #{result.event.title}
+              if result.venue
+                small.event-venue
+                  |  at #{result.venue.name}
+    
+            .list-recommend
+              img.img-rounded(alt='', src="//avatars.io/twitter/#{result.user.username}/small", style='float: left; margin-right: 10px; width: 48px; height: 48px;')
+              h4
+                a(href="/@" + result.user.username) #{result.user.name}
+                small
+                  |  @#{result.user.username}
+                  
+            .recommend-quote
+              =truncate(result.event.description, 280)  
+    
+            if user
+              .attending
+                if result.watchlist.status
+                  | You,
+                  
+                if result[''].friend_count > 0
+                  |  #{result[''].friend_count} friends
+      
+                if (result[''].watchlist_count - result[''].friend_count) > 0
+                  |  and #{result[''].watchlist_count - result[''].friend_count} more.
+    
+              .recommend-action                  
+                form.watchlist(action="/watchlist", method="post")
+                  div.form-group
+                    input.event_id(type="hidden", name="event_id", value="#{result.event.event_id}")
+                    div.btn-group(data-toggle="buttons", role="group")
+                      if result.watchlist.status == 'attend'
+                        label.btn.btn-default.active
+                          input.status(type="checkbox", name="status", value="attend", checked)
+                          | 👍 I'm Going
+                      else
+                        label.btn.btn-default
+                          input.status(type="checkbox", name="status", value="attend")
+                          | 👍 I'm Going
+        
+                      if result.watchlist.status == 'watch'
+                        label.btn.btn-default.active
+                          input.status(type="checkbox", name="status", value="watch", checked)
+                          | 🌟 Recommend
+                      else
+                        label.btn.btn-default
+                          input.status(type="checkbox", name="status", value="watch")
+                          | 🌟 Recommend
+
+      div#following.tab-pane(role="tabpanel")
+        h3 Following
+        
+      div#my.tab-pane(role="tabpanel")
+        h3 My Events
+             
+  .col-xs-12.col-sm-6

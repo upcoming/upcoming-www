@@ -51,7 +51,6 @@ exports.get = function(event_id, user, next) {
             + "AND event.event_id = ? "
             + "GROUP BY event.id";
 
-    console.log(sql);
     db.query({sql: sql, nestTables: true}, [ user.id, user.id, event_id ], function (err, result) {
       if (err) return next(err);
       next(null, result[0]);
@@ -76,7 +75,7 @@ exports.get = function(event_id, user, next) {
 
 exports.getAllByUser = function(user_id, next) {
   var sql = 'SELECT event.*, venue.*, user.* '
-    + 'FROM event, venue '
+    + 'FROM event, venue, user '
     + 'WHERE event.venue_id = venue.venue_id '
     + 'AND event.creator_user_id = ?';
   db.query({sql: sql, nestTables: true}, user_id, function (err, rows) {
@@ -85,19 +84,19 @@ exports.getAllByUser = function(user_id, next) {
   });  
 };
 
-exports.all = function(user, next) {
-  var options = {
-    filters: null, /* user, friends, date */
-    timespan: 'past', /* past, future, all */
-    sort: 'start_date', /* popular, friends, distance */
-    sort_order: 'desc',
-    user_id: user.id,
-    start_date: '2017-01-01',
-    end_date: '2018-01-01',
-    location: 'Portland, OR',
-    distance_miles: '20'
-  };
-  console.log(options['sort']);
+exports.search = function(user, options, next) {
+  /*
+    var options = {
+      filter: null, // user, friends, date
+      timespan: 'past', // past, future, all
+      sort: 'start_date', // popular, friends, distance
+      sort_order: 'desc', // asc, desc
+      start_date: '2017-01-01',
+      end_date: '2018-01-01',
+      location: 'Portland, OR',
+      distance_miles: '20'
+    };
+  */
   
   if (user) {
     var sql = "SELECT event.*, user.*, venue.*, watchlist.status, "
@@ -110,16 +109,33 @@ exports.all = function(user, next) {
             + "LEFT JOIN following ON friend_watchlist.user_id = following.friend_id AND following.user_id = ? "
             + "WHERE event.creator_user_id = user.id ";
             
-    if (options['timespan'] == 'future') {
-      sql += "AND start_date >= DATE( NOW() ) ";
-    } else if (options['timespan'] == 'past') {
+    if (options['when'] == 'all') {
+      // don't constrain event selection
+    } else if (options['when'] == 'past') {
       sql += "AND start_date <= DATE( NOW() ) ";
+    } else {
+      // default to future events
+      sql += "AND start_date >= DATE( NOW() ) ";
     }
     
-      sql   += "GROUP BY event.id "
-            + "ORDER BY DATE(event.start_date), friend_count DESC, watchlist_count DESC "
-            + "LIMIT 100";
-
+    if (options['filter'] == 'user') {
+      sql += "AND (event.creator_user_id = " + options['user_id'] + " OR watchlist.user_id = " + options['user_id'] + ") ";
+    }
+    
+    sql   += "GROUP BY event.id ";
+    
+    if (options['sort'] == 'recommended') {
+      sql += "ORDER BY friend_count DESC, watchlist_count DESC ";
+    } else if (options['sort'] == 'new') {
+      sql += "ORDER BY event.created_at DESC, event.id DESC ";
+    } else if (options['sort'] == 'popular') {
+      sql += "ORDER BY watchlist_count DESC ";
+    } else {
+      sql += "ORDER BY event.start_date, friend_count DESC, watchlist_count DESC ";
+    }
+    
+    sql += "LIMIT 25";
+    
     db.query({sql: sql, nestTables: true}, [ user.id, user.id ], function (err, rows) {
       if (err) return next(err);
       next(null, rows);
@@ -132,7 +148,7 @@ exports.all = function(user, next) {
             + "WHERE event.creator_user_id = user.id "
             + "AND start_date >= DATE( NOW() ) "
             + "GROUP BY event.id "
-            + "ORDER BY DATE(event.start_date), watchlist_count LIMIT 100";
+            + "ORDER BY DATE(event.start_date), watchlist_count LIMIT 25";
   
     db.query({sql: sql, nestTables: true}, function (err, rows) {
       if (err) return next(err);
@@ -140,5 +156,4 @@ exports.all = function(user, next) {
     });    
   }
 };
-    
 

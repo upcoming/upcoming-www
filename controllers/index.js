@@ -15,7 +15,12 @@ router.use('/comment', require('./comments'));
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  Event.all(req.user, function (err, results) {
+  options = { 
+    when: req.query.when,
+    sort: req.query.sort
+  };
+  
+  Event.search(req.user, options, function (err, results) {
     if (err) throw err;
     res.render('index', { title: 'Home', results: results });
   });
@@ -26,14 +31,30 @@ router.get(/@(.+)$/, function(req, res, next) {
   username = req.params[0].replace(/\//g, '');
   
   User.get(username, function (err, user) {
+    options = { 
+      filter: 'user',
+      user_id: user.id,
+      timespan: 'all'
+    };
     if (err) throw err;
-    User.getEvents(user.id, function (err, events) {
+    Event.search(req.user, options, function (err, results) {
       if (err) throw err;
-      res.render('user', { title: user.username, current_user: user, events: events});
+      res.render('user', { title: 'User', current_user: user, results: results });
     });
   });
 });
 
+router.get('/following', function(req, res){
+  options = { 
+    filter: 'friends',
+    timespan: 'all'
+  };
+  
+  Event.search(req.user, options, function (err, results) {
+    if (err) throw err;
+    res.render('index', { title: 'Following', results: results });
+  });
+});
 
 router.get('/logout', function(req, res){
   console.log('logging out');  
