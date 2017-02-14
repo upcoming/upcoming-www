@@ -11,7 +11,7 @@ block content
     else
       h3= moment(result.event.start_date).format('MMMM D, YYYY')
 
-    if venue
+    if result.venue
       .venue
         .venue-name
           a(href="/venue/#{slug(result.venue.name)}-#{result.venue.venue_id}") #{result.venue.name}
