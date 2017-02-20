@@ -17,7 +17,7 @@ block content
         .col-md-6
           .form-group
             label(for='city') City
-            input#city.form-control(type='text', name='city', value='Portland, OR')
+            input#city.form-control(type='text', name='city', value='')
         .col-md-6
           .form-group
             label(for='name') Venue Search 🔍
@@ -26,7 +26,7 @@ block content
         .col-md-6
           .form-group
             label(for='start_date') Start date
-            input#start_date.form-control(type='date', name='start_date')
+            input#start_date.form-control(type='date', name='start_date', value=moment(today).format('YYYY-MM-DD'))
         .col-md-6
           .form-group
             label(for='end_date') End date
