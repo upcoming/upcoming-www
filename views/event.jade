@@ -6,10 +6,11 @@ block includes
 block content
   .col-xs-12.col-sm-10.col-md-8  
     h1= result.event.title
-      if result.event.creator_user_id == user.id
-        small
-          a(href="/event/#{slug(result.event.title)}-#{result.event.event_id}/edit")
-            | 📝 Edit
+      if user
+        if result.event.creator_user_id == user.id
+          small
+            a(href="/event/#{slug(result.event.title)}-#{result.event.event_id}/edit")
+              | 📝 Edit
 
     if result.event.end_date
       h3= moment(result.event.start_date).twix(result.event.end_date, {allDay: true}).format({monthFormat: 'MMMM', implicitYear: false})
@@ -91,8 +92,9 @@ block content
           p= comment.comment_text
             br
   
-      form(name="comment", action="/comment", method="post")
-        div.form-group
-          textarea.form-control(name="comment_text", cols="40", rows="5")
-          input(type="hidden", name="event_id", value="#{result.event.event_id}")
-          button.btn.btn-default(type="submit") Add Comment
+      if user
+        form(name="comment", action="/comment", method="post")
+          div.form-group
+            textarea.form-control(name="comment_text", cols="40", rows="5")
+            input(type="hidden", name="event_id", value="#{result.event.event_id}")
+            button.btn.btn-default(type="submit") Add Comment
