@@ -36,6 +36,39 @@ exports.create = function(user, venue, event, next) {
   });
 };
 
+// edit an event
+exports.update = function(user, venue, event, next) {
+  if (event.start_time == '') {
+    event.start_time = null;
+  }
+
+  if (event.end_date == '') {
+    event.end_date = null;
+  }
+
+  if (event.end_time == '') {
+    event.end_time = null;
+  }
+  
+  var post = {
+    title: event.title,
+    description: event.description, 
+    start_date: event.start_date,
+    start_time: event.start_time, 
+    end_date: event.end_date, 
+    end_time: event.end_time, 
+    website: event.website,
+    venue_id: venue.venue_id,
+    event_id: event.event_id
+  };
+  
+  db.query('UPDATE event SET ? WHERE event_id = ?', [post, event.event_id], function (err, result) {
+    if (err) return next(err);
+    next(null, post);
+  });
+};
+
+
 /* get a particular event by its id */
 exports.get = function(event_id, user, next) {
   if (user) {

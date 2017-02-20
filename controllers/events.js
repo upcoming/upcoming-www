@@ -5,13 +5,7 @@ var Venue = require('../models/venue');
 var Watchlist = require('../models/watchlist');
 var Comment = require('../models/comment');
 
-// show add event form
-router.get('/add', function(req, res, next) {
-  res.render('add', { title: 'Add Event' });
-});
-
-
-// POST event
+// add new event
 router.post('/add', function (req, res, next) {
   user = req.user;
   post = req.body;
@@ -23,6 +17,47 @@ router.post('/add', function (req, res, next) {
       res.redirect('/event/' + req.app.locals.slug(event.title) + '-' + event.event_id);
     });
   });  
+});
+
+// edit event
+router.post('/edit', function (req, res, next) {
+  user = req.user;  
+  post = req.body;
+
+  // only allow editing if created by authed user  
+  Event.get(post.event_id, user, function (err, result) {
+    if (err) throw err;
+    if (user.id != result.event.creator_user_id) {
+      res.redirect('/event/' + req.app.locals.slug(result.event.title) + '-' + result.event.event_id); 
+    }
+  });
+
+  Venue.create(user, post, function (err, venue) {
+    if (err) throw err;
+    Event.update(user, venue, post, function (err, event) {
+      if (err) throw err;
+      res.redirect('/event/' + req.app.locals.slug(event.title) + '-' + event.event_id);
+    });
+  });  
+});
+
+// show add event form
+router.get('/add', function(req, res, next) {
+  res.render('add', { title: 'Add Event' });
+});
+
+// show edit event form
+router.get(/(?:.*-|)(.+)\/edit$/, function(req, res, next) {
+  event_id = req.params[0].replace(/\//g, '');
+  user = req.user;
+  Event.get(event_id, user, function (err, result) {
+    if (err) throw err;
+    if (user.id == result.event.creator_user_id) {
+      res.render('edit', { title: 'Edit Event', result: result });
+    } else {
+      res.redirect('/event/' + req.app.locals.slug(result.event.title) + '-' + result.event.event_id); 
+    }
+  });
 });
 
 
@@ -43,7 +78,6 @@ router.get(/(?:.*-|)(.+)$/, function(req, res, next) {
     });
   });
 });
-
 
 
 module.exports = router;

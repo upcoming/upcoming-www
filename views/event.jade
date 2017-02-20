@@ -6,6 +6,11 @@ block includes
 block content
   .col-xs-12.col-sm-10.col-md-8  
     h1= result.event.title
+      if result.event.creator_user_id == user.id
+        small
+          a(href="/event/#{slug(result.event.title)}-#{result.event.event_id}/edit")
+            | 📝 Edit
+
     if result.event.end_date
       h3= moment(result.event.start_date).twix(result.event.end_date, {allDay: true}).format({monthFormat: 'MMMM', implicitYear: false})
     else
