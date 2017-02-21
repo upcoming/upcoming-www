@@ -1,0 +1,4 @@
+if alert
+  - for (var i = 0; i < alert.messages.length; i++)
+    div.alert(class='#{alert.type}', role='alert')
+      | #{alert.messages[i].msg}

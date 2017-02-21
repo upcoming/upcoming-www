@@ -10,20 +10,32 @@ router.post('/add', function (req, res, next) {
   user = req.user;
   post = req.body;
   
-  Venue.create(user, post, function (err, venue) {
-    if (err) throw err;
-    Event.create(user, venue, post, function (err, event) {
+  // validate form
+  req.checkBody('title', 'Event name is required.').notEmpty();
+  req.checkBody('start_date', 'Start date is required.').isDate();
+  req.checkBody('name', 'Venue can\'t be blank, sorry.').notEmpty();
+  req.checkBody('foursquare_id', 'A valid venue is required. Search to find one!').notEmpty();
+  var errors = req.validationErrors();
+  
+  console.log(errors);
+  if (errors) {
+    res.render('add', { title: 'Add Event', alert: { type: 'alert-danger', messages: errors } });
+  } else {
+    Venue.create(user, post, function (err, venue) {
       if (err) throw err;
-      res.redirect('/event/' + req.app.locals.slug(event.title) + '-' + event.event_id);
+      Event.create(user, venue, post, function (err, event) {
+        if (err) throw err;
+        res.redirect('/event/' + req.app.locals.slug(event.title) + '-' + event.event_id);
+      });
     });
-  });  
+  }
 });
 
 // edit event
 router.post('/edit', function (req, res, next) {
   user = req.user;  
   post = req.body;
-
+  
   // only allow editing if created by authed user  
   Event.get(post.event_id, user, function (err, result) {
     if (err) throw err;
@@ -32,13 +44,28 @@ router.post('/edit', function (req, res, next) {
     }
   });
 
-  Venue.create(user, post, function (err, venue) {
-    if (err) throw err;
-    Event.update(user, venue, post, function (err, event) {
+  // validate form
+  req.checkBody('title', 'Event name is required.').notEmpty();
+  req.checkBody('start_date', 'Start date is required.').isDate();
+  req.checkBody('name', 'Venue can\'t be blank, sorry.').notEmpty();
+  req.checkBody('foursquare_id', 'A valid venue is required. Search to find one!').notEmpty();
+  var errors = req.validationErrors();
+  
+  console.log(errors);
+  if (errors) {
+    Event.get(post.event_id, user, function (err, result) {
       if (err) throw err;
-      res.redirect('/event/' + req.app.locals.slug(event.title) + '-' + event.event_id);
+      res.render('edit', { title: 'Edit Event', result: result, alert: { type: 'alert-danger', messages: errors } });
     });
-  });  
+  } else {
+    Venue.create(user, post, function (err, venue) {
+      if (err) throw err;
+      Event.update(user, venue, post, function (err, event) {
+        if (err) throw err;
+        res.redirect('/event/' + req.app.locals.slug(event.title) + '-' + event.event_id);
+      });
+    });
+  }
 });
 
 // show add event form

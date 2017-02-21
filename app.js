@@ -6,6 +6,7 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var passport = require('passport');
+var validator = require('express-validator');
 
 var controllers = require('./controllers/index');
 
@@ -19,6 +20,7 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
+app.use(validator());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.locals.moment = require('moment');
