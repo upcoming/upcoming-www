@@ -7,8 +7,8 @@ router.get('/twitter', passport.authenticate('twitter'));
 
 router.get('/twitter/callback',
   passport.authenticate('twitter', {
-    successRedirect: '/',
-    failureRedirect: '/login' 
+    successReturnToOrRedirect: '/',
+    failureRedirect: '/' 
   }));
 
 module.exports = router;

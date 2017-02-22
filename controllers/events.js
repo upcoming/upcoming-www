@@ -4,6 +4,7 @@ var Event = require('../models/event');
 var Venue = require('../models/venue');
 var Watchlist = require('../models/watchlist');
 var Comment = require('../models/comment');
+var ensureLoggedIn = require('connect-ensure-login').ensureLoggedIn();
 
 // add new event
 router.post('/add', function (req, res, next) {
@@ -17,7 +18,6 @@ router.post('/add', function (req, res, next) {
   req.checkBody('foursquare_id', 'A valid venue is required. Search to find one!').notEmpty();
   var errors = req.validationErrors();
   
-  console.log(errors);
   if (errors) {
     res.render('add', { title: 'Add Event', alert: { type: 'alert-danger', messages: errors } });
   } else {
@@ -51,7 +51,6 @@ router.post('/edit', function (req, res, next) {
   req.checkBody('foursquare_id', 'A valid venue is required. Search to find one!').notEmpty();
   var errors = req.validationErrors();
   
-  console.log(errors);
   if (errors) {
     Event.get(post.event_id, user, function (err, result) {
       if (err) throw err;
@@ -69,7 +68,7 @@ router.post('/edit', function (req, res, next) {
 });
 
 // show add event form
-router.get('/add', function(req, res, next) {
+router.get('/add', ensureLoggedIn, function(req, res, next) {
   res.render('add', { title: 'Add Event' });
 });
 
@@ -100,6 +99,7 @@ router.get(/(?:.*-|)(.+)$/, function(req, res, next) {
       Comment.getAllByEventId(event_id, function (err, comments) {
         if (err) throw err;
         title = result.event.title + ' at ' + result.venue.name;
+        req.session.returnTo = req.originalUrl;
         res.render('event', { title: title, result: result, watchlists: watchlists, comments: comments });
       });
     });
