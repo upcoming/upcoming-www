@@ -3,7 +3,7 @@ var router = express.Router();
 var db = require('../db.js');
 var Event = require('../models/event');
 var User = require('../models/user');
-
+var ensureLoggedIn = require('connect-ensure-login').ensureLoggedIn();
 
 router.use('/auth', require('./auth'));
 router.use('/event', require('./events'));
@@ -39,12 +39,12 @@ router.get(/@(.+)$/, function(req, res, next) {
     if (err) throw err;
     Event.search(req.user, options, function (err, results) {
       if (err) throw err;
-      res.render('user', { title: 'User', current_user: user, results: results });
+      res.render('user', { title: user.name, current_user: user, results: results });
     });
   });
 });
 
-router.get('/following', function(req, res){
+router.get('/following', function(req, res) {
   options = { 
     filter: 'friends',
     timespan: 'all'
@@ -56,22 +56,16 @@ router.get('/following', function(req, res){
   });
 });
 
+router.get('/login', function(req, res){
+  res.redirect('/auth/twitter');
+});
+
 router.get('/logout', function(req, res){
-  console.log('logging out');  
   req.session.destroy(function(e){
       req.logout();
       res.redirect('/');
   });
 });
-
-function isAuthenticated(req, res, next) {
-    if (req.user.authenticated) {
-      return next();
-    }
-    res.redirect('/');
-
-}
-
 
 router.get('/about', function(req, res, next) {
   res.render('about', { title: 'About' });

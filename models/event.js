@@ -167,21 +167,46 @@ exports.search = function(user, options, next) {
       sql += "ORDER BY event.start_date, friend_count DESC, watchlist_count DESC ";
     }
     
-    sql += "LIMIT 25";
+    sql += "LIMIT 50";
     
     db.query({sql: sql, nestTables: true}, [ user.id, user.id ], function (err, rows) {
       if (err) return next(err);
       next(null, rows);
     });
   } else {
-    var sql = "SELECT event.*, user.*, venue.*, COUNT(watchlist.user_id) AS watchlist_count "
+    var sql = "SELECT event.*, user.*, venue.*,  "
+            + "COUNT(watchlist.user_id) AS watchlist_count "
             + "FROM user, event "
             + "LEFT JOIN venue ON venue.venue_id = event.venue_id "
             + "LEFT JOIN watchlist ON watchlist.event_id = event.event_id "
-            + "WHERE event.creator_user_id = user.id "
-            + "AND start_date >= DATE( NOW() ) "
-            + "GROUP BY event.id "
-            + "ORDER BY DATE(event.start_date), watchlist_count LIMIT 25";
+            + "WHERE event.creator_user_id = user.id ";
+            
+    if (options['when'] == 'all') {
+      // don't constrain event selection
+    } else if (options['when'] == 'past') {
+      sql += "AND start_date <= DATE( NOW() ) ";
+    } else {
+      // default to future events
+      sql += "AND start_date >= DATE( NOW() ) ";
+    }
+
+    if (options['filter'] == 'user') {
+      sql += "AND (event.creator_user_id = " + options['user_id'] + " OR watchlist.user_id = " + options['user_id'] + ") ";
+    }
+    
+    sql   += "GROUP BY event.id ";
+    
+    if (options['sort'] == 'recommended') {
+      sql += "ORDER BY watchlist_count DESC ";
+    } else if (options['sort'] == 'new') {
+      sql += "ORDER BY event.created_at DESC, event.id DESC ";
+    } else if (options['sort'] == 'popular') {
+      sql += "ORDER BY watchlist_count DESC ";
+    } else {
+      sql += "ORDER BY event.start_date, watchlist_count DESC ";
+    }
+    
+    sql += "LIMIT 50";
   
     db.query({sql: sql, nestTables: true}, function (err, rows) {
       if (err) return next(err);
