@@ -157,7 +157,7 @@ exports.search = function(user, options, next) {
       } else {
         user_id = user.id;
       }
-      sql += "AND (event.creator_user_id = " + user_id + " OR watchlist.user_id = " + user_id + ") ";
+      sql += "AND (event.creator_user_id = " + user_id + " OR friend_watchlist.user_id = " + user_id + ") ";
     }
 
     sql   += "GROUP BY event.id ";
@@ -177,7 +177,7 @@ exports.search = function(user, options, next) {
     }
     
     sql += "LIMIT 50";
-        
+            
     db.query({sql: sql, nestTables: true}, [ user.id, user.id ], function (err, rows) {
       if (err) return next(err);
       next(null, rows);
