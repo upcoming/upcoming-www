@@ -120,7 +120,7 @@ exports.getAllByUser = function(user_id, next) {
 exports.search = function(user, options, next) {
   /*
     var options = {
-      filter: null, // user, friends, date
+      filter: null, // user, following, date
       timespan: 'past', // past, future, all
       sort: 'start_date', // popular, friends, distance
       sort_order: 'desc', // asc, desc
@@ -152,10 +152,19 @@ exports.search = function(user, options, next) {
     }
     
     if (options['filter'] == 'user') {
-      sql += "AND (event.creator_user_id = " + options['user_id'] + " OR watchlist.user_id = " + options['user_id'] + ") ";
+      if (options['user_id']) {
+        user_id = options['user_id'];
+      } else {
+        user_id = user.id;
+      }
+      sql += "AND (event.creator_user_id = " + user_id + " OR watchlist.user_id = " + user_id + ") ";
     }
-    
+
     sql   += "GROUP BY event.id ";
+
+    if (options['filter'] == 'following') {
+      sql +=  "HAVING friend_count > 0 ";
+    }
     
     if (options['sort'] == 'recommended') {
       sql += "ORDER BY friend_count DESC, watchlist_count DESC ";
@@ -168,7 +177,7 @@ exports.search = function(user, options, next) {
     }
     
     sql += "LIMIT 50";
-    
+        
     db.query({sql: sql, nestTables: true}, [ user.id, user.id ], function (err, rows) {
       if (err) return next(err);
       next(null, rows);

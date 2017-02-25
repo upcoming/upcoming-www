@@ -5,6 +5,7 @@ var Event = require('../models/event');
 var User = require('../models/user');
 var ensureLoggedIn = require('connect-ensure-login').ensureLoggedIn();
 
+router.use('/api', require('./api'));
 router.use('/auth', require('./auth'));
 router.use('/event', require('./events'));
 router.use('/venue', require('./venues'));
@@ -15,14 +16,41 @@ router.use('/comment', require('./comments'));
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
+  res.render('index', { title: 'Home' });
+});
+
+router.get('/home/all', function(req, res, next) {
   options = { 
     when: req.query.when,
-    sort: req.query.sort
+    sort: req.query.sort,
+    filter: req.query.filter
   };
   
   Event.search(req.user, options, function (err, results) {
     if (err) throw err;
-    res.render('index', { title: 'Home', results: results });
+    res.render('event-list', { results: results });
+  });
+});
+
+router.get('/home/following', function(req, res) {
+  options = { 
+    filter: 'following',
+  };
+  
+  Event.search(req.user, options, function (err, results) {
+    if (err) throw err;
+    res.render('event-list', { results: results });
+  });
+});
+
+router.get('/home/my', function(req, res) {
+  options = { 
+    filter: 'user',
+  };
+  
+  Event.search(req.user, options, function (err, results) {
+    if (err) throw err;
+    res.render('event-list', { results: results });
   });
 });
 
@@ -41,18 +69,6 @@ router.get(/@(.+)$/, function(req, res, next) {
       if (err) throw err;
       res.render('user', { title: user.name, current_user: user, results: results });
     });
-  });
-});
-
-router.get('/following', function(req, res) {
-  options = { 
-    filter: 'friends',
-    timespan: 'all'
-  };
-  
-  Event.search(req.user, options, function (err, results) {
-    if (err) throw err;
-    res.render('index', { title: 'Following', results: results });
   });
 });
 

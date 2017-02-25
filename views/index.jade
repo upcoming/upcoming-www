@@ -17,68 +17,21 @@ block content
       a(href='/') Pick a Date
 
   .col-xs-12.col-sm-6
-    ul.nav.nav-tabs(role="tablist")
+    ul#myTabs.nav.nav-tabs(role="tablist")
       li.active(role="presentation")
-        a(href="#home", aria-controls="home", role="tab", data-toggle="tab") All
+        a(href="#all", data-url="/home/all", aria-controls="all", role="tab", data-toggle="tab") All
       li
-        a(href="#following", aria-controls="following", role="tab", data-toggle="tab") Following
+        a(href="#following", data-url="/home/following", aria-controls="following", role="tab", data-toggle="tab") Following
       li
-        a(href="#my", aria-controls="my", role="tab", data-toggle="tab") My Events
+        a(href="#my", data-url="/home/my", aria-controls="my", role="tab", data-toggle="tab") My Events
     
     div.tab-content
-      div#home.tab-pane.active(role="tabpanel")      
-        - each result in results
-          .event
-            .event-date
-              if result.event.end_date
-                = moment(result.event.start_date).twix(result.event.end_date, {allDay: true}).format({monthFormat: 'MMMM'})
-              else
-                = moment(result.event.start_date).format('MMMM D')
-    
-            .event-title
-              a(href="/event/#{slug(result.event.title)}-#{result.event.event_id}") #{result.event.title}
-              if result.venue
-                small.event-venue
-                  |  at #{result.venue.name}
-    
-            .list-recommend
-              img.img-rounded(alt='', src="//avatars.io/twitter/#{result.user.username}/small", style='float: left; margin-right: 10px; width: 48px; height: 48px;')
-              h4
-                a(href="/@" + result.user.username) #{result.user.name}
-                small
-                  |  @#{result.user.username}
-                  
-            .recommend-quote
-              =truncate(result.event.description, 280)  
-    
-            if user
-              .recommend-action                  
-                form.watchlist(action="/watchlist", method="post")
-                  div.form-group
-                    input.event_id(type="hidden", name="event_id", value="#{result.event.event_id}")
-                    div.btn-group(data-toggle="buttons", role="group")
-                      if result.watchlist.status == 'attend'
-                        label.btn.btn-default.active
-                          input.status(type="checkbox", name="status", value="attend", checked)
-                          | 👍 I'm Going
-                      else
-                        label.btn.btn-default
-                          input.status(type="checkbox", name="status", value="attend")
-                          | 👍 I'm Going
-        
-                      if result.watchlist.status == 'watch'
-                        label.btn.btn-default.active
-                          input.status(type="checkbox", name="status", value="watch", checked)
-                          | 🌟 Recommend
-                      else
-                        label.btn.btn-default
-                          input.status(type="checkbox", name="status", value="watch")
-                          | 🌟 Recommend
+      div#all.tab-pane.active(role="tabpanel")      
 
       div#following.tab-pane(role="tabpanel")
-        h3 Following
         
       div#my.tab-pane(role="tabpanel")
-        h3 My Events
+        
              
   .col-xs-12.col-sm-6
+    
