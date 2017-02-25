@@ -78,7 +78,8 @@ block content
       if comments.length > 0
         h3 Comments
       else
-        h3 Add a comment
+        if user
+          h3 Add a comment
       
       - each comment in comments
         img(alt='', src="//avatars.io/twitter/#{comment.username}/medium", style='float: left; margin-right: 10px; width: 48px; height: 48px;')
