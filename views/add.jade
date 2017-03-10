@@ -2,7 +2,7 @@ extends layout
 
 block includes
   script(src='//cdn.jsdelivr.net/handlebarsjs/3.0.0/handlebars.min.js')
-  script(src='/components/typeahead.js/dist/typeahead.bundle.min.js')
+  script(src='/components/corejs-typeahead/dist/typeahead.bundle.min.js')
   script(src!='//maps.googleapis.com/maps/api/js?libraries=places&key=AIzaSyCELrZ_wJW6wZ9XE7yaY_TgTubSUWuBXjw')
   script(src='/components/geocomplete/jquery.geocomplete.min.js')
 
@@ -80,7 +80,7 @@ block content
     $('#name').typeahead({
         hint: true,
         highlight: false,
-        minLength: 3
+        minLength: 1
       }, {
         name: 'Search',
         displayKey: 'name',
@@ -88,7 +88,7 @@ block content
         templates: {
           empty: [
             '<div class="empty-message">',
-              'No venue found! <a href="/venues/add">Add it.</a>',
+              'No venue found!',
             '</div>'
           ].join('\n'),
           suggestion: Handlebars.compile(
