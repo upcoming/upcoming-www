@@ -25,12 +25,13 @@ block content
           if result.venue.address
             span.address= result.venue.address
             br
-          span.locality= result.venue.locality + ', '
-          span.region= result.venue.region
+          span.locality
+            a(href="/place/#{slug(result.venue.locality)}-#{slug(result.venue.region)}")
+              | #{result.venue.locality}, #{result.venue.region}
   
     div
       .list-recommend
-        img.img-rounded(alt='', src="//avatars.io/twitter/#{result.user.username}/medium", style='float: left; margin-right: 10px; width: 48px; height: 48px;')
+        img.img-rounded(alt='', src="//avatars.io/twitter/#{result.user.username}/small", style='float: left; margin-right: 10px; width: 48px; height: 48px;')
         h4
           a(href="/@" + result.user.username) #{result.user.name}
           small
@@ -82,7 +83,7 @@ block content
           h3 Add a comment
       
       - each comment in comments
-        img(alt='', src="//avatars.io/twitter/#{comment.username}/medium", style='float: left; margin-right: 10px; width: 48px; height: 48px;')
+        img(alt='', src="//avatars.io/twitter/#{comment.username}/small", style='float: left; margin-right: 10px; width: 48px; height: 48px;')
         .comment(style='margin-left: 60px')
           h4
             a(href="/@" + comment.username) #{comment.name}
