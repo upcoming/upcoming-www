@@ -63,7 +63,7 @@ router.get(/@(.+)$/, function(req, res, next) {
     options = { 
       filter: 'user',
       user_id: user.id,
-      timespan: 'all'
+      when: 'all'
     };
     if (err) throw err;
     Event.search(req.user, options, function (err, results) {
