@@ -182,7 +182,6 @@ exports.search = function(user, options, next) {
     }
     
     sql += "LIMIT 50";
-    console.log(sql);
             
     db.query({sql: sql, nestTables: true}, [ user.id, user.id ], function (err, rows) {
       if (err) return next(err);
@@ -193,6 +192,7 @@ exports.search = function(user, options, next) {
             + "COUNT(watchlist.user_id) AS watchlist_count "
             + "FROM user, event "
             + "LEFT JOIN venue ON venue.venue_id = event.venue_id "
+            + "LEFT JOIN venue_gid ON venue_gid.venue_id = venue.venue_id "
             + "LEFT JOIN watchlist ON watchlist.event_id = event.event_id "
             + "WHERE event.creator_user_id = user.id ";
             
@@ -209,6 +209,10 @@ exports.search = function(user, options, next) {
       sql += "AND (event.creator_user_id = " + options['user_id'] + " OR watchlist.user_id = " + options['user_id'] + ") ";
     }
     
+    if (options['filter'] == 'gid') {
+      sql += "AND venue_gid.gid = '" + options['gid'] + "' ";
+    }
+
     sql   += "GROUP BY event.id ";
     
     if (options['sort'] == 'recommended') {
