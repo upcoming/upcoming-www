@@ -8,7 +8,7 @@ var ensureLoggedIn = require('connect-ensure-login').ensureLoggedIn();
 router.use('/api', require('./api'));
 router.use('/auth', require('./auth'));
 router.use('/event', require('./events'));
-router.use('/place', require('./places'));
+router.use('/places', require('./places'));
 router.use('/venue', require('./venues'));
 router.use('/user', require('./users'));
 router.use('/following', require('./following'));

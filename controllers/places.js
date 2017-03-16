@@ -2,11 +2,19 @@ var express = require('express');
 var config = require('config');
 var router = express.Router();
 var Event = require('../models/event');
-var Venue = require('../models/venue');
-var Watchlist = require('../models/watchlist');
-var Comment = require('../models/comment');
+var Place = require('../models/place');
 var request = require('request');
 // request.debug = 'true';
+
+
+// GET popular places
+router.get('/', function(req, res, next) {
+  Place.getPopular(function (err, results) {
+    if (err) throw err;
+    res.render('place-list', { title: 'Popular Places', places: results });
+  });
+});
+
 
 // GET place
 router.get(/(.+)$/, function(req, res, next) {
@@ -22,7 +30,7 @@ router.get(/(.+)$/, function(req, res, next) {
     qs: {
       api_key: config.mapzen.api_key,
       text: query,
-      layers: 'locality,borough,localadmin,county,macrocounty,region,macroregion,country',
+      layers: 'locality,borough',
       sources: 'wof',
       size: 1
     },

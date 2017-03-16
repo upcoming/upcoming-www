@@ -1,0 +1,15 @@
+extends layout
+
+block content
+  #main
+    .page-header
+      h1 Popular Places
+          
+  .col-xs-12.col-sm-6
+    - each place in places
+      .place
+        a(href="/places/#{slug(place.venue.locality)}-#{slug(place.venue.region)}")
+          | #{place.venue.locality}, #{place.venue.region}          
+        small= place[''].event_count
+             
+  .col-xs-12.col-sm-6
