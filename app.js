@@ -29,6 +29,14 @@ app.locals.truncate = require('truncate');
 app.locals.slug = require('slug');
 app.locals.slug.defaults.mode = 'rfc3986';
 
+app.locals.marked = require('marked');
+app.locals.marked.setOptions({
+  gfm: true,
+  breaks: false,
+  sanitize: true,
+  smartypants: true
+});
+
 var session = require('express-session');
 var RedisStore = require('connect-redis')(session);
 

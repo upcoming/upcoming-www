@@ -4,7 +4,7 @@ block includes
   script(src='/js/watchlists.js')
 
 block content
-  .col-xs-12.col-sm-10.col-md-8  
+  .col-xs-12.col-sm-8.col-md-8  
     h1= result.event.title
       if user
         if result.event.creator_user_id == user.id
@@ -36,8 +36,7 @@ block content
           a(href="/@" + result.user.username) #{result.user.name}
           small
             |  @#{result.user.username}
-      .recommend-quote
-        p= result.event.description
+      .recommend-quote!= marked(result.event.description)
         
         if result.event.website
           p
@@ -67,36 +66,38 @@ block content
                     input.status(type="checkbox", name="status", value="watch")
                     | 🌟 Recommend
 
-      if watchlists.length > 0
-        h3 Attending
-      
+  if watchlists.length > 0
+    .col-xs-12.col-sm-4.col-md-4
+      h3 Attending
+    
       - each watchlist in watchlists
         .watchlist
           a(href="/@" + watchlist.username) #{watchlist.name}
           | 
           small @#{watchlist.username}
-
-      if comments.length > 0
-        h3 Comments
-      else
-        if user
-          h3 Add a comment
-      
-      - each comment in comments
-        img(alt='', src="//avatars.io/twitter/#{comment.username}/small", style='float: left; margin-right: 10px; width: 48px; height: 48px;')
-        .comment(style='margin-left: 60px')
-          h4
-            a(href="/@" + comment.username) #{comment.name}
-            | 
-            small @#{comment.username}
-          
-            p= comment.created_at
-          p= comment.comment_text
-            br
   
+  .col-xs-12.col-sm-8.col-md-8
+    if comments.length > 0
+      h3 Comments
+    else
       if user
-        form(name="comment", action="/comment", method="post")
-          div.form-group
-            textarea.form-control(name="comment_text", cols="40", rows="5")
-            input(type="hidden", name="event_id", value="#{result.event.event_id}")
-            button.btn.btn-default(type="submit") Add Comment
+        h3 Add a comment
+    
+    - each comment in comments
+      img(alt='', src="//avatars.io/twitter/#{comment.username}/small", style='float: left; margin-right: 10px; width: 48px; height: 48px;')
+      .comment(style='margin-left: 60px')
+        h4
+          a(href="/@" + comment.username) #{comment.name}
+          | 
+          small @#{comment.username}
+        
+          p= comment.created_at
+        p!= marked(comment.comment_text)
+
+    if user
+      form(name="comment", action="/comment", method="post")
+        div.form-group
+          textarea.form-control(name="comment_text", cols="40", rows="5")
+          input(type="hidden", name="event_id", value="#{result.event.event_id}")
+          button.btn.btn-default(type="submit") Add Comment
+
