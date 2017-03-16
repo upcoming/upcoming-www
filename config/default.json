@@ -28,5 +28,10 @@
   "google": {
     "oauth_key": "",
     "oauth_secret": ""
+  },
+  
+  "mapzen": {
+    "api_key": ""
   }
+
 }
