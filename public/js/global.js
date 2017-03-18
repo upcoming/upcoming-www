@@ -1,9 +1,7 @@
 $(document).ready(function() {
   $(function(){
     $('[rel="tooltip"]').tooltip();
-  });
-  
-  $(function(){
+
     $('#myTabs a').click(function (e) {
     	e.preventDefault();
     	      
@@ -19,7 +17,6 @@ $(document).ready(function() {
         
     // load first tab content
     $('#all').load($('.active a').attr("data-url"),function(result){
-      $('.active a').tab('show');
     });
   });
 
