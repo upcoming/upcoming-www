@@ -3,6 +3,7 @@ var router = express.Router();
 var db = require('../db.js');
 var Event = require('../models/event');
 var User = require('../models/user');
+var Backer = require('../models/backer');
 var ensureLoggedIn = require('connect-ensure-login').ensureLoggedIn();
 
 router.use('/api', require('./api'));
@@ -86,6 +87,13 @@ router.get('/logout', function(req, res){
 
 router.get('/about', function(req, res, next) {
   res.render('about', { title: 'About' });
+});
+
+router.get('/about/backers', function(req, res, next) {
+  Backer.getAll(req.user, function (err, results) {
+    if (err) throw err;
+    res.render('backers', { title: 'Backers', results: results });
+  });
 });
 
 router.get('/guidelines', function(req, res, next) {

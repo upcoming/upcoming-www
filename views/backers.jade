@@ -1,0 +1,10 @@
+extends layout
+
+block content
+  .col-md-12
+    .page-header
+      h1 Kickstarter Backers
+
+  - each result in results
+    .col-xs-6.col-sm-4.col-md-3
+      p= result.backer.name
