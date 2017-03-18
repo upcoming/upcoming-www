@@ -21,9 +21,9 @@ body {
   visibility: hidden;
 }
 
-.navbar-brand img {
-  margin: 2px 0px 0px 14px;
-  height: 100%;
+.navbar-brand > img {
+  height: 24px;
+  margin: 0px 0px 0px 14px;
 }
 
 .list-nav {
