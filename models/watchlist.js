@@ -5,9 +5,8 @@ exports.add = function(user, watchlist, next) {
   var post = {
     user_id: user.id,
     event_id: watchlist.event_id,
-    status: watchlist.status,
+    status: watchlist.status
   };
-  console.log(JSON.stringify(post));
   
   db.query('INSERT INTO watchlist SET created_at=NOW(), ? ON DUPLICATE KEY UPDATE status=VALUES(status)', post, function (err, result) {
     if (err) return next(err);

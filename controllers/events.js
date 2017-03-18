@@ -25,6 +25,13 @@ router.post('/add', function (req, res, next) {
       if (err) throw err;
       Event.create(user, venue, post, function (err, event) {
         if (err) throw err;
+        
+        // watchlist the event after creation 
+        var watchlist = { event_id: event.event_id, status: 'watch' };
+        Watchlist.add(user, watchlist, function (err, result) {
+          if (err) throw err;
+        });
+        
         res.redirect('/event/' + req.app.locals.slug(event.title) + '-' + event.event_id);
       });
     });
