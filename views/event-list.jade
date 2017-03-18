@@ -1,5 +1,6 @@
 block includes
-  script(src='/js/watchlists.js')
+  script.
+    $.getScript('/js/watchlists.js');
 
 - each result in results
   .event
