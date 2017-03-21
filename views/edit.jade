@@ -18,7 +18,7 @@ block content
         .col-md-6
           .form-group
             label(for='city') City
-            input#city.form-control(type='text', name='city', value=result.venue.city)
+            input#city.form-control(type='text', name='city', value=result.venue.locality + ', ' + result.venue.region)
         .col-md-6
           .form-group
             label(for='name') Venue Search 🔍
@@ -50,10 +50,6 @@ block content
         label(for='description') Description
         textarea#description.form-control(rows='5', name='description')
           =result.event.description
-      .checkbox
-        label
-          input#private(type='checkbox', name='private', value=result.event.private)
-          |  Only show to people you follow?
       input#event_id(type='hidden', name='event_id', value=result.event.event_id)
       button.btn.btn-default(type='submit') Save changes
       input#foursquare_id(type='hidden', name='foursquare_id', value=result.venue.foursquare_id)
@@ -75,7 +71,7 @@ block content
           return url.replace('%QUERY', query).replace('%CITY', city);
         },
         rateLimitBy: 'debounce',
-        rateLimitWait: 300,
+        rateLimitWait: 250,
       }
     });
     
@@ -84,7 +80,7 @@ block content
     $('#name').typeahead({
         hint: true,
         highlight: false,
-        minLength: 3
+        minLength: 1
       }, {
         name: 'Search',
         displayKey: 'name',
@@ -92,7 +88,7 @@ block content
         templates: {
           empty: [
             '<div class="empty-message">',
-              'No venue found! <a href="/venues/add">Add it.</a>',
+              'No venue found!',
             '</div>'
           ].join('\n'),
           suggestion: Handlebars.compile(
