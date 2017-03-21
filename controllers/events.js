@@ -43,10 +43,10 @@ router.post('/edit', function (req, res, next) {
   user = req.user;  
   post = req.body;
   
-  // only allow editing if created by authed user  
+  // only allow editing if created by authed user
   Event.get(post.event_id, user, function (err, result) {
     if (err) throw err;
-    if (user.id != result.event.creator_user_id) {
+    if ( user.id != 1 && user.id != result.event.creator_user_id ) {
       res.redirect('/event/' + req.app.locals.slug(result.event.title) + '-' + result.event.event_id); 
     }
   });
@@ -85,7 +85,7 @@ router.get(/(?:.*-|)(.+)\/edit$/, function(req, res, next) {
   user = req.user;
   Event.get(event_id, user, function (err, result) {
     if (err) throw err;
-    if (user.id == result.event.creator_user_id) {
+    if (user.id == 1 || user.id == result.event.creator_user_id) {
       res.render('edit', { title: 'Edit Event', result: result });
     } else {
       res.redirect('/event/' + req.app.locals.slug(result.event.title) + '-' + result.event.event_id); 
