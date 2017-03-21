@@ -24,6 +24,7 @@
     "node-foursquare-venues": "^1.1.0",
     "passport": "^0.3.2",
     "passport-twitter": "^1.0.3",
+    "request": "^2.81.0",
     "serve-favicon": "~2.3.0",
     "shortid": "^2.2.4",
     "slug": "^0.9.1",
