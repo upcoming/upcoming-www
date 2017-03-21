@@ -16,8 +16,8 @@ $(document).ready(function() {
     });
         
     // load first tab content
-    $('#all').load($('.active a').attr("data-url"),function(result){
-    });
-  });
+    $('#all').load($('.active a').attr("data-url"));
 
+
+  });
 });
