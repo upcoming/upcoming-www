@@ -1,4 +1,5 @@
 var db = require('../db.js');
+var helpers = require('../helpers');
 
 // create a new venue
 exports.create = function(user, venue, next) {
@@ -26,6 +27,11 @@ exports.create = function(user, venue, next) {
         
       db.query('INSERT INTO venue SET ?', post, function (err, result) {
         if (err) return next(err);
+        helpers.reverse_geocode(venue_id, function (err, events) {
+          if (err) throw err;
+          return(venue_id);
+        });    
+        
         exports.get(venue_id, next);
       });
     } else {
@@ -33,6 +39,7 @@ exports.create = function(user, venue, next) {
     }
   });
 };
+
 
 /* get a particular venue by its id */
 exports.get = function(id, next) {
