@@ -36,6 +36,11 @@ body {
   color: #777;
 }
 
+.list-nav .active {
+  font-weight: bold;
+  text-decoration: none;
+}
+
 .event {
   padding: 12px 10px 10px 0px;
   border-bottom: 1px solid #e5e5e5;

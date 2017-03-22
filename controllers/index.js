@@ -36,6 +36,8 @@ router.get('/home/all', function(req, res, next) {
 
 router.get('/home/following', function(req, res) {
   options = { 
+    when: req.query.when,
+    sort: req.query.sort,
     filter: 'following',
   };
   
@@ -47,6 +49,8 @@ router.get('/home/following', function(req, res) {
 
 router.get('/home/my', function(req, res) {
   options = { 
+    when: req.query.when,
+    sort: req.query.sort,
     filter: 'user',
   };
   
@@ -64,7 +68,8 @@ router.get(/@(.+)$/, function(req, res, next) {
     options = { 
       filter: 'user',
       user_id: user.id,
-      when: 'all'
+      when: req.query.when,
+      sort: req.query.sort
     };
     if (err) throw err;
     Event.search(req.user, options, function (err, results) {

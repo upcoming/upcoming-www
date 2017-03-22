@@ -3,16 +3,16 @@ extends layout
 block content
   #main
   .hidden-xs.col-sm-2
-    .list-nav
-      a(href='/?sort=recommended') Recommended
-      a(href='/?sort=popular') Popular
-      a(href='/?sort=new') Recently added
-      a(href='/?sort=date') Latest
-    .list-nav
-      a(href='/?when=future') Future
-      a(href='/?when=past') Past Events
-      a(href='/') Pick a Date
-
+    #filters
+      .list-nav
+        a(href='#', data-cat="sort", data-filter="date", class="active") Latest
+        a(href='#', data-cat="sort", data-filter="popular") Most Popular
+        a(href='#', data-cat="sort", data-filter="new") Recently Added
+      .list-nav
+        a(href='#', data-cat="when", data-filter="future", class="active") Upcoming
+        a(href='#', data-cat="when", data-filter="past") Past Events
+        a(href='#', data-cat="when", data-filter="all") Anytime
+        
   .col-xs-12.col-sm-6
     ul#myTabs.nav.nav-tabs(role="tablist")
       li.active(role="presentation")
