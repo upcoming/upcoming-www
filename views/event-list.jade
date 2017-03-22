@@ -2,50 +2,53 @@ block includes
   script.
     $.getScript('/js/watchlists.js');
 
-- each result in results
-  .event
-    .event-date
-      if result.event.end_date
-        = moment(result.event.start_date).twix(result.event.end_date, {allDay: true}).format({monthFormat: 'MMMM'})
-      else
-        = moment(result.event.start_date).format('MMMM D')
-
-    .event-title
-      a(href="/event/#{slug(result.event.title)}-#{result.event.event_id}") #{result.event.title}
-      if result.venue
-        small.event-venue
-          |  at #{result.venue.name}
-
-    .list-recommend
-      img.img-rounded(alt='', src="//avatars.io/twitter/#{result.user.username}/small", style='float: left; margin-right: 10px; width: 48px; height: 48px;')
-      h4
-        a(href="/@" + result.user.username) #{result.user.name}
-        small
-          |  @#{result.user.username}
-          
-    .recommend-quote
-      =truncate(result.event.description, 280)  
-
-    if user
-      .recommend-action                  
-        form.watchlist(action="/watchlist", method="post")
-          div.form-group
-            input.event_id(type="hidden", name="event_id", value="#{result.event.event_id}")
-            div.btn-group(data-toggle="buttons", role="group")
-              if result.watchlist.status == 'attend'
-                label.btn.btn-default.active
-                  input.status(type="checkbox", name="status", value="attend", checked)
-                  | 👍 I'm Going
-              else
-                label.btn.btn-default
-                  input.status(type="checkbox", name="status", value="attend")
-                  | 👍 I'm Going
-
-              if result.watchlist.status == 'watch'
-                label.btn.btn-default.active
-                  input.status(type="checkbox", name="status", value="watch", checked)
-                  | 🌟 Recommend
-              else
-                label.btn.btn-default
-                  input.status(type="checkbox", name="status", value="watch")
-                  | 🌟 Recommend
+if results.length > 0
+  - each result in results
+    .event
+      .event-date
+        if result.event.end_date
+          = moment(result.event.start_date).twix(result.event.end_date, {allDay: true}).format({monthFormat: 'MMMM'})
+        else
+          = moment(result.event.start_date).format('MMMM D')
+  
+      .event-title
+        a(href="/event/#{slug(result.event.title)}-#{result.event.event_id}") #{result.event.title}
+        if result.venue
+          small.event-venue
+            |  at #{result.venue.name}
+  
+      .list-recommend
+        img.img-rounded(alt='', src="//avatars.io/twitter/#{result.user.username}/small", style='float: left; margin-right: 10px; width: 48px; height: 48px;')
+        h4
+          a(href="/@" + result.user.username) #{result.user.name}
+          small
+            |  @#{result.user.username}
+            
+      .recommend-quote
+        !=marked(truncate(result.event.description, 280))
+  
+      if user
+        .recommend-action                  
+          form.watchlist(action="/watchlist", method="post")
+            div.form-group
+              input.event_id(type="hidden", name="event_id", value="#{result.event.event_id}")
+              div.btn-group(data-toggle="buttons", role="group")
+                if result.watchlist.status == 'attend'
+                  label.btn.btn-default.active
+                    input.status(type="checkbox", name="status", value="attend", checked)
+                    | 👍 I'm Going
+                else
+                  label.btn.btn-default
+                    input.status(type="checkbox", name="status", value="attend")
+                    | 👍 I'm Going
+  
+                if result.watchlist.status == 'watch'
+                  label.btn.btn-default.active
+                    input.status(type="checkbox", name="status", value="watch", checked)
+                    | 🌟 Recommend
+                else
+                  label.btn.btn-default
+                    input.status(type="checkbox", name="status", value="watch")
+                    | 🌟 Recommend
+else
+  div No upcoming events!
