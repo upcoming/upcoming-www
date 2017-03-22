@@ -34,6 +34,7 @@ exports.getEvents = function(user_id, next) {
     + 'WHERE event.venue_id = venue.venue_id '
     + 'AND event.event_id = watchlist.event_id '
     + 'AND watchlist.user_id = ? '
+    + 'AND start_date >= NOW '
     + 'GROUP BY event.event_id '
     + 'ORDER BY start_date';
   db.query({sql: sql, nestTables: true}, user_id, function (err, rows) {

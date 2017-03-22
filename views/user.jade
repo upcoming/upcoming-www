@@ -14,10 +14,15 @@ block content
   .hidden-xs.col-sm-2
     p 👑 Kickstarter Backer!
     
-    small= current_user.description
+    p
+      small= current_user.description
+
+    hr
+    .list-nav
+      a(href='?when=future') Upcoming
+      a(href='?when=past') Past Events
 
   .col-xs-12.col-sm-6
     include event-list
              
   .col-xs-12.col-sm-6
-    
