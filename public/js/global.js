@@ -4,7 +4,7 @@ $(document).ready(function() {
 
     var filters = {};
         
-    $('.list-nav a').click(function (e) {
+    $('#filters .list-nav a').click(function (e) {
     	e.preventDefault();
     	
     	// remove active class from all other nav links, add it to current

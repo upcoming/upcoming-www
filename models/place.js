@@ -8,7 +8,7 @@ exports.getPopular = function(next) {
     + "AND venue_gid.layer = 'locality' "
     + "GROUP BY venue_gid.gid "
     + "ORDER BY event_count DESC "
-    + "LIMIT 10";
+    + "LIMIT 25";
     
   db.query({sql: sql, nestTables: true}, function (err, rows) {
     if (err) return next(err);

@@ -45,7 +45,8 @@ router.get(/(.+)$/, function(req, res, next) {
           options = { 
             filter: 'gid',
             gid: place.properties.locality_gid,
-            when: 'all'
+            sort: req.query.sort,
+            when: req.query.when
           };
           
           Event.search(req.user, options, function (err, results) {

@@ -8,7 +8,6 @@ block content
   #main
     .page-header
       h1= place.properties.label
-      <!-- pre= JSON.stringify(place, null, 2) -->
           
   .hidden-xs.col-sm-2
     .list-nav
@@ -17,9 +16,8 @@ block content
       a(href='?sort=new') Recently added
       a(href='?sort=date') Latest
     .list-nav
-      a(href='?when=future') Future
+      a(href='?when=future') Upcoming
       a(href='?when=past') Past Events
-      a(href='/') Pick a Date
   
   .col-xs-12.col-sm-6
     include event-list
