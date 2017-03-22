@@ -18,7 +18,7 @@ block content
         .col-md-6
           .form-group
             label(for='city') City
-            input#city.form-control(type='text', name='city', value='')
+            input#city.form-control(type='text', name='city')
         .col-md-6
           .form-group
             label(for='name') Venue Search 🔍
@@ -47,10 +47,6 @@ block content
       .form-group
         label(for='description') Description
         textarea#description.form-control(rows='5', name='description')
-      .checkbox
-        label
-          input#private(type='checkbox', name='private')
-          |  Only show to people you follow?
       button.btn.btn-default(type='submit') Add event
       input#foursquare_id(type='hidden', name='foursquare_id')
       input#address(type='hidden', name='address')
@@ -65,13 +61,14 @@ block content
       datumTokenizer: Bloodhound.tokenizers.obj.whitespace('value'),
       queryTokenizer: Bloodhound.tokenizers.whitespace,
       remote: {
+        cache: true,
         url: '/venue/search/?city=%CITY&query=%QUERY',
         replace: function(url, query) {
           var city = encodeURIComponent($('#city').val());
           return url.replace('%QUERY', query).replace('%CITY', city);
         },
         rateLimitBy: 'debounce',
-        rateLimitWait: 300,
+        rateLimitWait: 250,
       }
     });
     
