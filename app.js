@@ -32,7 +32,7 @@ app.locals.slug.defaults.mode = 'rfc3986';
 app.locals.marked = require('marked');
 app.locals.marked.setOptions({
   gfm: true,
-  breaks: false,
+  breaks: true,
   sanitize: true,
   smartypants: true
 });
