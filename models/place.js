@@ -6,6 +6,7 @@ exports.getPopular = function(next) {
     + "WHERE event.venue_id = venue.venue_id "
     + "AND venue.venue_id = venue_gid.venue_id "
     + "AND venue_gid.layer = 'locality' "
+    + "AND start_date >= DATE( NOW() ) "
     + "GROUP BY venue_gid.gid "
     + "ORDER BY event_count DESC "
     + "LIMIT 25";
