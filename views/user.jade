@@ -6,7 +6,7 @@ block includes
 block content
   #main
     .page-header
-      img.img-rounded(alt='', src="//avatars.io/twitter/#{current_user.username}/small", style='float: left; margin-right: 10px')
+      img.img-rounded(alt='', src="#{current_user.avatar_image_url}", style='float: left; margin-right: 10px')
       h1= current_user.name
         small
           |  @#{current_user.username}

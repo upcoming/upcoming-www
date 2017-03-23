@@ -11,7 +11,7 @@ passport.serializeUser(function(user, done) {
 
 passport.deserializeUser(function(id, done) {
     var query = db.query("SELECT * FROM user WHERE id = ? ", [id], function(err, rows){
-      var user = rows[0];
+      var user = rows[0];        
       done(err, user);
     });
 });
@@ -49,6 +49,7 @@ passport.use(
         var query = db.query("INSERT INTO user SET ?", new_user, function(err, result) {
           if (err) throw err;
           new_user.id = result.insertId;
+          helpers.saveAvatar(new_user, token_key, token_secret);
           helpers.getTwitterFriends(new_user.id, profile.id, token_key, token_secret);
           helpers.updateFollowing(new_user.id);
           
@@ -56,12 +57,17 @@ passport.use(
         });
 
       } else {
+        var user = rows[0];
         // TODO: only retrieve new friends list if not updated in x days
         // helpers.getTwitterFriends(rows[0].id, profile.id, token_key, token_secret);
+        
+        // TODO: update twitter token key and token secret in db, update twitter profile info
 
         // existing user, update following list and sign them in
-        helpers.updateFollowing(rows[0].id);
-        return done(null, rows[0]);
+        helpers.saveAvatar(user, token_key, token_secret);
+        helpers.updateFollowing(user.id);
+        
+        return done(null, user);
       }
     });
   })

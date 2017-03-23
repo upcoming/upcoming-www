@@ -79,7 +79,7 @@ html(lang="en")
               if user
                 li.dropdown
                   a.dropdown-toggle(href='#', data-toggle='dropdown', role='button', style='padding: 10px 20px 10px 20px')
-                    img.img-rounded(alt='', src="//avatars.io/twitter/#{user.username}/small", width='30', height='30')
+                    img.img-rounded(alt='', src="#{user.avatar_image_url}", width='30', height='30')
                     span.caret
                   ul.dropdown-menu(role='menu')
                     li(role='presentation')

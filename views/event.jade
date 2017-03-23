@@ -1,5 +1,6 @@
 extends layout
 
+
 block includes
   script(src='/js/watchlists.js')
 
@@ -31,7 +32,7 @@ block content
   
     div
       .list-recommend
-        img.img-rounded(alt='', src="//avatars.io/twitter/#{result.user.username}/small", style='float: left; margin-right: 10px; width: 48px; height: 48px;')
+        img.img-rounded(alt='', src="#{result.user.avatar_image_url}", style='float: left; margin-right: 10px; width: 48px; height: 48px;')
         h4
           a(href="/@" + result.user.username) #{result.user.name}
           small
@@ -84,7 +85,7 @@ block content
         h3 Add a comment
     
     - each comment in comments
-      img(alt='', src="//avatars.io/twitter/#{comment.username}/small", style='float: left; margin-right: 10px; width: 48px; height: 48px;')
+      img(alt='', src="#{comment.avatar_image_url}", style='float: left; margin-right: 10px; width: 48px; height: 48px;')
       .comment(style='margin-left: 60px')
         h4
           a(href="/@" + comment.username) #{comment.name}
