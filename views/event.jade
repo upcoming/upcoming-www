@@ -27,8 +27,11 @@ block content
             span.address= result.venue.address
             br
           span.locality
-            a(href="/places/#{slug(result.venue.locality)}-#{slug(result.venue.region)}")
-              | #{result.venue.locality}, #{result.venue.region}
+            a(href="/places/#{slug(result.locality.name)}-#{slug(result.locality.id)}")
+              if result.country.name == 'United States'
+                | #{result.locality.name}, #{result.region.name}
+              else
+                | #{result.locality.name}, #{result.country.name}
   
     div
       .list-recommend

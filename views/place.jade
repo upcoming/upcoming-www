@@ -7,8 +7,18 @@ block includes
 block content
   #main
     .page-header
-      h1= place.properties.label
-          
+      if place.properties
+        if place.properties.country == 'United States'
+          h1= 'Events in ' + place.properties.locality + ', ' + place.properties.region
+        else
+          h1= 'Events in ' + place.properties.locality + ', ' + place.properties.country
+      else
+        if place.country.name == 'United States'
+          h1= 'Events in ' + place.locality.name + ', ' + place.region.name
+        else
+          h1= 'Events in ' + place.locality.name + ', ' + place.country.name
+      
+                
   .hidden-xs.col-sm-2
     .list-nav
       a(href='?sort=recommended') Recommended

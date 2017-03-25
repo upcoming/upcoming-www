@@ -72,11 +72,14 @@ exports.update = function(user, venue, event, next) {
 /* get a particular event by its id */
 exports.get = function(event_id, user, next) {
   if (user) {
-    var sql = "SELECT event.*, user.*, venue.*, watchlist.status, "
-            + "COUNT(friend_watchlist.user_id) AS watchlist_count, "
+    var sql = "SELECT event.*, user.*, venue.*, locality.*, region.name, country.name, watchlist.status, "
+            + "COUNT(watchlist.user_id) AS watchlist_count, COUNT(friend_watchlist.user_id) AS watchlist_count, "
             + "COUNT(following.friend_id) AS friend_count "
             + "FROM user, event "
             + "LEFT JOIN venue ON venue.venue_id = event.venue_id "
+            + "LEFT JOIN venue_gid locality ON locality.venue_id = venue.venue_id AND locality.layer = 'locality' "
+            + "LEFT JOIN venue_gid region ON region.venue_id = venue.venue_id AND region.layer = 'region' "
+            + "LEFT JOIN venue_gid country ON country.venue_id = venue.venue_id AND country.layer = 'country' "
             + "LEFT JOIN watchlist friend_watchlist ON friend_watchlist.event_id = event.event_id "
             + "LEFT JOIN watchlist ON watchlist.event_id = event.event_id AND watchlist.user_id = ? "
             + "LEFT JOIN following ON friend_watchlist.user_id = following.friend_id AND following.user_id = ? "
@@ -90,11 +93,16 @@ exports.get = function(event_id, user, next) {
     });
     
   } else {
-    var sql = "SELECT event.*, user.*, venue.*, COUNT(watchlist.user_id) AS watchlist_count "
-            + "FROM venue, user, event "
+    var sql = "SELECT event.*, user.*, venue.*, locality.*, region.name, country.name, "
+            + "COUNT(watchlist.user_id) AS watchlist_count "
+            + "FROM user, event "
+            + "LEFT JOIN venue ON venue.venue_id = event.venue_id "
+            + "LEFT JOIN venue_gid locality ON locality.venue_id = venue.venue_id AND locality.layer = 'locality' "
+            + "LEFT JOIN venue_gid region ON region.venue_id = venue.venue_id AND region.layer = 'region' "
+            + "LEFT JOIN venue_gid country ON country.venue_id = venue.venue_id AND country.layer = 'country' "
+            + "LEFT JOIN watchlist friend_watchlist ON friend_watchlist.event_id = event.event_id "
             + "LEFT JOIN watchlist ON watchlist.event_id = event.event_id "
             + "WHERE event.creator_user_id = user.id "
-            + "AND event.venue_id = venue.venue_id "
             + "AND event.event_id = ? "
             + "GROUP BY event.id";
   
@@ -118,19 +126,6 @@ exports.getAllByUser = function(user_id, next) {
 };
 
 exports.search = function(user, options, next) {
-  /*
-    var options = {
-      filter: null, // user, following, date
-      timespan: 'past', // past, future, all
-      sort: 'start_date', // popular, friends, distance
-      sort_order: 'desc', // asc, desc
-      start_date: '2017-01-01',
-      end_date: '2018-01-01',
-      location: 'Portland, OR',
-      distance_miles: '20'
-    };
-  */
-  
   if (user) {
     var sql = "SELECT event.*, user.*, venue.*, watchlist.status, "
             + "COUNT(friend_watchlist.user_id) AS watchlist_count, "
@@ -158,11 +153,11 @@ exports.search = function(user, options, next) {
       } else {
         user_id = user.id;
       }
-      sql += "AND (event.creator_user_id = " + user_id + " OR friend_watchlist.user_id = " + user_id + ") ";
+      sql += "AND (event.creator_user_id = " + db.escape(user_id) + " OR friend_watchlist.user_id = " + db.escape(user_id) + ") ";
     }
 
-    if (options['filter'] == 'gid') {
-      sql += "AND venue_gid.gid = '" + options['gid'] + "' ";
+    if (options['gid'] && options['gid'] != 'all') {
+      sql += "AND venue_gid.gid = " + db.escape(options['gid']) + " ";
     }
 
     sql   += "GROUP BY event.id ";
@@ -206,11 +201,14 @@ exports.search = function(user, options, next) {
     }
 
     if (options['filter'] == 'user') {
-      sql += "AND (event.creator_user_id = " + options['user_id'] + " OR watchlist.user_id = " + options['user_id'] + ") ";
+      if (options['user_id']) {
+        user_id = options['user_id'];
+      }
+      sql += "AND (event.creator_user_id = " + db.escape(options['user_id']) + " OR watchlist.user_id = " + db.escape(options['user_id']) + ") ";
     }
     
-    if (options['filter'] == 'gid') {
-      sql += "AND venue_gid.gid = '" + options['gid'] + "' ";
+    if (options['gid'] && options['gid'] != 'all') {
+      sql += "AND venue_gid.gid = " + db.escape(options['gid']) + " ";
     }
 
     sql   += "GROUP BY event.id ";
