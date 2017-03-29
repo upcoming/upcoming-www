@@ -7,7 +7,7 @@ block includes
   script(src='/components/geocomplete/jquery.geocomplete.min.js')
 
 block content
-  .col-md-6
+  .col-sm-8.col-md-6.col-sm-offset-1
     h1 Add New Event
     form(method='post', action='/event/add')
       include alert
@@ -24,20 +24,20 @@ block content
             label(for='name') Venue Search 🔍
             input#name.form-control.typeahead(type='text', name='name', placeholder='Venue name', autocomplete='off')
       .row
-        .col-md-6
+        .col-xs-6
           .form-group
             label(for='start_date') Start date
             input#start_date.form-control(type='date', name='start_date', value=moment(today).format('YYYY-MM-DD'))
-        .col-md-6
+        .col-xs-6
           .form-group
             label(for='end_date') End date
             input#end_date.form-control(type='date', name='end_date')
       .row
-        .col-md-6
+        .col-xs-6
           .form-group
             label(for='start_time') Start time
             input#start_time.form-control(type='time', name='start_time')
-        .col-md-6
+        .col-xs-6
           .form-group
             label(for='end_time') End time
             input#end_time.form-control(type='time', name='end_time')
