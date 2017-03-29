@@ -1,5 +1,5 @@
 $(document).ready(function(e) {
-  $("#add-city").click(function(){
+  $("#add-city").click(function(e){
   	e.preventDefault();
     $('#autocomplete').css('display','block');
     $('.tt-input').focus();
