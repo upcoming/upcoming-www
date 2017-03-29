@@ -21,13 +21,19 @@ block content
                 
   .hidden-xs.col-sm-2
     .list-nav
-      a(href='?sort=recommended') Recommended
-      a(href='?sort=popular') Popular
-      a(href='?sort=new') Recently added
-      a(href='?sort=date') Latest
+      .list-item
+        a(href='?sort=date') Latest
+      .list-item
+        a(href='?sort=popular') Popular
+      .list-item
+        a(href='?sort=new') Recently added
     .list-nav
-      a(href='?when=future') Upcoming
-      a(href='?when=past') Past Events
+      .list-item
+        a(href='?when=future') Upcoming
+      .list-item
+        a(href='?when=past') Past Events
+      .list-item        
+        a(href='?when=past') Anytime
   
   .col-xs-12.col-sm-6
     include event-list

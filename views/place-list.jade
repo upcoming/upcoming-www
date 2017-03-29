@@ -11,9 +11,10 @@ block content
         li.list-group-item
           a(href="/places/#{slug(place.locality.name)}-#{slug(place.locality.id)}")
             if place.country.name == 'United States'
-              | #{place.locality.name}, #{place.region.name} 
+              | #{place.locality.name}, #{place.region.name}
             else
-              | #{place.locality.name}, #{place.country.name} 
+              | #{place.locality.name}, #{place.country.name}
+          | 
           small= place[''].event_count
              
   .col-xs-12.col-sm-6
