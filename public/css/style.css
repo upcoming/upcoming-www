@@ -47,8 +47,10 @@ body {
   visibility: hidden;
 }
 
-.list-item:hover .glyphicon {
-  visibility: visible;
+@media (pointer: fine) {  
+  .list-item:hover .glyphicon {
+    visibility: visible;
+  }
 }
 
 .list-nav .active {
