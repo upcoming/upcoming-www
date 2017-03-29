@@ -24,7 +24,7 @@ block content
                     span.glyphicon.glyphicon-remove-circle(aria-hidden="true")
               .list-item
                 #add-city
-                  a(href='#') Add City
+                  a(href='#') Change City
                 #autocomplete
                   form(method='post', action='/user/location')
                     input#name.form-control.typeahead(type='text', name='name', placeholder='City Name', autocomplete='off')
@@ -40,6 +40,7 @@ block content
               a(href='#', data-cat="sort", data-filter="popular") Popular
             .list-item
               a(href='#', data-cat="sort", data-filter="new") Newly Added
+
         .col-xs-4.col-sm-12
           .list-nav
             .list-item
