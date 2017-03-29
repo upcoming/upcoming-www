@@ -27,11 +27,14 @@ block content
             span.address= result.venue.address
             br
           span.locality
-            a(href="/place/#{slug(result.locality.name)}-#{slug(result.locality.id)}")
-              if result.country.name == 'United States'
-                | #{result.locality.name}, #{result.region.name}
-              else
-                | #{result.locality.name}, #{result.country.name}
+            if result.locality.name
+              a(href="/place/#{slug(result.locality.name)}-#{slug(result.locality.id)}")
+                if result.country.name == 'United States'
+                  | #{result.locality.name}, #{result.region.name}
+                else
+                  | #{result.locality.name}, #{result.country.name}
+            else
+              | #{result.venue.locality}, #{result.venue.region}
   
     div
       .list-recommend
