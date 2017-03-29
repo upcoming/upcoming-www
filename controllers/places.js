@@ -3,9 +3,18 @@ var config = require('config');
 var router = express.Router();
 var Event = require('../models/event');
 var Place = require('../models/place');
+var ensureLoggedIn = require('connect-ensure-login').ensureLoggedIn();
 var request = require('request');
-// request.debug = 'true';
 
+router.post('/add', function (req, res, next) {
+  var user = req.user;
+  var post = JSON.parse(req.body.json);
+
+  Place.create(user, post, function (err, result) {
+    if (err) throw err;
+    res.json('success');
+  });
+});
 
 // GET popular places
 router.get('/', function(req, res, next) {

@@ -1,17 +1,53 @@
 extends layout
 
+block includes
+  script(src='//cdn.jsdelivr.net/handlebarsjs/3.0.0/handlebars.min.js')
+  script(src='/components/corejs-typeahead/dist/typeahead.bundle.min.js')
+  script.
+    $.getScript('/js/autocomplete.js');
+
 block content
   #main
-  .hidden-xs.col-sm-2
+  .col-xs-12.col-sm-2
     #filters
-      .list-nav
-        a(href='#', data-cat="sort", data-filter="date", class="active") Latest
-        a(href='#', data-cat="sort", data-filter="popular") Most Popular
-        a(href='#', data-cat="sort", data-filter="new") Recently Added
-      .list-nav
-        a(href='#', data-cat="when", data-filter="future", class="active") Upcoming
-        a(href='#', data-cat="when", data-filter="past") Past Events
-        a(href='#', data-cat="when", data-filter="all") Anytime
+      .row
+        .col-xs-6.col-sm-12
+          #city-list.list-nav
+            .list-item
+              a(href='#', data-cat="gid", data-filter="all", class="active") Anywhere
+            if user_locations
+              - each user_location in user_locations
+                .list-item
+                  a(href='#', data-cat="gid", data-filter="#{user_location.gid}") #{user_location.name}
+                  | 
+                  a.remove-city(href='#')
+                    span.glyphicon.glyphicon-remove-circle(aria-hidden="true")
+              .list-item
+                #add-city
+                  a(href='#') Add City
+                #autocomplete
+                  form(method='post', action='/user/location')
+                    input#name.form-control.typeahead(type='text', name='name', placeholder='City Name', autocomplete='off')
+            else
+              #add-city
+                a(href='/login') Change City
+              
+        .col-xs-6.col-sm-12
+          .list-nav
+            .list-item
+              a(href='#', data-cat="sort", data-filter="date", class="active") Latest
+            .list-item
+              a(href='#', data-cat="sort", data-filter="popular") Popular
+            .list-item
+              a(href='#', data-cat="sort", data-filter="new") Newly Added
+        .col-xs-6.col-sm-12
+          .list-nav
+            .list-item
+              a(href='#', data-cat="when", data-filter="future", class="active") Future
+            .list-item
+              a(href='#', data-cat="when", data-filter="past") Past Events
+            .list-item
+              a(href='#', data-cat="when", data-filter="all") Anytime
         
   .col-xs-12.col-sm-6
     ul#myTabs.nav.nav-tabs(role="tablist")
@@ -29,5 +65,5 @@ block content
         
       div#my.tab-pane(role="tabpanel")
 
-  .col-xs-12.col-sm-4
+  .hidden-xs.col-sm-4
     include news

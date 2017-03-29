@@ -66,7 +66,7 @@ html(lang="en")
               li
                 a.navbar-link(href='/') Explore
               li
-                a.navbar-link(href='/places') Places
+                a.navbar-link(href='/place') Places
             ul.nav.navbar-nav.navbar-right
               li
                 a.navbar-link(href='/event/add')
@@ -79,7 +79,10 @@ html(lang="en")
               if user
                 li.dropdown
                   a.dropdown-toggle(href='#', data-toggle='dropdown', role='button', style='padding: 10px 20px 10px 20px')
-                    img.img-rounded(alt='', src="#{user.avatar_image_url}", width='30', height='30')
+                    if user.avatar_image_url
+                      img.img-rounded(alt='', src="#{user.avatar_image_url}", width='30', height='30')
+                    else
+                      img.img-rounded(alt='', src="#{user.profile_image_url}", width='30', height='30')
                     span.caret
                   ul.dropdown-menu(role='menu')
                     li(role='presentation')
@@ -119,13 +122,8 @@ html(lang="en")
         li
           a(href="/about") About
         li
-          a(href="/guidelines") Guidelines
-        li
-          a(href="/terms") Terms
+          a(href="/terms") Terms of Use
         li
           a(href="/privacy") Privacy
         li
-          a(href="http://blog.upcoming.org/") Blog
-        li
           a(href="https://twitter.com/upcomingorg") Twitter
-      

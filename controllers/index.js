@@ -9,7 +9,7 @@ var ensureLoggedIn = require('connect-ensure-login').ensureLoggedIn();
 router.use('/api', require('./api'));
 router.use('/auth', require('./auth'));
 router.use('/event', require('./events'));
-router.use('/places', require('./places'));
+router.use('/place', require('./places'));
 router.use('/venue', require('./venues'));
 router.use('/user', require('./users'));
 router.use('/following', require('./following'));
@@ -18,13 +18,22 @@ router.use('/comment', require('./comments'));
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Home' });
+  var user_locations;
+  if (req.user) {
+    User.getLocations(req.user, function (err, user_locations) {
+      if (err) throw err;
+      res.render('index', { title: 'Home', user_locations: user_locations });
+    });
+  } else {
+    res.render('index', { title: 'Home' });
+  }    
 });
 
 router.get('/home/all', function(req, res, next) {
   options = { 
     when: req.query.when,
     sort: req.query.sort,
+    gid: req.query.gid,
     filter: req.query.filter
   };
   
@@ -38,6 +47,7 @@ router.get('/home/following', function(req, res) {
   options = { 
     when: req.query.when,
     sort: req.query.sort,
+    gid: req.query.gid,
     filter: 'following',
   };
   
@@ -51,6 +61,7 @@ router.get('/home/my', function(req, res) {
   options = { 
     when: req.query.when,
     sort: req.query.sort,
+    gid: req.query.gid,
     filter: 'user',
   };
   
@@ -99,10 +110,6 @@ router.get('/about/backers', function(req, res, next) {
     if (err) throw err;
     res.render('backers', { title: 'Backers', results: results });
   });
-});
-
-router.get('/guidelines', function(req, res, next) {
-  res.render('guidelines', { title: 'Guidelines' });
 });
 
 module.exports = router;
