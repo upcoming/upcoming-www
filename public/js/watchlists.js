@@ -13,8 +13,7 @@ $(document).ready(function() {
       status: $('input:checked', form).val()
     };
 
-    $.post('/watchlist', post, function(data) {
-    });
+    $.post('/watchlist', post, function(data) {});
 
     return false;
   });
