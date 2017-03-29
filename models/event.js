@@ -141,7 +141,7 @@ exports.search = function(user, options, next) {
     if (options['when'] == 'all') {
       // don't constrain event selection
     } else if (options['when'] == 'past') {
-      sql += "AND start_date <= DATE( NOW() ) ";
+      sql += "AND start_date < DATE( NOW() ) ";
     } else {
       // default to future events
       sql += "AND start_date >= DATE( NOW() ) ";
@@ -173,7 +173,11 @@ exports.search = function(user, options, next) {
     } else if (options['sort'] == 'popular') {
       sql += "ORDER BY watchlist_count DESC ";
     } else {
-      sql += "ORDER BY event.start_date, friend_count DESC, watchlist_count DESC ";
+      if (options['when'] == 'past') {
+        sql += "ORDER BY event.start_date DESC, friend_count DESC, watchlist_count DESC ";
+      } else {
+        sql += "ORDER BY event.start_date, friend_count DESC, watchlist_count DESC ";
+      }
     }
     
     sql += "LIMIT 50";
