@@ -27,7 +27,7 @@ block content
             span.address= result.venue.address
             br
           span.locality
-            a(href="/places/#{slug(result.locality.name)}-#{slug(result.locality.id)}")
+            a(href="/place/#{slug(result.locality.name)}-#{slug(result.locality.id)}")
               if result.country.name == 'United States'
                 | #{result.locality.name}, #{result.region.name}
               else

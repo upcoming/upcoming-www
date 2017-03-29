@@ -9,7 +9,7 @@ block content
     .panel-body.list-group
       - each place in places
         li.list-group-item
-          a(href="/places/#{slug(place.locality.name)}-#{slug(place.locality.id)}")
+          a(href="/place/#{slug(place.locality.name)}-#{slug(place.locality.id)}")
             if place.country.name == 'United States'
               | #{place.locality.name}, #{place.region.name}
             else
