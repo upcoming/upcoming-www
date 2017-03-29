@@ -47,9 +47,13 @@ body {
   visibility: hidden;
 }
 
-@media (pointer: fine) {  
-  .list-item:hover .glyphicon {
-    visibility: visible;
+.list-item:hover .glyphicon {
+   visibility: visible;
+}
+
+@media (pointer: coarse) {  
+  .list-item .glyphicon {
+    display: none;
   }
 }
 
