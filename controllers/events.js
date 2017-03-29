@@ -80,7 +80,7 @@ router.get('/add', ensureLoggedIn, function(req, res, next) {
 });
 
 // show edit event form
-router.get(/(?:.*-|)(.+)\/edit$/, function(req, res, next) {
+router.get(/(?:.*-|)(.+)\/edit$/, ensureLoggedIn, function(req, res, next) {
   event_id = req.params[0].replace(/\//g, '');
   user = req.user;
   Event.get(event_id, user, function (err, result) {
