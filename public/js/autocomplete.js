@@ -1,10 +1,12 @@
-$(document).ready(function() {
+$(document).ready(function(e) {
   $("#add-city").click(function(){
-      $('#autocomplete').css('display','block');
-      $('.tt-input').focus();
+  	e.preventDefault();
+    $('#autocomplete').css('display','block');
+    $('.tt-input').focus();
   });
   
-  $(".remove-city").click(function(){
+  $(".remove-city").click(function(e){
+  	e.preventDefault();
     var gid = $(this).closest('.list-item').find('a').data('filter');
     $.post('/user/location', { gid: gid, status: 'remove' }, function(data) {});
   	$(this).closest('.list-item').remove();
