@@ -44,7 +44,10 @@ block content
         
         if result.event.website
           p
-            a(href="#{result.event.website}") #{result.event.website}
+            if (!/^(f|ht)tps?:\/\//i.test(result.event.website))
+              a(href="http://#{result.event.website}") #{result.event.website}
+            else
+              a(href="http://#{result.event.website}") #{result.event.website}
         
       if user
         .recommend-action                  
