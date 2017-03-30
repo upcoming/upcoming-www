@@ -53,31 +53,22 @@ html(lang="en")
       
       nav.navbar.navbar-default.navbar-static-top(role='navigation')
         .container-fluid
-          .navbar-header
-            button.navbar-toggle.collapsed(type='button', data-toggle='collapse', data-target='#bs-navbar-collapse')
-              span.sr-only Toggle navigation
-              span.icon-bar
-              span.icon-bar
-              span.icon-bar
+          .navbar-header.pull-left
             a.navbar-brand(href='/')
               img(alt='Upcoming', src='/images/logo.png')
-          #bs-navbar-collapse.collapse.navbar-collapse
-            ul.nav.navbar-nav.navbar-left
+            ul.nav.navbar-nav.hidden-xs
               li
                 a.navbar-link(href='/') Explore
               li
                 a.navbar-link(href='/place') Places
+          .navbar-header.pull-right
             ul.nav.navbar-nav.navbar-right
               li
                 a.navbar-link(href='/event/add')
                   span.glyphicon.glyphicon-plus(aria-hidden="true")
-                  |  Add New Event
-              // li
-                a.navbar-link(href='/search')
-                  span.glyphicon.glyphicon-search(aria-hidden="true")
-                  |  Search
+                  |  Add
               if user
-                li.dropdown
+                li
                   a.dropdown-toggle(href='#', data-toggle='dropdown', role='button', style='padding: 10px 20px 10px 20px')
                     if user.avatar_image_url
                       img.img-rounded(alt='', src="#{user.avatar_image_url}", width='30', height='30')
@@ -88,11 +79,11 @@ html(lang="en")
                     li(role='presentation')
                       #{user.name}
                     li(role='presentation')
-                      a(href="/@#{user.username}", role='menuitem', tabindex='-1') Your Profile
+                      a(href="/@#{user.username}", role='menuitem') Your Profile
                     li(role='presentation')
-                      a(href="/following", role='menuitem', tabindex='-1') Following
+                      a(href="/following", role='menuitem') Following
                     li(role='presentation')
-                      a(href='/logout', role='menuitem', tabindex='-1') Logout
+                      a(href='/logout', role='menuitem') Logout
               else
                 li
                   a.navbar-link(href='/login')
