@@ -13,17 +13,17 @@ block meta
   <meta property="og:url" content="https://upcoming.org/event/#{slug(result.event.title)}-#{result.event.event_id}" /> 
   <meta property="og:title" content="#{result.event.title} at #{result.venue.name}" /> 
   <meta property="og:description" content="#{truncate(result.event.description, 160)}" /> 
-  <meta property="og:image" content="https://upcoming.org/images/apple-touch-icon-120x120.png" /> 
+  <meta property="og:image" content="https://upcoming.org/images/favicon-96x96.png" /> 
   
   <!-- twitter card tags additive with the og: tags -->
   <meta name="twitter:domain" value="upcoming.org" /> 
   <meta name="twitter:title" value="#{result.event.title}" /> 
   <meta name="twitter:description" value="#{truncate(result.event.description, 160)}" /> 
-  <meta name="twitter:image" content="https://upcoming.org/images/apple-touch-icon-120x120.png" /> 
+  <meta name="twitter:image" content="https://upcoming.org/images/favicon-96x96.png" /> 
   <meta name="twitter:url" value="https://upcoming.org/event/#{slug(result.event.title)}-#{result.event.event_id}" /> 
-  <meta name="twitter:label1" value="Date/Time" /> 
+  <meta name="twitter:label1" value="When" /> 
   <meta name="twitter:data1" value="#{event_date}" /> 
-  <meta name="twitter:label2" value="Location" /> 
+  <meta name="twitter:label2" value="Where" /> 
   <meta name="twitter:data2" value="#{event_address}" /> 
 
 block includes
