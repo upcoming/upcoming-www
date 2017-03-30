@@ -7,8 +7,8 @@ block includes
   script(src='/components/geocomplete/jquery.geocomplete.min.js')
 
 block content
-  .col-md-6
-    h1 Edit Event
+  .col-sm-8.col-md-6.col-sm-offset-1
+    h2 Edit Event
     form(method='post', action='/event/edit')
       include alert
       .form-group
@@ -26,20 +26,20 @@ block content
       - var start_date = (result.event.start_date ? moment(result.event.start_date).format('YYYY-MM-DD') : '')
       - var end_date = (result.event.end_date ? moment(result.event.end_date).format('YYYY-MM-DD') : '')
       .row
-        .col-md-6
+        .col-xs-6
           .form-group
             label(for='start_date') Start date
             input#start_date.form-control(type='date', name='start_date', value=start_date)
-        .col-md-6
+        .col-xs-6
           .form-group
             label(for='end_date') End date
             input#end_date.form-control(type='date', name='end_date', value=end_date)
       .row
-        .col-md-6
+        .col-xs-6
           .form-group
             label(for='start_time') Start time
             input#start_time.form-control(type='time', name='start_time', value=result.event.start_time)
-        .col-md-6
+        .col-xs-6
           .form-group
             label(for='end_time') End time
             input#end_time.form-control(type='time', name='end_time', value=result.event.end_time)
@@ -65,6 +65,7 @@ block content
       datumTokenizer: Bloodhound.tokenizers.obj.whitespace('value'),
       queryTokenizer: Bloodhound.tokenizers.whitespace,
       remote: {
+        cache: true,
         url: '/venue/search/?city=%CITY&query=%QUERY',
         replace: function(url, query) {
           var city = encodeURIComponent($('#city').val());
