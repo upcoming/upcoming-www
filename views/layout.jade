@@ -2,11 +2,26 @@ doctype html
 html(lang="en")
   head
     title= title
-      |  - Upcoming Beta
+      |  - Upcoming
     
     meta(charset='utf-8')
     meta(http-equiv='X-UA-Compatible', content='IE=edge')
     meta(name='viewport', content='width=device-width, initial-scale=1')
+    
+    block meta
+      <!-- facebook open graph tags --> 
+      <meta property="og:type" content="website" /> 
+      <meta property="og:url" content="https://upcoming.org/" /> 
+      <meta property="og:title" content="Upcoming.org" /> 
+      <meta property="og:description" content="The original collaborative event community." /> 
+      <meta property="og:image" content="https://upcoming.org/images/apple-touch-icon-120x120.png" /> 
+      
+      <!-- twitter card tags additive with the og: tags -->
+      <meta name="twitter:domain" value="upcoming.org" /> 
+      <meta name="twitter:title" value="Upcoming.org" /> 
+      <meta name="twitter:description" value="The original collaborative event community." /> 
+      <meta name="twitter:image" content="https://upcoming.org/images/apple-touch-icon-120x120.png" /> 
+      <meta name="twitter:url" value="https://upcoming.org/" /> 
 
     link(rel='stylesheet', href='//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css')
     link(rel='stylesheet', type='text/css', href='/css/style.css')
@@ -19,8 +34,9 @@ html(lang="en")
     script(src='//use.typekit.net/tqk1fsd.js')
     script.
       try{Typekit.load({ async: true });}catch(e){}
-      
+
     block includes
+    
     // HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries
     // WARNING: Respond.js doesn't work if you view the page via file://
     //if lt IE 9
@@ -93,18 +109,6 @@ html(lang="en")
 
   #container.container-fluid
     block content
-
-  // Auth modal
-  #myModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='myModalLabel', aria-hidden='true')
-    .modal-dialog.modal-lg
-      .modal-content
-        .modal-header
-          button.close(type='button', data-dismiss='modal', aria-label='Close')
-            span(aria-hidden='true') &times;
-          h4#myModalLabel.modal-title Sign in
-        .modal-body
-          div
-            a(href='/auth/twitter') Login with Twitter
 
   footer.footer
     block footer

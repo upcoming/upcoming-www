@@ -1,8 +1,34 @@
 extends layout
 
+block meta
+  if result.event.end_date
+    - var event_date = moment(result.event.start_date).twix(result.event.end_date, {allDay: true}).format({monthFormat: 'MMMM', implicitYear: false})
+  else
+    - var event_date = moment(result.event.start_date).format('MMMM D, YYYY')
+  
+  - var event_address = result.venue.name + "\n" + result.venue.address + "\n" + result.venue.locality + ", " + result.venue.region
+  
+  <!-- facebook open graph tags --> 
+  <meta property="og:type" content="website" /> 
+  <meta property="og:url" content="https://upcoming.org/event/#{slug(result.event.title)}-#{result.event.event_id}" /> 
+  <meta property="og:title" content="#{result.event.title} at #{result.venue.name}" /> 
+  <meta property="og:description" content="#{truncate(result.event.description, 160)}" /> 
+  <meta property="og:image" content="https://upcoming.org/images/apple-touch-icon-120x120.png" /> 
+  
+  <!-- twitter card tags additive with the og: tags -->
+  <meta name="twitter:domain" value="upcoming.org" /> 
+  <meta name="twitter:title" value="#{result.event.title}" /> 
+  <meta name="twitter:description" value="#{truncate(result.event.description, 160)}" /> 
+  <meta name="twitter:image" content="https://upcoming.org/images/apple-touch-icon-120x120.png" /> 
+  <meta name="twitter:url" value="https://upcoming.org/event/#{slug(result.event.title)}-#{result.event.event_id}" /> 
+  <meta name="twitter:label1" value="Date/Time" /> 
+  <meta name="twitter:data1" value="#{event_date}" /> 
+  <meta name="twitter:label2" value="Location" /> 
+  <meta name="twitter:data2" value="#{event_address}" /> 
 
 block includes
   script(src='/js/watchlists.js')
+  
 
 block content
   .col-xs-12.col-sm-8.col-md-8  
@@ -50,7 +76,7 @@ block content
             if (!/^(f|ht)tps?:\/\//i.test(result.event.website))
               a(href="http://#{result.event.website}") #{result.event.website}
             else
-              a(href="http://#{result.event.website}") #{result.event.website}
+              a(href="#{result.event.website}") #{result.event.website}
         
       if user
         .recommend-action                  
