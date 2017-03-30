@@ -24,13 +24,13 @@ block content
                     span.glyphicon.glyphicon-remove-circle(aria-hidden="true")
               .list-item
                 #add-city
-                  a(href='#') Change City
+                  a(href='#') Add City
                 #autocomplete
                   form(method='post', action='/user/location')
                     input#name.form-control.typeahead(type='text', name='name', placeholder='City Name', autocomplete='off')
             else
               #add-city
-                a(href='/login') Change City
+                a(href='/login') Add City
               
         .col-xs-4.col-sm-12
           .list-nav

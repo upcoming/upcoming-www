@@ -1,11 +1,11 @@
 $(document).ready(function(e) {
-  $("#add-city").click(function(e){
+  $(".list-item #add-city").click(function(e){
   	e.preventDefault();
     $('#autocomplete').css('display','block');
     $('.tt-input').focus();
   });
   
-  $(".remove-city").click(function(e){
+  $("#filters").on('click', 'a.remove-city', function(e) {
   	e.preventDefault();
     var gid = $(this).closest('.list-item').find('a').data('filter');
     $.post('/user/location', { gid: gid, status: 'remove' }, function(data) {});
@@ -55,7 +55,13 @@ $(document).ready(function(e) {
       }
     }
   ).on('typeahead:selected', onSelected);
-  
+
+  $('#autocomplete .twitter-typeahead').on('keyup', function(e) {
+    if(e.which == 13) {
+      $(".tt-suggestion:first-child", this).trigger('click');
+    }
+  });
+
   function onSelected($e, place) {
     if (place.properties.layer == 'borough') {
       place_name = place.properties.borough;
