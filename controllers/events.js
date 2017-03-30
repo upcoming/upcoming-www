@@ -104,6 +104,12 @@ router.get(/(?:.*-|)(.+)$/, function(req, res, next) {
   user = req.user;
   event_id = req.params[0].replace(/\//g, '');
   
+  // redirect old-school upcoming urls
+  if (/^\d+$/.test(event_id)) {
+    res.redirect('http://archive.upcoming.org/event/' + event_id);
+    return;
+  }
+  
   Event.get(event_id, user, function (err, result) {
     if (err) throw err;
     Watchlist.getAllByEventId(event_id, function (err, watchlists) {
@@ -117,6 +123,5 @@ router.get(/(?:.*-|)(.+)$/, function(req, res, next) {
     });
   });
 });
-
 
 module.exports = router;

@@ -20,5 +20,15 @@ router.post('/location', function (req, res, next) {
   }
 });
 
+router.get(/(?:.*-|)(.+)$/, function(req, res, next) {
+  user_id = req.params[0].replace(/\//g, '');
+  
+  // redirect old-school upcoming urls
+  if (/^\d+$/.test(user_id)) {
+    res.redirect('http://archive.upcoming.org/user/' + user_id);
+    return;
+  }
+});
+
 
 module.exports = router;
