@@ -25,7 +25,7 @@ exports.create = function(user, venue, next) {
         creator_user_id: user.id
       };
         
-      db.query('INSERT INTO venue SET ?', post, function (err, result) {
+      db.query('INSERT INTO venue SET created_at = NOW(), ?', post, function (err, result) {
         if (err) return next(err);
         helpers.reverse_geocode(venue_id, function (err, events) {
           if (err) throw err;

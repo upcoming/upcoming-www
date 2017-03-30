@@ -8,7 +8,7 @@ exports.create = function(user, comment, next) {
     comment_text: comment.comment_text
   };
     
-  db.query('INSERT INTO comment SET ?', post, function (err, result) {
+  db.query('INSERT INTO comment SET created_at = NOW(), ?', post, function (err, result) {
     if (err) return next(err);
     next(null, post);
   });

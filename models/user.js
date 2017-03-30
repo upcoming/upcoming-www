@@ -15,7 +15,7 @@ exports.create = function(user, done) {
     twitter_user_id: user.user_id
   };
   
-  db.query('INSERT INTO user SET ?', values, function(err, result) {
+  db.query('INSERT INTO user SET created_at = NOW(), ?', values, function(err, result) {
     if (err) return done(err);
     done(null, result.insertId);
   });

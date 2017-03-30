@@ -30,7 +30,7 @@ exports.create = function(user, venue, event, next) {
     creator_user_id: user.id
   };
     
-  db.query('INSERT INTO event SET ?', post, function (err, result) {
+  db.query('INSERT INTO event SET created_at = NOW(), ?', post, function (err, result) {
     if (err) return next(err);
     next(null, post);
   });
