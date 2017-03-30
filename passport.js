@@ -51,7 +51,6 @@ passport.use(
           new_user.id = result.insertId;
           helpers.saveAvatar(new_user, token_key, token_secret);
           helpers.getTwitterFriends(new_user.id, profile.id, token_key, token_secret);
-          helpers.updateFollowing(new_user.id);
           
           return done(null, new_user);
         });
@@ -65,7 +64,7 @@ passport.use(
 
         // existing user, update following list and sign them in
         helpers.saveAvatar(user, token_key, token_secret);
-        helpers.updateFollowing(user.id);
+        helpers.getTwitterFriends(user.id, user.twitter_user_id, token_key, token_secret);
         
         return done(null, user);
       }

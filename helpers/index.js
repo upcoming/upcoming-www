@@ -16,13 +16,19 @@ exports.getTwitterFriends = function(user_id, twitter_user_id, token_key, token_
   
   // save twitter following list to mysql
   twitter.get('friends/ids', { user_id: twitter_user_id },  function (err, data, response) {
-    for (var i = 0; i < data.ids.length; i++) {
-      friend_twitter_id = data.ids[i];
-      var post = { user_id: user_id, friend_twitter_id: friend_twitter_id };
-      var query = db.query('INSERT IGNORE INTO twitter_following SET ?', post, function (err, result) {
-        if (err) throw err;
-      });
-    }
+    var query = db.query('SELECT user.id AS friend_id FROM user WHERE twitter_user_id IN (?)', [data.ids], function (err, rows) {
+      if (err) throw err;
+      if (rows.length > 0) {
+        var post = new Array();
+        for (var i in rows) {
+          var friend = rows[i];
+          post.push([user_id, friend.friend_id, 1]);
+        }
+        db.query('INSERT IGNORE INTO following (user_id, friend_id, following_status) VALUES ?', [post], function (err, result) {          
+          if (err) throw err;
+        });
+      }
+    });
   });
 }
 
