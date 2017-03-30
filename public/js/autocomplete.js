@@ -75,7 +75,7 @@ $(document).ready(function(e) {
     }
     
     var place_div = '<div class="list-item">'
-          + '<a href="#" data-cat="gid" data-filter="' + place_gid + '"> ' 
+          + '<a href="#" data-cat="gid" data-filter="' + place_gid + '" class="active"> ' 
           + place_name + '</a> '
           + '<a href="#" class="remove-city"><span class="glyphicon glyphicon-remove-circle" aria-hidden="true"></a>';
 
@@ -83,11 +83,11 @@ $(document).ready(function(e) {
     $('#city-list .list-item:last-child').before(place_div);
     $('#autocomplete').css('display','none');
     $('#name').typeahead('val', '');
+    $('#city-list .list-item:last').prev().find('a.active').trigger('click');
 
     // save user location preference to db    
     var post = { gid: place_gid, status: 'add' };
     $.post('/user/location', post, function(data) {});  
-
-    $.post('/place/add', { json: JSON.stringify(place) }, function(data) {}, 'json');  
+    $.post('/place/add', { json: JSON.stringify(place) }, function(data) {}, 'json');
   }
 });
