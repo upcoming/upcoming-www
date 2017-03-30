@@ -112,4 +112,13 @@ router.get('/about/backers', function(req, res, next) {
   });
 });
 
+router.get('/robots.txt', function(req, res, next) {
+  if ('/robots.txt' == req.url) {
+    res.type('text/plain')
+    res.send("User-agent: AhrefsBot\nDisallow: /");
+  } else {
+    next();
+  }
+});
+
 module.exports = router;
