@@ -35,12 +35,24 @@ exports.get = function(user, event_id, next) {
 
 /* find watchlists by event id */
 exports.getAllByEventId = function(event_id, next) {
-  var sql = 'SELECT * FROM user, watchlist '
-    + 'WHERE user.id = watchlist.user_id '
-    + 'AND event_id = ?';
+  var sql = 'SELECT user.id, user.name, user.username, watchlist.status '
+          + 'FROM user, watchlist '
+          + 'WHERE user.id = watchlist.user_id '
+          + 'AND event_id = ? '
+          + 'ORDER BY watchlist.status, watchlist.created_at';
 
-  db.query(sql, event_id, function (err, rows) {
+  db.query({sql: sql, nestTables: true}, event_id, function (err, rows) {
     if (err) return next(err);
-    next(null, rows);
+
+    var watchlists = {};
+    for (var i in rows) {
+      var status = rows[i].watchlist.status;
+      var user = rows[i].user;
+      if (!watchlists[status]) {
+        watchlists[status] = {};
+      }
+      watchlists[status][user.id] = user;
+    }
+    next(null, watchlists);
   });
 };

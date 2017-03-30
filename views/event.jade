@@ -76,15 +76,23 @@ block content
                     input.status(type="checkbox", name="status", value="watch")
                     | 🌟 Recommend
 
-  if watchlists.length > 0
+  if watchlists
     .col-xs-12.col-sm-4.col-md-4
-      h3 Attending
-    
-      - each watchlist in watchlists
-        .watchlist
-          a(href="/@" + watchlist.username) #{watchlist.name}
-          | 
-          small @#{watchlist.username}
+      if watchlists['attend']
+        h4 Attending            
+        - each watchlist in watchlists['attend']
+          .watchlist
+            a(href="/@" + watchlist.username) #{watchlist.name}
+            | 
+            small @#{watchlist.username}
+  
+      if watchlists['watch']
+        h4 Recommend        
+        - each watchlist in watchlists['watch']
+          .watchlist
+            a(href="/@" + watchlist.username) #{watchlist.name}
+            | 
+            small @#{watchlist.username}
   
   .col-xs-12.col-sm-8.col-md-8
     if comments.length > 0
