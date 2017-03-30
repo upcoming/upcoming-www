@@ -6,7 +6,7 @@ block includes
 
 block content
   .col-xs-12.col-sm-8.col-md-8  
-    h1= result.event.title
+    h2= result.event.title
       if user
         if (result.event.creator_user_id == user.id) || (user.id == 1)
           small
@@ -14,9 +14,9 @@ block content
               | 📝 Edit
 
     if result.event.end_date
-      h3= moment(result.event.start_date).twix(result.event.end_date, {allDay: true}).format({monthFormat: 'MMMM', implicitYear: false})
+      h4= moment(result.event.start_date).twix(result.event.end_date, {allDay: true}).format({monthFormat: 'MMMM', implicitYear: false})
     else
-      h3= moment(result.event.start_date).format('MMMM D, YYYY')
+      h4= moment(result.event.start_date).format('MMMM D, YYYY')
 
     if result.venue
       .venue
