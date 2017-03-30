@@ -6,7 +6,7 @@ block meta
   else
     - var event_date = moment(result.event.start_date).format('MMMM D, YYYY')
   
-  - var event_address = result.venue.name + "\n" + result.venue.address + "\n" + result.venue.locality + ", " + result.venue.region
+  - var event_address = result.venue.name + ", " + result.venue.address + ", " + result.venue.locality + ", " + result.venue.region
   
   <!-- facebook open graph tags --> 
   <meta property="og:type" content="website" /> 
@@ -19,7 +19,7 @@ block meta
   <meta name="twitter:domain" value="upcoming.org" /> 
   <meta name="twitter:title" value="#{result.event.title}" /> 
   <meta name="twitter:description" value="#{truncate(result.event.description, 160)}" /> 
-  <meta name="twitter:image" content="https://upcoming.org/images/favicon-96x96.png" /> 
+  <meta name="twitter:image" content="https://upcoming.org/images/apple-touch-icon-114x114.png" /> 
   <meta name="twitter:url" value="https://upcoming.org/event/#{slug(result.event.title)}-#{result.event.event_id}" /> 
   <meta name="twitter:label1" value="When" /> 
   <meta name="twitter:data1" value="#{event_date}" /> 
