@@ -50,6 +50,13 @@ exports.getLocations = function(user, next) {
   });
 };
 
+exports.getLastLocation = function(user, next) {
+  db.query('SELECT * FROM event, venue WHERE event.venue_id = venue.venue_id AND event.creator_user_id = ? ORDER BY event.id DESC limit 1', user.id, function(err, results) {
+    if (err) return next(err);
+    next(null, results[0]);
+  });
+};
+
 exports.addLocation = function(user, location, next) {
   db.query('INSERT IGNORE INTO user_location (user_id, gid) VALUES (?, ?)', [user.id, location.gid], function (err, result) {
     if (err) return next(err);

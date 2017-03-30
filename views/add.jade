@@ -18,7 +18,10 @@ block content
         .col-md-6
           .form-group
             label(for='city') City
-            input#city.form-control(type='text', name='city')
+            if place
+              input#city.form-control(type='text', name='city', value=place.locality + ', ' + place.region)
+            else
+              input#city.form-control(type='text', name='city')
         .col-md-6
           .form-group
             label(for='name') Venue Search 🔍

@@ -4,6 +4,7 @@ var Event = require('../models/event');
 var Venue = require('../models/venue');
 var Watchlist = require('../models/watchlist');
 var Comment = require('../models/comment');
+var User = require('../models/user');
 var ensureLoggedIn = require('connect-ensure-login').ensureLoggedIn();
 
 // add new event
@@ -76,7 +77,11 @@ router.post('/edit', function (req, res, next) {
 
 // show add event form
 router.get('/add', ensureLoggedIn, function(req, res, next) {
-  res.render('add', { title: 'Add Event' });
+  user = req.user;
+  User.getLastLocation(user, function (err, result) {
+    if (err) throw err;
+    res.render('add', { title: 'Add Event', place: result });
+  });
 });
 
 // show edit event form
