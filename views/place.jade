@@ -9,14 +9,14 @@ block content
     .page-header
       if place.properties
         if place.properties.country == 'United States'
-          h1= 'Events in ' + place.properties.locality + ', ' + place.properties.region
+          h2= place.properties.locality + ', ' + place.properties.region
         else
-          h1= 'Events in ' + place.properties.locality + ', ' + place.properties.country
+          h2= place.properties.locality + ', ' + place.properties.country
       else
         if place.country.name == 'United States'
-          h1= 'Events in ' + place.locality.name + ', ' + place.region.name
+          h2= place.locality.name + ', ' + place.region.name
         else
-          h1= 'Events in ' + place.locality.name + ', ' + place.country.name
+          h2= place.locality.name + ', ' + place.country.name
       
                 
   .hidden-xs.col-sm-2
