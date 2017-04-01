@@ -76,17 +76,21 @@ router.get(/@(.+)$/, function(req, res, next) {
   username = req.params[0].replace(/\//g, '');
   
   User.get(username, function (err, user) {
-    options = { 
-      filter: 'user',
-      user_id: user.id,
-      when: req.query.when,
-      sort: req.query.sort
-    };
     if (err) throw err;
-    Event.search(req.user, options, function (err, results) {
-      if (err) throw err;
-      res.render('user', { title: user.name, current_user: user, results: results });
-    });
+    if (!user) {
+      res.render('404', { title: '404 Not Found' });
+    } else {
+      options = { 
+        filter: 'user',
+        user_id: user.id,
+        when: req.query.when,
+        sort: req.query.sort
+      };
+      Event.search(req.user, options, function (err, results) {
+        if (err) throw err;
+        res.render('user', { title: user.name, current_user: user, results: results });
+      });
+    }
   });
 });
 
