@@ -7,10 +7,14 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var passport = require('passport');
 var validator = require('express-validator');
+var helmet = require('helmet')
 
 var controllers = require('./controllers/index');
 
 var app = express();
+
+// set headers for security
+app.use(helmet())
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
