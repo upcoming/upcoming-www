@@ -34,16 +34,20 @@ router.get(/(.*-|)(.+)$/, function(req, res, next) {
     place_id = req.params[1].replace(/\//g, '');
     Place.get(place_id, function (err, place) {
       if (err) throw err;
-      options = { 
-        sort: req.query.sort,
-        when: req.query.when,
-        gid: place.locality.gid
-      };
-  
-      Event.search(req.user, options, function (err, results) {
-        if (err) throw err;
-        res.render('place', { title: place.locality.name, place: place, results: results });
-      });
+      if (!place) {
+        res.render('404', { title: '404 Not Found' });
+      } else {
+        options = { 
+          sort: req.query.sort,
+          when: req.query.when,
+          gid: place.locality.gid
+        };
+    
+        Event.search(req.user, options, function (err, results) {
+          if (err) throw err;
+          res.render('place', { title: place.locality.name, place: place, results: results });
+        });
+      }
     });
       
   } else {

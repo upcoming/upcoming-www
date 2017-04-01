@@ -112,15 +112,19 @@ router.get(/(?:.*-|)(.+)$/, function(req, res, next) {
   
   Event.get(event_id, user, function (err, result) {
     if (err) throw err;
-    Watchlist.getAllByEventId(event_id, function (err, watchlists) {
-      if (err) throw err;    
-      Comment.getAllByEventId(event_id, function (err, comments) {
-        if (err) throw err;
-        title = result.event.title + ' at ' + result.venue.name;
-        req.session.returnTo = req.originalUrl;
-        res.render('event', { title: title, result: result, watchlists: watchlists, comments: comments });
+    if (!result) {
+      res.render('404', { title: '404 Not Found' });
+    } else {
+      Watchlist.getAllByEventId(event_id, function (err, watchlists) {
+        if (err) throw err;    
+        Comment.getAllByEventId(event_id, function (err, comments) {
+          if (err) throw err;
+          title = result.event.title + ' at ' + result.venue.name;
+          req.session.returnTo = req.originalUrl;
+          res.render('event', { title: title, result: result, watchlists: watchlists, comments: comments });
+        });
       });
-    });
+    }
   });
 });
 

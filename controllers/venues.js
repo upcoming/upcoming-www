@@ -31,11 +31,15 @@ router.post('/', function (req, res, next) {
 router.get(/(?:.*-|)(.+)$/, function(req, res, next) {
   venue_id = req.params[0].replace(/\//g, '');
   Venue.get(venue_id, function (err, venue) {
-    if (err) throw err;
-    Venue.getEvents(venue_id, function (err, events) {
+    if (!venue) {
+      res.render('404', { title: '404 Not Found' });
+    } else {
       if (err) throw err;
-      res.render('venue', { title: venue.name, venue: venue, events: events });
-    });
+      Venue.getEvents(venue_id, function (err, events) {
+        if (err) throw err;
+        res.render('venue', { title: venue.name, venue: venue, events: events });
+      });
+    }
   });
 });
 
