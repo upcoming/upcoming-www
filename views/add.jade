@@ -58,7 +58,7 @@ block content
       input#postal_code(type='hidden', name='postal_code')
       input#longitude(type='hidden', name='longitude')
       input#latitude(type='hidden', name='latitude')
-  
+
   script.
     var venues = new Bloodhound({
       datumTokenizer: Bloodhound.tokenizers.obj.whitespace('value'),
@@ -74,9 +74,9 @@ block content
         rateLimitWait: 250,
       }
     });
-    
+
     venues.initialize();
-    
+
     $('#name').typeahead({
         hint: true,
         highlight: false,
@@ -97,7 +97,7 @@ block content
         }
       }
     ).on('typeahead:selected', onSelected);
-    
+
     function onSelected($e, venue) {
       $('#foursquare_id').val(venue['id']);
       $('#address').val(venue['location']['address']);
@@ -107,7 +107,7 @@ block content
       $('#longitude').val(venue['location']['lng']);
       $('#latitude').val(venue['location']['lat']);
     }
-    
+
     $("#city").geocomplete({
       types: ['(cities)']
     });
