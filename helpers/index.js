@@ -47,8 +47,8 @@ exports.saveAvatar = function(user, token_key, token_secret) {
     var client = knox.createClient({
         key: config.s3.access_key_id,
         secret: config.s3.secret_access_key,
-        bucket: 'upcoming.s3',
-        region: 'us-west-2'
+        bucket: config.s3.bucket,
+        region: config.s3.region
     });
 
     var avatar_path = '/avatars/' + user.id + '.png';

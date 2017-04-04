@@ -32,6 +32,13 @@
 
   "mapzen": {
     "api_key": ""
+  },
+
+  "s3": {
+    "access_key_id": "",
+    "secret_access_key": "",
+    "bucket": "",
+    "region": ""
   }
 
 }
