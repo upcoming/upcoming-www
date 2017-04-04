@@ -11,7 +11,7 @@ passport.serializeUser(function(user, done) {
 
 passport.deserializeUser(function(id, done) {
     var query = db.query("SELECT * FROM user WHERE id = ? ", [id], function(err, rows){
-      var user = rows[0];        
+      var user = rows[0];
       done(err, user);
     });
 });
@@ -26,7 +26,7 @@ passport.use(
     db.query("SELECT * FROM user WHERE twitter_user_id = ?", [profile.id], function(err, rows) {
       if (err)
         return done(err);
-        
+
       // user doesn't exist, create it
       if (!rows.length) {
         var new_user = {
@@ -51,7 +51,7 @@ passport.use(
           new_user.id = result.insertId;
           helpers.saveAvatar(new_user, token_key, token_secret);
           helpers.getTwitterFriends(new_user.id, profile.id, token_key, token_secret);
-          
+
           return done(null, new_user);
         });
 
@@ -59,13 +59,13 @@ passport.use(
         var user = rows[0];
         // TODO: only retrieve new friends list if not updated in x days
         // helpers.getTwitterFriends(rows[0].id, profile.id, token_key, token_secret);
-        
+
         // TODO: update twitter token key and token secret in db, update twitter profile info
 
         // existing user, update following list and sign them in
         helpers.saveAvatar(user, token_key, token_secret);
         helpers.getTwitterFriends(user.id, user.twitter_user_id, token_key, token_secret);
-        
+
         return done(null, user);
       }
     });
