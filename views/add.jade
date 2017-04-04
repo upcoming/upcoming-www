@@ -111,3 +111,11 @@ block content
     $("#city").geocomplete({
       types: ['(cities)']
     });
+
+    var end_date_changed = false;
+    $('#end_date').on('change', function(){end_date_changed=true;});
+    $('#start_date').on('change', function(){
+      if (end_date_changed !== true) {
+        $('#end_date').val($('#start_date').val());
+      }
+    });
