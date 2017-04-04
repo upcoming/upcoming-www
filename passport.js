@@ -46,7 +46,7 @@ passport.use(
           token_secret: token_secret
         };
 
-        var query = db.query("INSERT INTO user SET ?", new_user, function(err, result) {
+        var query = db.query("INSERT INTO user SET created_at = NOW(), ?", new_user, function(err, result) {
           if (err) throw err;
           new_user.id = result.insertId;
           helpers.saveAvatar(new_user, token_key, token_secret);
