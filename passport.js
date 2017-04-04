@@ -12,6 +12,7 @@ passport.serializeUser(function(user, done) {
 passport.deserializeUser(function(id, done) {
     var query = db.query("SELECT * FROM user WHERE id = ? ", [id], function(err, rows){
       var user = rows[0];
+      if ("undefined" === typeof user) {user = null};
       done(err, user);
     });
 });
