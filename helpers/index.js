@@ -8,12 +8,12 @@ var request = require('request');
 
 exports.getTwitterFriends = function(user_id, twitter_user_id, token_key, token_secret) {
   var twitter = new twit({
-        consumer_key:         config.twitter.consumer_key, 
-        consumer_secret:      config.twitter.consumer_secret, 
-        access_token:         token_key, 
+        consumer_key:         config.twitter.consumer_key,
+        consumer_secret:      config.twitter.consumer_secret,
+        access_token:         token_key,
         access_token_secret:  token_secret
   });
-  
+
   // save twitter following list to mysql
   twitter.get('friends/ids', { user_id: twitter_user_id },  function (err, data, response) {
     if (err) throw err;
@@ -26,7 +26,7 @@ exports.getTwitterFriends = function(user_id, twitter_user_id, token_key, token_
             var friend = rows[i];
             post.push([user_id, friend.friend_id, 1]);
           }
-          db.query('INSERT IGNORE INTO following (user_id, friend_id, following_status) VALUES ?', [post], function (err, result) {          
+          db.query('INSERT IGNORE INTO following (user_id, friend_id, following_status) VALUES ?', [post], function (err, result) {
             if (err) throw err;
           });
         }
@@ -37,22 +37,22 @@ exports.getTwitterFriends = function(user_id, twitter_user_id, token_key, token_
 
 exports.saveAvatar = function(user, token_key, token_secret) {
   var twitter = new twit({
-        consumer_key:         config.twitter.consumer_key, 
-        consumer_secret:      config.twitter.consumer_secret, 
-        access_token:         token_key, 
+        consumer_key:         config.twitter.consumer_key,
+        consumer_secret:      config.twitter.consumer_secret,
+        access_token:         token_key,
         access_token_secret:  token_secret
   });
-  
+
   twitter.get('users/show', { user_id: user.twitter_user_id },  function (err, data, response) {
     var client = knox.createClient({
-        key: config.s3.access_key_id, 
-        secret: config.s3.secret_access_key, 
+        key: config.s3.access_key_id,
+        secret: config.s3.secret_access_key,
         bucket: 'upcoming.s3',
         region: 'us-west-2'
     });
-    
+
     var avatar_path = '/avatars/' + user.id + '.png';
-    
+
     http.get(data.profile_image_url, function(res){
       var headers = {
           'Content-Length': res.headers['content-length'],
@@ -64,12 +64,12 @@ exports.saveAvatar = function(user, token_key, token_secret) {
         if (200 == res.statusCode) {
           console.log('saved to %s', res.req.url);
         }
-        db.query('UPDATE user SET avatar_image_url = ? WHERE id = ?', [res.req.url, user.id], function (err, result) {          
+        db.query('UPDATE user SET avatar_image_url = ? WHERE id = ?', [res.req.url, user.id], function (err, result) {
           if (err) throw err;
         });
       });
     });
-  });  
+  });
 }
 
 exports.updateFollowing = function(user_id) {
@@ -82,11 +82,11 @@ exports.updateFollowing = function(user_id) {
     for (var i in rows) {
       var friend = rows[i];
       var post = { user_id: user_id, friend_id: friend.friend_id, following_status: 1 };
-      db.query('INSERT IGNORE INTO following SET ?', post, function (err, result) {          
+      db.query('INSERT IGNORE INTO following SET ?', post, function (err, result) {
         if (err) throw err;
       });
     }
-  });    
+  });
 }
 
 exports.reverse_geocode = function(venue_id, next) {
@@ -94,7 +94,7 @@ exports.reverse_geocode = function(venue_id, next) {
     if (err) {
       return next(err);
     }
-  
+
     if (rows.length > 0) {
       var venue = rows[0];
       var options = {
@@ -107,13 +107,13 @@ exports.reverse_geocode = function(venue_id, next) {
         },
         json: true
       };
-  
+
       request(options, function(error, response, body) {
         if (!error && response.statusCode === 200) {
-          if (body.features[0]) {          
+          if (body.features[0]) {
             var properties = body.features[0].properties;
             var layers = ['neighbourhood', 'borough', 'localadmin', 'locality', 'county', 'macrocounty', 'region', 'macroregion', 'country'];
-            
+
             for (var i=0; i < layers.length; i++) {
               var layer = layers[i];
               if (layer in properties) {
@@ -121,18 +121,17 @@ exports.reverse_geocode = function(venue_id, next) {
 
                 var sql = 'INSERT IGNORE INTO venue_gid (venue_id, name, gid, layer, created_at) '
                   + 'VALUES (?, ?, ?, ?, NOW())';
-            
+
                 db.query(sql, [venue_id, properties[layer], properties[layer_gid], layer], function (err, result) {
                   if (err) return next(err);
                 });
               }
             }
           }
-        }         
+        }
       });
     } else {
       next(null, rows[0]);
     }
   });
 };
-
