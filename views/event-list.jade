@@ -4,27 +4,30 @@ block includes
 
 if results.length > 0
   - each result in results  
-    .event
+    .event.h-event
       .event-date
         if result.event.end_date
           = moment(result.event.start_date).twix(result.event.end_date, {allDay: true}).format({monthFormat: 'MMMM'})
+          time.hidden.dt-start(datetime=moment(result.event.start_date).format('YYYY-MM-DD'))
+          time.hidden.dt-end(datetime=moment(result.event.end_date).format('YYYY-MM-DD'))
         else
-          = moment(result.event.start_date).format('MMMM D')
+          time.dt-start(datetime=moment(result.event.start_date).format('YYYY-MM-DD'))= moment(result.event.start_date).format('MMMM D')
   
       .event-title
-        a(href="/event/#{slug(result.event.title)}-#{result.event.event_id}") #{result.event.title}
+        a.p-name.u-url(href="/event/#{slug(result.event.title)}-#{result.event.event_id}") #{result.event.title}
         if result.venue
           small.event-venue
             |  at #{result.venue.name}
   
       .list-recommend
-        img.img-rounded(alt='', src="#{result.user.avatar_image_url}", style='float: left; margin-right: 10px; width: 48px; height: 48px;')
+        a.u-author.h-card(href="/@" + result.user.username) #{result.user.name}
+          img.img-rounded(alt=result.user.name, src="#{result.user.avatar_image_url}", style='float: left; margin-right: 10px; width: 48px; height: 48px;')
         h4
           a(href="/@" + result.user.username) #{result.user.name}
           small
             |  @#{result.user.username}
             
-      .recommend-quote
+      .recommend-quote.e-description
         !=marked(truncate(result.event.description, 200))
   
       if user

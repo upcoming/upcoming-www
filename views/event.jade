@@ -31,117 +31,133 @@ block includes
   
 
 block content
-  .col-xs-12.col-sm-8.col-md-8  
-    h2= result.event.title
-      if user
-        if (result.event.creator_user_id == user.id) || (user.id == 1)
-          small
-            a(href="/event/#{slug(result.event.title)}-#{result.event.event_id}/edit")
-              | 📝 Edit
+  .h-event
+    .col-xs-12.col-sm-8.col-md-8  
+      h2.p-name= result.event.title
+        if user
+          if (result.event.creator_user_id == user.id) || (user.id == 1)
+            small
+              a(href="/event/#{slug(result.event.title)}-#{result.event.event_id}/edit")
+                | 📝 Edit
 
-    if result.event.end_date
-      h4= moment(result.event.start_date).twix(result.event.end_date, {allDay: true}).format({monthFormat: 'MMMM', implicitYear: false})
-    else
-      h4= moment(result.event.start_date).format('MMMM D, YYYY')
-
-    if result.venue
-      .venue
-        .venue-name
-          a(href="/venue/#{slug(result.venue.name)}-#{result.venue.venue_id}") #{result.venue.name}
-        .venue-address
-          if result.venue.address
-            span.address= result.venue.address
-            br
-          span.locality
-            if result.locality.name
-              a(href="/place/#{slug(result.locality.name)}-#{slug(result.locality.id)}")
-                if result.country.name == 'United States'
-                  | #{result.locality.name}, #{result.region.name}
-                else
-                  | #{result.locality.name}, #{result.country.name}
-            else
-              | #{result.venue.locality}, #{result.venue.region}
-  
-    div
-      .list-recommend
-        img.img-rounded(alt='', src="#{result.user.avatar_image_url}", style='float: left; margin-right: 10px; width: 48px; height: 48px;')
+      if result.event.end_date
+        h4= moment(result.event.start_date).twix(result.event.end_date, {allDay: true}).format({monthFormat: 'MMMM', implicitYear: false})
+        time.hidden.dt-start(datetime=moment(result.event.start_date).format('YYYY-MM-DD'))
+        time.hidden.dt-end(datetime=moment(result.event.end_date).format('YYYY-MM-DD'))
+      else
         h4
-          a(href="/@" + result.user.username) #{result.user.name}
-          small
-            |  @#{result.user.username}
-      .recommend-quote!= marked(result.event.description)
-        
-        if result.event.website
-          p
-            if (!/^(f|ht)tps?:\/\//i.test(result.event.website))
-              a(href="http://#{result.event.website}") #{result.event.website}
-            else
-              a(href="#{result.event.website}") #{result.event.website}
-        
-      if user
-        .recommend-action                  
-          form.watchlist(action="/watchlist", method="post")
-            div.form-group
-              input.event_id(type="hidden", name="event_id", value="#{result.event.event_id}")
-              div.btn-group(data-toggle="buttons", role="group")
-                if result.watchlist.status == 'attend'
-                  label.btn.btn-default.active
-                    input.status(type="checkbox", name="status", value="attend", checked)
-                    | 👍 I'm Going
-                else
-                  label.btn.btn-default
-                    input.status(type="checkbox", name="status", value="attend")
-                    | 👍 I'm Going
-  
-                if result.watchlist.status == 'watch'
-                  label.btn.btn-default.active
-                    input.status(type="checkbox", name="status", value="watch", checked)
-                    | 🌟 Recommend
-                else
-                  label.btn.btn-default
-                    input.status(type="checkbox", name="status", value="watch")
-                    | 🌟 Recommend
+          time.dt-start(datetime=moment(result.event.start_date).format('YYYY-MM-DD'))= moment(result.event.start_date).format('MMMM D, YYYY')
 
-  if watchlists
-    .col-xs-12.col-sm-4.col-md-4
-      if watchlists['attend']
-        h4 Attending            
-        - each watchlist in watchlists['attend']
-          .watchlist
-            a(href="/@" + watchlist.username) #{watchlist.name}
-            | 
-            small @#{watchlist.username}
-  
-      if watchlists['watch']
-        h4 Recommend        
-        - each watchlist in watchlists['watch']
-          .watchlist
-            a(href="/@" + watchlist.username) #{watchlist.name}
-            | 
-            small @#{watchlist.username}
-  
-  .col-xs-12.col-sm-8.col-md-8
-    if comments.length > 0
-      h3 Comments
-    else
-      if user
-        h3 Add a comment
+      a.hidden.u-url.u-uid(href="")
+
+      if result.venue
+        .venue.p-location.h-card
+          .venue-name
+            a.p-name.u-url(href="/venue/#{slug(result.venue.name)}-#{result.venue.venue_id}") #{result.venue.name}
+          .venue-address
+            if result.venue.address
+              span.address.p-street-address= result.venue.address
+              br
+            span.locality
+              if result.locality.name
+                a(href="/place/#{slug(result.locality.name)}-#{slug(result.locality.id)}")
+                  if result.country.name == 'United States'
+                    span.p-locality= result.locality.name
+                    | , 
+                    span.p-region= result.region.name
+                  else
+                    span.p-locality= result.locality.name
+                    | , 
+                    span.p-country-name= result.country.name
+              else
+                span.p-locality= result.venue.locality
+                | , 
+                span.p-region= result.venue.region
     
-    - each comment in comments
-      img(alt='', src="#{comment.avatar_image_url}", style='float: left; margin-right: 10px; width: 48px; height: 48px;')
-      .comment(style='margin-left: 60px')
-        h4
-          a(href="/@" + comment.username) #{comment.name}
-          | 
-          small @#{comment.username}
-        
-          p= comment.created_at
-        p!= marked(comment.comment_text)
+      div
+        .list-recommend
+          a.u-author.h-card(href="/@" + result.user.username)
+            img.img-rounded(alt=result.user.name, src="#{result.user.avatar_image_url}", style='float: left; margin-right: 10px; width: 48px; height: 48px;')
+          h4
+            a(href="/@" + result.user.username) #{result.user.name}
+            small
+              |  @#{result.user.username}
+        .recommend-quote.e-description!= marked(result.event.description)
+          
+          if result.event.website
+            p
+              if (!/^(f|ht)tps?:\/\//i.test(result.event.website))
+                a.u-url(href="http://#{result.event.website}") #{result.event.website}
+              else
+                a.u-url(href="#{result.event.website}") #{result.event.website}
+          
+        if user
+          .recommend-action                  
+            form.watchlist(action="/watchlist", method="post")
+              div.form-group
+                input.event_id(type="hidden", name="event_id", value="#{result.event.event_id}")
+                div.btn-group(data-toggle="buttons", role="group")
+                  if result.watchlist.status == 'attend'
+                    label.btn.btn-default.active
+                      input.status(type="checkbox", name="status", value="attend", checked)
+                      | 👍 I'm Going
+                  else
+                    label.btn.btn-default
+                      input.status(type="checkbox", name="status", value="attend")
+                      | 👍 I'm Going
+    
+                  if result.watchlist.status == 'watch'
+                    label.btn.btn-default.active
+                      input.status(type="checkbox", name="status", value="watch", checked)
+                      | 🌟 Recommend
+                  else
+                    label.btn.btn-default
+                      input.status(type="checkbox", name="status", value="watch")
+                      | 🌟 Recommend
 
-    if user
-      form(name="comment", action="/comment", method="post")
-        div.form-group
-          textarea.form-control(name="comment_text", cols="40", rows="5")
-          input(type="hidden", name="event_id", value="#{result.event.event_id}")
-          button.btn.btn-default(type="submit") Add Comment
+    if watchlists
+      .col-xs-12.col-sm-4.col-md-4
+        if watchlists['attend']
+          h4 Attending            
+          - each watchlist in watchlists['attend']
+            .watchlist.p-attendee.h-card
+              a.p-name.u-url(href="/@" + watchlist.username) #{watchlist.name}
+              | 
+              small @#{watchlist.username}
+
+        if watchlists['watch']
+          h4 Recommend        
+          - each watchlist in watchlists['watch']
+            .watchlist.u-like.h-card
+              a.p-name.u-url(href="/@" + watchlist.username) #{watchlist.name}
+              | 
+              small @#{watchlist.username}
+    
+    .col-xs-12.col-sm-8.col-md-8
+      if comments.length > 0
+        h3 Comments
+      else
+        if user
+          h3 Add a comment
+      
+      - each comment in comments
+        .p-comment.h-entry(id="comment-"+comment.id)
+          a.u-author.h-card(href="/@" + comment.username)
+            img.p-name(alt=comment.name, src="#{comment.avatar_image_url}", style='float: left; margin-right: 10px; width: 48px; height: 48px;')
+          .comment(style='margin-left: 60px')
+            h4
+              a(href="/@" + comment.username) #{comment.name}
+              | 
+              small @#{comment.username}
+
+            .e-content.p-name
+              p!= marked(comment.comment_text)
+            a.hidden.u-url(href="#comment-"+comment.id)
+              time.dt-published(datetime=moment(comment.created_at).format('YYYY-MM-DDThh:mm:ssZ'))
+      if user
+        form(name="comment", action="/comment", method="post")
+          div.form-group
+            textarea.form-control(name="comment_text", cols="40", rows="5")
+            input(type="hidden", name="event_id", value="#{result.event.event_id}")
+            button.btn.btn-default(type="submit") Add Comment
 
