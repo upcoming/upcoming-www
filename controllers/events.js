@@ -20,7 +20,7 @@ router.post('/add', function (req, res, next) {
   var errors = req.validationErrors();
   
   if (errors) {
-    res.render('add', { title: 'Add Event', alert: { type: 'alert-danger', messages: errors } });
+    res.render('add', { title: 'Add Event', post: post, alert: { type: 'alert-danger', messages: errors } });
   } else {
     Venue.create(user, post, function (err, venue) {
       if (err) throw err;
