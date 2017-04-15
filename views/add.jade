@@ -13,7 +13,7 @@ block content
       include alert
       .form-group
         label(for='event_name') Title
-        if post
+        if post.title
           input#title.form-control(type='text', name='title', value="#{post.title}")
         else
           input#title.form-control(type='text', name='title')        
@@ -21,7 +21,7 @@ block content
         .col-md-6
           .form-group
             label(for='city') City
-            if post
+            if post.city
               input#city.form-control(type='text', name='city', value="#{post.city}")
             else if place
               input#city.form-control(type='text', name='city', value=place.locality + ', ' + place.region)
@@ -30,7 +30,7 @@ block content
         .col-md-6
           .form-group
             label(for='name') Venue Search 🔍
-            if post
+            if post.name
               input#name.form-control.typeahead(type='text', name='name', placeholder='Venue name', autocomplete='off', value="#{post.name}")
             else 
               input#name.form-control.typeahead(type='text', name='name', placeholder='Venue name', autocomplete='off')
@@ -38,7 +38,7 @@ block content
         .col-xs-6
           .form-group
             label(for='start_date') Start date
-            if post
+            if post.start_date
               input#start_date.form-control(type='date', name='start_date', value='#{post.start_date}')
             else
               input#start_date.form-control(type='date', name='start_date', value=moment(today).format('YYYY-MM-DD'))            
@@ -53,31 +53,31 @@ block content
         .col-xs-6
           .form-group
             label(for='start_time') Start time
-            if post
+            if post.start_time
               input#start_time.form-control(type='time', name='start_time', value='#{post.start_time}')
             else
               input#start_time.form-control(type='time', name='start_time')
         .col-xs-6
           .form-group
             label(for='end_time') End time
-            if post
+            if post.end_time
               input#end_time.form-control(type='time', name='end_time', value='#{post.end_time}')
             else
               input#end_time.form-control(type='time', name='end_time')
       .form-group
         label(for='website') Website
-        if post
+        if post.website
           input#website.form-control(type='text', name='website', value='#{post.website}')
         else
           input#website.form-control(type='text', name='website')
       .form-group
         label(for='description') Description
-        if post
+        if post.description
           textarea#description.form-control(rows='5', name='description') #{post.description}
         else
           textarea#description.form-control(rows='5', name='description')
       button.btn.btn-default(type='submit') Add event
-      if post
+      if post.foursquare_id
         input#foursquare_id(type='hidden', name='foursquare_id', value="#{post.foursquare_id}")
         input#address(type='hidden', name='address', value="#{post.address}")
         input#locality(type='hidden', name='locality', value="#{post.locality}")

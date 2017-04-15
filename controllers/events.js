@@ -78,9 +78,11 @@ router.post('/edit', function (req, res, next) {
 // show add event form
 router.get('/add', ensureLoggedIn, function(req, res, next) {
   user = req.user;
+  post = req.body;
+  
   User.getLastLocation(user, function (err, result) {
     if (err) throw err;
-    res.render('add', { title: 'Add Event', place: result });
+    res.render('add', { title: 'Add Event', post: post, place: result });
   });
 });
 
