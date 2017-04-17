@@ -5,37 +5,51 @@ block includes
     $.getScript('/js/watchlists.js');
 
 block content
-  #main
-    .page-header
-      if place.properties
-        if place.properties.country == 'United States'
-          h2= place.properties.locality + ', ' + place.properties.region
+  .h-card
+    #main
+      .page-header.p-name
+        if place.properties
+          if place.properties.country == 'United States'
+            h2
+              span.p-locality= place.properties.locality
+              | , 
+              span.p-region= place.properties.region
+          else
+            h2
+              span.p-locality= place.properties.locality
+              | , 
+              span.p-country-name= place.properties.country
         else
-          h2= place.properties.locality + ', ' + place.properties.country
-      else
-        if place.country.name == 'United States'
-          h2= place.locality.name + ', ' + place.region.name
-        else
-          h2= place.locality.name + ', ' + place.country.name
-      
-                
-  .hidden-xs.col-sm-2
-    .list-nav
-      .list-item
-        a(href='?sort=date') Latest
-      .list-item
-        a(href='?sort=popular') Popular
-      .list-item
-        a(href='?sort=new') Recently added
-    .list-nav
-      .list-item
-        a(href='?when=future') Upcoming
-      .list-item
-        a(href='?when=past') Past Events
-      .list-item        
-        a(href='?when=past') Anytime
-  
-  .col-xs-12.col-sm-6
-    include event-list
-             
-  .col-xs-12.col-sm-6
+          if place.country.name == 'United States'
+            h2
+              span.p-locality= place.locality.name
+              | , 
+              span.p-region= place.region.name
+          else
+            h2
+              span.p-locality= place.locality.name
+              | , 
+              span.p-country-name= place.country.name
+    
+    a.hidden.u-url(href="")
+    
+    .hidden-xs.col-sm-2
+      .list-nav
+        .list-item
+          a(href='?sort=date') Latest
+        .list-item
+          a(href='?sort=popular') Popular
+        .list-item
+          a(href='?sort=new') Recently added
+      .list-nav
+        .list-item
+          a(href='?when=future') Upcoming
+        .list-item
+          a(href='?when=past') Past Events
+        .list-item        
+          a(href='?when=past') Anytime
+    
+    .col-xs-12.col-sm-6
+      include event-list
+               
+    .col-xs-12.col-sm-6

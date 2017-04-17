@@ -4,26 +4,28 @@ block includes
   script(src='/js/watchlists.js')
 
 block content
-  #main
-  .row
-    .col-md-12
-      .page-header
-        img.img-rounded(alt='', src="#{current_user.avatar_image_url}", style='float: left; margin-right: 10px')
-        h1= current_user.name
-          small
-            |  @#{current_user.username}
-  
-  .row
-    .col-xs-12.col-sm-3      
-      p
-        small= current_user.description
-  
-      hr
-      .list-nav
-        .list-item
-          a(href='?when=future') Upcoming
-        .list-item
-          a(href='?when=past') Past Events
+  .h-card
+    #main
+    .row
+      .col-md-12
+        .page-header
+          a.u-url(href="")
+            img.img-rounded.p-name.u-photo(alt=current_user.name, src="#{current_user.avatar_image_url}", style='float: left; margin-right: 10px')
+          h1= current_user.name
+            small
+              |  @#{current_user.username}
+    
+    .row
+      .col-xs-12.col-sm-3      
+        p
+          small.p-bio= current_user.description
+    
+        hr
+        .list-nav
+          .list-item
+            a(href='?when=future') Upcoming
+          .list-item
+            a(href='?when=past') Past Events
 
-    .col-xs-12.col-sm-6
-      include event-list
+      .col-xs-12.col-sm-6
+        include event-list

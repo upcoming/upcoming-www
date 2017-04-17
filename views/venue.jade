@@ -1,26 +1,28 @@
 extends layout
 
 block content
-  .col-xs-12.col-sm-10.col-md-8.col-lg-6
+  .h-card.col-xs-12.col-sm-10.col-md-8.col-lg-6
     .page-header
-      h1= venue.name
+      h1.p-name= venue.name
   
     .venue
       .venue-address
         if venue.address
-          span.address= venue.address
+          span.address.p-street-address= venue.address
           br
-          span.locality= venue.locality + ', '
-          span.region= venue.region + ' '
-          span.postal_code= venue.postal_code
+          span.locality.p-locality= venue.locality + ', '
+          span.region.p-region= venue.region + ' '
+          span.postal_code.p-postal-code= venue.postal_code
         else
           span No address available
-          
-      a(href="//foursquare.com/v/" + venue.foursquare_id) View on Foursquare
+      
+      a.hidden.u-url.u-uid(href="")
+      a.u-url(href="//foursquare.com/v/" + venue.foursquare_id) View on Foursquare
   
     if events.length > 0
       - each event in events
-        .event
-          small= moment(event.start_date).format('MMMM D, YYYY')
+        .event.h-event
+          small
+            time.dt-start(datetime=moment(event.start_date).format('YYYY-MM-DD'))= moment(event.start_date).format('MMMM D, YYYY')
           h4
-            a(href="/event/#{slug(event.title)}-#{event.event_id}") #{event.title}
+            a.p-name.u-url(href="/event/#{slug(event.title)}-#{event.event_id}") #{event.title}
