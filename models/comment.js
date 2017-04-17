@@ -16,7 +16,7 @@ exports.create = function(user, comment, next) {
 
 /* find comments by event id */
 exports.getAllByEventId = function(event_id, next) {
-  var sql = 'SELECT * FROM comment, user '
+  var sql = 'SELECT *, comment.id, comment.created_at FROM comment, user '
       + 'WHERE comment.user_id = user.id '
       + 'AND comment.event_id = ?';
   db.query(sql, event_id, function (err, rows) {
