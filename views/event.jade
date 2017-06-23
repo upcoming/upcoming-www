@@ -5,6 +5,13 @@ block meta
     - var event_date = moment(result.event.start_date).twix(result.event.end_date, {allDay: true}).format({monthFormat: 'MMMM', implicitYear: false})
   else
     - var event_date = moment(result.event.start_date).format('MMMM D, YYYY')
+    
+  if result.event.start_time
+    - var start_time = moment(result.event.start_time, 'HH:mm:ss')
+
+  if result.event.end_time
+    - var end_time = moment(result.event.end_time, 'HH:mm:ss')
+    - var time_range = moment(start_time).twix(end_time).format({hideDate: true, spaceBeforeMeridiem: false, meridiemFormat: 'a'})
   
   - var event_address = result.venue.name + ", " + result.venue.address + ", " + result.venue.locality + ", " + result.venue.region
   
@@ -39,10 +46,16 @@ block content
             a(href="/event/#{slug(result.event.title)}-#{result.event.event_id}/edit")
               | 📝 Edit
 
-    if result.event.end_date
-      h4= moment(result.event.start_date).twix(result.event.end_date, {allDay: true}).format({monthFormat: 'MMMM', implicitYear: false})
-    else
-      h4= moment(result.event.start_date).format('MMMM D, YYYY')
+    h4    
+      if result.event.end_date
+        = moment(result.event.start_date).twix(result.event.end_date, {allDay: true}).format({monthFormat: 'MMMM', implicitYear: false})
+      else
+        = moment(result.event.start_date).format('MMMM D, YYYY')
+
+      if time_range
+        |  — #{time_range}
+      else if result.event.start_time
+        |  — #{moment(start_time).format('h:mma')}
 
     if result.venue
       .venue
