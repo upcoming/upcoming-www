@@ -3,3 +3,4 @@ node_modules
 
 # So we don't accidentally overwrite from local copy
 config/default.json
+config/local.json
