@@ -4,7 +4,7 @@ $(document).ready(function(e) {
     $('#autocomplete').css('display','block');
     $('.tt-input').focus();
   });
-  
+
   $("#filters").on('click', 'a.remove-city', function(e) {
   	e.preventDefault();
     var gid = $(this).closest('.list-item').find('a').data('filter');
@@ -16,10 +16,10 @@ $(document).ready(function(e) {
     datumTokenizer: Bloodhound.tokenizers.obj.whitespace('label'),
     queryTokenizer: Bloodhound.tokenizers.whitespace,
     remote: {
-      cache: true,      
+      cache: true,
       rateLimitBy: 'throttle',
       rateLimitWait: 1000,
-      url: 'https://search.mapzen.com/v1/autocomplete?sources=wof&api_key=mapzen-MBvh2sM&layers=locality,borough,localadmin&text=%QUERY',
+      url: 'https://api.geocode.earth/v1/autocomplete?sources=wof&api_key=ge-46a2f5fac371bea0&layers=locality,borough,localadmin&text=%QUERY',
       replace: function(url, query) {
         return url.replace('%QUERY', query)
       },
@@ -32,9 +32,9 @@ $(document).ready(function(e) {
       }
     }
   });
-  
+
   cities.initialize();
-  
+
   $('#name').typeahead({
       hint: true,
       highlight: true,
@@ -65,17 +65,20 @@ $(document).ready(function(e) {
   function onSelected($e, place) {
     if (place.properties.layer == 'borough') {
       place_name = place.properties.borough;
-      place_gid = place.properties.borough_gid;      
+      place_gid = place.properties.borough_gid;
     } else if (place.properties.layer == 'localadmin') {
       place_name = place.properties.localadmin;
-      place_gid = place.properties.localadmin_gid;      
+      place_gid = place.properties.localadmin_gid;
+    } else if (place.properties.layer == 'region') {
+      place_name = place.properties.region;
+      place_gid = place.properties.region_gid;
     } else {
       place_name = place.properties.locality;
       place_gid = place.properties.locality_gid;
     }
-    
+
     var place_div = '<div class="list-item">'
-          + '<a href="#" data-cat="gid" data-filter="' + place_gid + '" class="active"> ' 
+          + '<a href="#" data-cat="gid" data-filter="' + place_gid + '" class="active"> '
           + place_name + '</a> '
           + '<a href="#" class="remove-city"><span class="glyphicon glyphicon-remove-circle" aria-hidden="true"></a>';
 
@@ -85,9 +88,9 @@ $(document).ready(function(e) {
     $('#name').typeahead('val', '');
     $('#city-list .list-item:last').prev().find('a.active').trigger('click');
 
-    // save user location preference to db    
+    // save user location preference to db
     var post = { gid: place_gid, status: 'add' };
-    $.post('/user/location', post, function(data) {});  
+    $.post('/user/location', post, function(data) {});
     $.post('/place/add', { json: JSON.stringify(place) }, function(data) {}, 'json');
   }
 });

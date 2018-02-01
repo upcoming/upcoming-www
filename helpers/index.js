@@ -98,9 +98,9 @@ exports.reverse_geocode = function(venue_id, next) {
     if (rows.length > 0) {
       var venue = rows[0];
       var options = {
-        uri: 'https://search.mapzen.com/v1/reverse',
+        uri: config.geocode_earth.endpoint + '/v1/reverse',
         qs: {
-          api_key: config.mapzen.api_key,
+          api_key: config.geocode_earth.api_key,
           'point.lat': venue.latitude,
           'point.lon': venue.longitude,
           size: 1

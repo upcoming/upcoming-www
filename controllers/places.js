@@ -37,19 +37,19 @@ router.get(/(.*-|)(.+)$/, function(req, res, next) {
       if (!place) {
         res.render('404', { title: '404 Not Found' });
       } else {
-        options = { 
+        options = {
           sort: req.query.sort,
           when: req.query.when,
           gid: place.locality.gid
         };
-    
+
         Event.search(req.user, options, function (err, results) {
           if (err) throw err;
           res.render('place', { title: place.locality.name, place: place, results: results });
         });
       }
     });
-      
+
   } else {
     // if doesn't exist, geocode place with mapzen and save results
     query = req.params[0] + req.params[1];
@@ -57,9 +57,9 @@ router.get(/(.*-|)(.+)$/, function(req, res, next) {
     query = query.replace(/-/g, ' ');
 
     var options = {
-      uri: 'https://search.mapzen.com/v1/search',
+      uri: config.geocode_earth.endpoint + '/v1/search',
       qs: {
-        api_key: config.mapzen.api_key,
+        api_key: config.geocode_earth.api_key,
         text: query,
         layers: 'locality,borough',
         sources: 'wof',
@@ -67,23 +67,23 @@ router.get(/(.*-|)(.+)$/, function(req, res, next) {
       },
       json: true
     };
-  
+
     request(options, function(error, response, body) {
         if (!error && response.statusCode === 200) {
-          if (body.features[0]) {          
+          if (body.features[0]) {
             var place = body.features[0];
-            
-            options = { 
+
+            options = {
               sort: req.query.sort,
               when: req.query.when,
               gid: place.properties.locality_gid
             };
-            
+
             Event.search(req.user, options, function (err, results) {
               if (err) throw err;
               res.render('place', { title: place.properties.name, place: place, results: results });
             });
-            
+
           } else {
             res.render('404', { title: '404 Not Found' });
           }
@@ -93,7 +93,7 @@ router.get(/(.*-|)(.+)$/, function(req, res, next) {
       }
     );
   }
-      
+
 });
 
 module.exports = router;
