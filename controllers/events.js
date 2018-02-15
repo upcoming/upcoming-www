@@ -114,7 +114,9 @@ router.get(/(?:.*-|)(.+)$/, function(req, res, next) {
   
   Event.get(event_id, user, function (err, result) {
     if (err) throw err;
-    if (!result) {
+    
+    // 404 unknown/deleted events and events from banned users
+    if (!result || result.event.deleted == 1 || result.user.deleted == 1) {
       res.render('404', { title: '404 Not Found' });
     } else {
       Watchlist.getAllByEventId(event_id, function (err, watchlists) {
