@@ -6,15 +6,14 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var passport = require('passport');
-var validator = require('express-validator');
-var helmet = require('helmet')
+var helmet = require('helmet');
 
 var controllers = require('./controllers/index');
 
 var app = express();
 
 // set headers for security
-app.use(helmet())
+app.use(helmet());
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -24,7 +23,6 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(validator());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.locals.moment = require('moment');
@@ -41,15 +39,20 @@ app.locals.marked.setOptions({
   smartypants: true
 });
 
+var redis = require('redis');
 var session = require('express-session');
 var RedisStore = require('connect-redis')(session);
+var redisClient = redis.createClient({
+    host: '127.0.0.1',
+    port: 6379,
+    password: config.redis_password
+  }
+);
+redisClient.unref();
+redisClient.on('error', console.log);
 
 app.use(session({ 
-    store: new RedisStore({
-      host: '127.0.0.1',
-      port: 6379,
-      pass: config.redis_password
-    }),
+    store: new RedisStore({ client: redisClient }),
     secret: config.session_secret, 
     resave: false, 
     saveUninitialized: false,

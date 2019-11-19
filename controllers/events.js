@@ -7,20 +7,22 @@ var Comment = require('../models/comment');
 var User = require('../models/user');
 var ensureLoggedIn = require('connect-ensure-login').ensureLoggedIn();
 
+// use validator
+var { check, validationResult } = require('express-validator');
+
 // add new event
-router.post('/add', function (req, res, next) {
+router.post('/add', [
+  check('title', 'Event name is required.').not().isEmpty(),
+  check('start_date', 'Start date is required.').exists({checkFalsy: true}).isISO8601(),
+  check('name', 'Venue can\'t be blank, sorry.').not().isEmpty(),
+  check('foursquare_id', 'A valid venue is required. Search to find one!').not().isEmpty(),
+], function (req, res, next) {
   user = req.user;
   post = req.body;
-  
-  // validate form
-  req.checkBody('title', 'Event name is required.').notEmpty();
-  req.checkBody('start_date', 'Start date is required.').isDate();
-  req.checkBody('name', 'Venue can\'t be blank, sorry.').notEmpty();
-  req.checkBody('foursquare_id', 'A valid venue is required. Search to find one!').notEmpty();
-  var errors = req.validationErrors();
-  
-  if (errors) {
-    res.render('add', { title: 'Add Event', post: post, alert: { type: 'alert-danger', messages: errors } });
+
+  var errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    res.render('add', { title: 'Add Event', post: post, alert: { type: 'alert-danger', messages: errors.array() } });
   } else {
     Venue.create(user, post, function (err, venue) {
       if (err) throw err;
@@ -40,7 +42,12 @@ router.post('/add', function (req, res, next) {
 });
 
 // edit event
-router.post('/edit', function (req, res, next) {
+router.post('/edit', [
+  check('title', 'Event name is required.').not().isEmpty(),
+  check('start_date', 'Start date is required.').exists({checkFalsy: true}).isISO8601(),
+  check('name', 'Venue can\'t be blank, sorry.').not().isEmpty(),
+  check('foursquare_id', 'A valid venue is required. Search to find one!').not().isEmpty()
+], function (req, res, next) {
   user = req.user;  
   post = req.body;
   
@@ -52,17 +59,11 @@ router.post('/edit', function (req, res, next) {
     }
   });
 
-  // validate form
-  req.checkBody('title', 'Event name is required.').notEmpty();
-  req.checkBody('start_date', 'Start date is required.').isDate();
-  req.checkBody('name', 'Venue can\'t be blank, sorry.').notEmpty();
-  req.checkBody('foursquare_id', 'A valid venue is required. Search to find one!').notEmpty();
-  var errors = req.validationErrors();
-  
-  if (errors) {
+  var errors = validationResult(req);  
+  if (!errors.isEmpty()) {
     Event.get(post.event_id, user, function (err, result) {
       if (err) throw err;
-      res.render('edit', { title: 'Edit Event', result: result, alert: { type: 'alert-danger', messages: errors } });
+      res.render('edit', { title: 'Edit Event', result: result, alert: { type: 'alert-danger', messages: errors.array() } });
     });
   } else {
     Venue.create(user, post, function (err, venue) {
