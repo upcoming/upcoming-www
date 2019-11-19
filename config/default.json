@@ -30,8 +30,9 @@
     "oauth_secret": ""
   },
 
-  "mapzen": {
-    "api_key": ""
+  "geocode_earth": {
+    "api_key": "",
+    "endpoint": "https://api.geocode.earth"
   },
 
   "s3": {

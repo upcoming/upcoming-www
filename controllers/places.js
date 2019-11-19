@@ -51,7 +51,7 @@ router.get(/(.*-|)(.+)$/, function(req, res, next) {
     });
 
   } else {
-    // if doesn't exist, geocode place with mapzen and save results
+    // if doesn't exist, geocode place with Geocode Earth and save results
     query = req.params[0] + req.params[1];
     query = query.replace(/\//g, '');
     query = query.replace(/-/g, ' ');
