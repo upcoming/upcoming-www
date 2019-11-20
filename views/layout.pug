@@ -95,15 +95,15 @@ html(lang="en")
                 li
                   a.dropdown-toggle(href='#', data-toggle='dropdown', role='button', style='padding: 10px 20px 10px 20px')
                     if user.avatar_image_url
-                      img.img-rounded(alt='', src="#{user.avatar_image_url}", width='30', height='30')
+                      img.img-rounded(alt='', src=user.avatar_image_url, width='30', height='30')
                     else
-                      img.img-rounded(alt='', src="#{user.profile_image_url}", width='30', height='30')
+                      img.img-rounded(alt='', src=user.profile_image_url, width='30', height='30')
                     span.caret
                   ul.dropdown-menu(role='menu')
                     li(role='presentation')
                       #{user.name}
                     li(role='presentation')
-                      a(href="/@#{user.username}", role='menuitem') Your Profile
+                      a(href='/@' + user.username, role='menuitem') Your Profile
                     li(role='presentation')
                       a(href="/following", role='menuitem') Following
                     li(role='presentation')

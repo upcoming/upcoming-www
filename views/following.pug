@@ -5,11 +5,11 @@ block content
     .page-header
       h1= title
       
-    - each friend in following
+    each friend in following
       - var avatar = friend.avatar_image_url ? friend.avatar_image_url : 'https://avatars.io/twitter/' + friend.username + '/small'
       .friend.clearfix
-        img.img-rounded(alt='', src="#{avatar}", style='float: left; margin-bottom: 10px; margin-right: 10px; width: 48px; height: 48px;')
+        img.img-rounded(alt='', src=avatar, style='float: left; margin-bottom: 10px; margin-right: 10px; width: 48px; height: 48px;')
         h4
-          a(href="/@" + friend.username) #{friend.name}
+          a(href='/@' + friend.username) #{friend.name}
           small
             |  @#{friend.username}

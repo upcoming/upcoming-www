@@ -3,7 +3,7 @@ block includes
     $.getScript('/js/watchlists.js');
 
 if results.length > 0
-  - each result in results  
+  each result in results  
     .event
       .event-date
         if result.event.end_date
@@ -12,13 +12,13 @@ if results.length > 0
           = moment(result.event.start_date).format('MMMM D')
   
       .event-title
-        a(href="/event/#{slug(result.event.title)}-#{result.event.event_id}") #{result.event.title}
+        a(href='/event/' + slug(result.event.title) + '-' + result.event.event_id) #{result.event.title}
         if result.venue
           small.event-venue
             |  at #{result.venue.name}
   
       .list-recommend
-        img.img-rounded(alt='', src="#{result.user.avatar_image_url}", style='float: left; margin-right: 10px; width: 48px; height: 48px;')
+        img.img-rounded(alt='', src=result.user.avatar_image_url, style='float: left; margin-right: 10px; width: 48px; height: 48px;')
         h4
           a(href="/@" + result.user.username) #{result.user.name}
           small
@@ -31,7 +31,7 @@ if results.length > 0
         .recommend-action                  
           form.watchlist(action="/watchlist", method="post")
             div.form-group
-              input.event_id(type="hidden", name="event_id", value="#{result.event.event_id}")
+              input.event_id(type="hidden", name="event_id", value=result.event.event_id)
               div.btn-group(data-toggle="buttons", role="group")
                 if result.watchlist.status == 'attend'
                   label.btn.btn-default.active

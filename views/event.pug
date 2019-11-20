@@ -43,7 +43,7 @@ block content
       if user
         if (result.event.creator_user_id == user.id) || (user.id == 1)
           small
-            a(href="/event/#{slug(result.event.title)}-#{result.event.event_id}/edit")
+            a(href='/event/' + slug(result.event.title) + '-' + result.event.event_id + '/edit')
               | 📝 Edit
 
     h4    
@@ -60,14 +60,14 @@ block content
     if result.venue
       .venue
         .venue-name
-          a(href="/venue/#{slug(result.venue.name)}-#{result.venue.venue_id}") #{result.venue.name}
+          a(href='/venue/' + slug(result.venue.name) + '-' + result.venue.venue_id) #{result.venue.name}
         .venue-address
           if result.venue.address
             span.address= result.venue.address
             br
           span.locality
             if result.locality.name
-              a(href="/place/#{slug(result.locality.name)}-#{slug(result.locality.id)}")
+              a(href='/place/' + slug(result.locality.name) + '-' + slug(result.locality.id))
                 if result.country.name == 'United States'
                   | #{result.locality.name}, #{result.region.name}
                 else
@@ -77,9 +77,9 @@ block content
   
     div
       .list-recommend
-        img.img-rounded(alt='', src="#{result.user.avatar_image_url}", style='float: left; margin-right: 10px; width: 48px; height: 48px;')
+        img.img-rounded(alt='', src=result.user.avatar_image_url, style='float: left; margin-right: 10px; width: 48px; height: 48px;')
         h4
-          a(href="/@" + result.user.username) #{result.user.name}
+          a(href='/@' + result.user.username) #{result.user.name}
           small
             |  @#{result.user.username}
       .recommend-quote!= marked(result.event.description)
@@ -87,15 +87,15 @@ block content
         if result.event.website
           p
             if (!/^(f|ht)tps?:\/\//i.test(result.event.website))
-              a(href="http://#{result.event.website}") #{result.event.website}
+              a(href='http://' + result.event.website) #{result.event.website}
             else
-              a(href="#{result.event.website}") #{result.event.website}
+              a(href=result.event.website) #{result.event.website}
         
       if user
         .recommend-action                  
           form.watchlist(action="/watchlist", method="post")
             div.form-group
-              input.event_id(type="hidden", name="event_id", value="#{result.event.event_id}")
+              input.event_id(type="hidden", name="event_id", value=result.event.event_id)
               div.btn-group(data-toggle="buttons", role="group")
                 if result.watchlist.status == 'attend'
                   label.btn.btn-default.active
@@ -119,7 +119,7 @@ block content
     .col-xs-12.col-sm-4.col-md-4
       if watchlists['attend']
         h4 Attending            
-        - each watchlist in watchlists['attend']
+        each watchlist in watchlists['attend']
           .watchlist
             a(href="/@" + watchlist.username) #{watchlist.name}
             | 
@@ -127,7 +127,7 @@ block content
   
       if watchlists['watch']
         h4 Recommend        
-        - each watchlist in watchlists['watch']
+        each watchlist in watchlists['watch']
           .watchlist
             a(href="/@" + watchlist.username) #{watchlist.name}
             | 
@@ -140,8 +140,8 @@ block content
       if user
         h3 Add a comment
     
-    - each comment in comments
-      img(alt='', src="#{comment.avatar_image_url}", style='float: left; margin-right: 10px; width: 48px; height: 48px;')
+    each comment in comments
+      img(alt='', src=comment.avatar_image_url, style='float: left; margin-right: 10px; width: 48px; height: 48px;')
       .comment(style='margin-left: 60px')
         h4
           a(href="/@" + comment.username) #{comment.name}
@@ -154,5 +154,5 @@ block content
       form(name="comment", action="/comment", method="post")
         div.form-group
           textarea.form-control(name="comment_text", cols="40", rows="5")
-          input(type="hidden", name="event_id", value="#{result.event.event_id}")
+          input(type="hidden", name="event_id", value=result.event.event_id)
           button.btn.btn-default(type="submit") Add Comment
