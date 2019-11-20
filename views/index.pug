@@ -18,7 +18,7 @@ block content
             if user_locations
               each user_location in user_locations
                 .list-item
-                  a(href='#', data-cat="gid", data-filter="#{user_location.gid}") #{user_location.name}
+                  a(href='#', data-cat="gid", data-filter=user_location.gid) #{user_location.name}
                   | 
                   a.remove-city(href='#')
                     span.glyphicon.glyphicon-remove-circle(aria-hidden="true")

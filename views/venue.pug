@@ -23,4 +23,4 @@ block content
         .event
           small= moment(event.start_date).format('MMMM D, YYYY')
           h4
-            a(href="/event/#{slug(event.title)}-#{event.event_id}") #{event.title}
+            a(href='/event/' + slug(event.title) + '-' + event.event_id) #{event.title}
