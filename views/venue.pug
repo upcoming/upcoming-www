@@ -19,7 +19,7 @@ block content
       a(href="//foursquare.com/v/" + venue.foursquare_id) View on Foursquare
   
     if events.length > 0
-      - each event in events
+      each event in events
         .event
           small= moment(event.start_date).format('MMMM D, YYYY')
           h4

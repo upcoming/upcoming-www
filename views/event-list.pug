@@ -3,7 +3,7 @@ block includes
     $.getScript('/js/watchlists.js');
 
 if results.length > 0
-  - each result in results  
+  each result in results  
     .event
       .event-date
         if result.event.end_date

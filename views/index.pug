@@ -16,7 +16,7 @@ block content
             .list-item
               a(href='#', data-cat="gid", data-filter="all", class="active") Anywhere
             if user_locations
-              - each user_location in user_locations
+              each user_location in user_locations
                 .list-item
                   a(href='#', data-cat="gid", data-filter="#{user_location.gid}") #{user_location.name}
                   | 

@@ -119,7 +119,7 @@ block content
     .col-xs-12.col-sm-4.col-md-4
       if watchlists['attend']
         h4 Attending            
-        - each watchlist in watchlists['attend']
+        each watchlist in watchlists['attend']
           .watchlist
             a(href="/@" + watchlist.username) #{watchlist.name}
             | 
@@ -127,7 +127,7 @@ block content
   
       if watchlists['watch']
         h4 Recommend        
-        - each watchlist in watchlists['watch']
+        each watchlist in watchlists['watch']
           .watchlist
             a(href="/@" + watchlist.username) #{watchlist.name}
             | 
@@ -140,7 +140,7 @@ block content
       if user
         h3 Add a comment
     
-    - each comment in comments
+    each comment in comments
       img(alt='', src="#{comment.avatar_image_url}", style='float: left; margin-right: 10px; width: 48px; height: 48px;')
       .comment(style='margin-left: 60px')
         h4
