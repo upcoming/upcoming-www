@@ -2,7 +2,9 @@ var db = require('../db.js')
 
 /* get a particular user by its id */
 exports.get = function(username, next) {
-  var sql = 'SELECT * FROM user WHERE username = ?';
+  var sql = "SELECT * FROM user "
+    + "WHERE username = ? "
+    + "AND deleted = 0";
   db.query(sql, username, function (err, result) {
     if (err) return next(err);
     next(null, result[0]);
