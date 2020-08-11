@@ -9,7 +9,7 @@ block includes
 block content
   .col-sm-8.col-md-6.col-sm-offset-1
     h2 Add New Event
-    form#add-event(method='post', action='/event/add')
+    form#add-event(method='post', action='/event/add', autocomplete="off")
       include alert
       .form-group
         label(for='event_name') Title
@@ -22,18 +22,18 @@ block content
           .form-group
             label(for='city') City
             if post.city
-              input#city.form-control(type='text', name='city', value=post.city)
+              input#city.form-control(type='search', name='city', value=post.city)
             else if place
-              input#city.form-control(type='text', name='city', value=place.locality + ', ' + place.region)
+              input#city.form-control(type='search', name='city', value=place.locality + ', ' + place.region)
             else
-              input#city.form-control(type='text', name='city')
+              input#city.form-control(type='search', name='city')
         .col-md-6
           .form-group
             label(for='name') Venue Search 🔍
             if post.name
-              input#name.form-control.typeahead(type='text', name='name', placeholder='Venue name', autocomplete='off', value=post.name)
+              input#name.form-control.typeahead(type='search', name='name', placeholder='Venue name', value=post.name)
             else 
-              input#name.form-control.typeahead(type='text', name='name', placeholder='Venue name', autocomplete='off')
+              input#name.form-control.typeahead(type='search', name='name', placeholder='Venue name')
       .row
         .col-xs-6
           .form-group

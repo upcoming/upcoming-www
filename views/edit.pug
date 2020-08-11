@@ -9,7 +9,7 @@ block includes
 block content
   .col-sm-8.col-md-6.col-sm-offset-1
     h2 Edit Event
-    form(method='post', action='/event/edit')
+    form(method='post', action='/event/edit', autocomplete='off')
       include alert
       .form-group
         label(for='event_name') Title
@@ -18,11 +18,11 @@ block content
         .col-md-6
           .form-group
             label(for='city') City
-            input#city.form-control(type='text', name='city', value=result.venue.locality + ', ' + result.venue.region)
+            input#city.form-control(type='search', name='city', value=result.venue.locality + ', ' + result.venue.region)
         .col-md-6
           .form-group
             label(for='name') Venue Search 🔍
-            input#name.form-control.typeahead(type='text', name='name', placeholder='Venue name', autocomplete='off', value=result.venue.name)
+            input#name.form-control.typeahead(type='search', name='name', placeholder='Venue name', value=result.venue.name)
       - var start_date = (result.event.start_date ? moment(result.event.start_date).format('YYYY-MM-DD') : '')
       - var end_date = (result.event.end_date ? moment(result.event.end_date).format('YYYY-MM-DD') : '')
       .row
