@@ -20,6 +20,7 @@ exports.getAllByEventId = function(event_id, next) {
       + 'user.name, user.avatar_image_url, user.username, comment.created_at '
       + 'FROM comment, user '
       + 'WHERE comment.user_id = user.id '
+      + 'AND user.deleted = 0 '
       + 'AND comment.event_id = ?';
   db.query(sql, event_id, function (err, rows) {
     if (err) return next(err);

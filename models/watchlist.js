@@ -39,6 +39,7 @@ exports.getAllByEventId = function(event_id, next) {
           + 'FROM user, watchlist '
           + 'WHERE user.id = watchlist.user_id '
           + 'AND event_id = ? '
+          + 'AND user.deleted = 0 '
           + 'ORDER BY watchlist.status, watchlist.created_at';
 
   db.query({sql: sql, nestTables: true}, event_id, function (err, rows) {

@@ -113,18 +113,6 @@ exports.get = function(event_id, user, next) {
   };
 };
 
-
-exports.getAllByUser = function(user_id, next) {
-  var sql = 'SELECT event.*, venue.*, user.* '
-    + 'FROM event, venue, user '
-    + 'WHERE event.venue_id = venue.venue_id '
-    + 'AND event.creator_user_id = ?';
-  db.query({sql: sql, nestTables: true}, user_id, function (err, rows) {
-    if (err) return next(err);
-    next(null, rows);
-  });
-};
-
 exports.search = function(user, options, next) {
   if (user) {
     var sql = "SELECT event.*, user.*, venue.*, watchlist.status, "
