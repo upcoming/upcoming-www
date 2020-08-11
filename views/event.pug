@@ -115,6 +115,33 @@ block content
                     input.status(type="checkbox", name="status", value="watch")
                     | 🌟 Recommend
 
+    .col-xs-12.col-sm-8.col-md-8
+      if comments.length > 0
+        h3 Comments
+      else
+        if user
+          h3 Add a comment
+      
+      each comment in comments
+        img(alt='', src=comment.avatar_image_url, style='float: left; margin-right: 10px; width: 48px; height: 48px;')
+        .comment(style='margin-left: 60px')
+          h4
+            a(href="/@" + comment.username) #{comment.name}
+            | 
+            small @#{comment.username} 
+              if moment(comment.created_at)
+                | · 
+                span(title=moment(comment.created_at).format('h:mm A · MMM D, YYYY')) #{moment(comment.created_at).fromNow()}
+          
+          p!= marked(comment.comment_text)
+
+      if user
+        form(name="comment", action="/comment", method="post")
+          div.form-group
+            textarea.form-control(name="comment_text", cols="40", rows="5")
+            input(type="hidden", name="event_id", value=result.event.event_id)
+            button.btn.btn-default(type="submit") Add Comment
+
   if watchlists
     .col-xs-12.col-sm-4.col-md-4
       if watchlists['attend']
@@ -133,29 +160,3 @@ block content
             | 
             small @#{watchlist.username}
 
-  .col-xs-12.col-sm-8.col-md-8
-    if comments.length > 0
-      h3 Comments
-    else
-      if user
-        h3 Add a comment
-    
-    each comment in comments
-      img(alt='', src=comment.avatar_image_url, style='float: left; margin-right: 10px; width: 48px; height: 48px;')
-      .comment(style='margin-left: 60px')
-        h4
-          a(href="/@" + comment.username) #{comment.name}
-          | 
-          small @#{comment.username} 
-            if moment(comment.created_at)
-              | · 
-              span(title=moment(comment.created_at).format('h:mm A · MMM D, YYYY')) #{moment(comment.created_at).fromNow()}
-        
-        p!= marked(comment.comment_text)
-
-    if user
-      form(name="comment", action="/comment", method="post")
-        div.form-group
-          textarea.form-control(name="comment_text", cols="40", rows="5")
-          input(type="hidden", name="event_id", value=result.event.event_id)
-          button.btn.btn-default(type="submit") Add Comment
