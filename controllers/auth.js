@@ -1,9 +1,10 @@
 var express = require('express');
-var config = require('config');
 var router = express.Router();
 var passport = require('../passport.js');
 
-router.get('/twitter', passport.authenticate('twitter'));
+router.get('/twitter', passport.authenticate('twitter', { 
+  scope: ["offline.access", "tweet.read", "users.read"] 
+}));
 
 router.get('/twitter/callback',
   passport.authenticate('twitter', {
